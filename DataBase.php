@@ -42,7 +42,7 @@ class DataBase{
       $c = __CLASS__;
       self::$instance = new $c;
     }
-    self->connect();
+    self->link = self->connect();
     return self::$instance;
   }
 
@@ -70,6 +70,10 @@ class DataBase{
   private function close(){
     $this->linked = False;
     return mysql_close($this->link);
+  }
+
+  public function getId(){
+    return $this->link;
   }
 }
 ?>
