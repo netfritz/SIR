@@ -141,24 +141,24 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `SIR`.`AgrupacionEstudiantil_pertenece_Universidad`
+-- Table `SIR`.`Agrupacion_pertenece_Universidad`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `SIR`.`AgrupacionEstudiantil_pertenece_Universidad` ;
+DROP TABLE IF EXISTS `SIR`.`Agrupacion_pertenece_Universidad` ;
 
-CREATE  TABLE IF NOT EXISTS `SIR`.`AgrupacionEstudiantil_pertenece_Universidad` (
-  `AgrupacionEstudiantil_universidad` VARCHAR(45) NOT NULL ,
-  `AgrupacionEstudiantil_nombre` VARCHAR(45) NOT NULL ,
+CREATE  TABLE IF NOT EXISTS `SIR`.`Agrupacion_pertenece_Universidad` (
+  `Agrupacion_universidad` VARCHAR(45) NOT NULL ,
+  `Agrupacion_nombre` VARCHAR(45) NOT NULL ,
   `Universidad_id` INT NOT NULL ,
   `Universidad_nombre` VARCHAR(100) NOT NULL ,
-  PRIMARY KEY (`AgrupacionEstudiantil_universidad`, `AgrupacionEstudiantil_nombre`, `Universidad_id`, `Universidad_nombre`) ,
-  INDEX `fk_AgrupacionEstudiantil_pertenece_Universidad_Universidad` (`Universidad_id` ASC, `Universidad_nombre` ASC) ,
-  INDEX `fk_AgrupacionEstudiantil_pertenece_Universidad_AgrupacionEstudiantil` (`AgrupacionEstudiantil_universidad` ASC, `AgrupacionEstudiantil_nombre` ASC) ,
-  CONSTRAINT `fk_AgrupacionEstudiantil_pertenece_Universidad_AgrupacionEstudiantil`
-    FOREIGN KEY (`AgrupacionEstudiantil_universidad` , `AgrupacionEstudiantil_nombre` )
+  PRIMARY KEY (`Agrupacion_universidad`, `Agrupacion_nombre`, `Universidad_id`, `Universidad_nombre`) ,
+  INDEX `fk_Agrupacion_pertenece_Universidad_Universidad` (`Universidad_id` ASC, `Universidad_nombre` ASC) ,
+  INDEX `fk_Agrupacion_pertenece_Universidad_Agrupacion` (`Agrupacion_universidad` ASC, `Agrupacion_nombre` ASC) ,
+  CONSTRAINT `fk_Agrupacion_pertenece_Universidad_Agrupacion`
+    FOREIGN KEY (`Agrupacion_universidad` , `Agrupacion_nombre` )
     REFERENCES `SIR`.`AgrupacionEstudiantil` (`universidad` , `nombre` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_AgrupacionEstudiantil_pertenece_Universidad_Universidad`
+  CONSTRAINT `fk_Agrupacion_pertenece_Universidad_Universidad`
     FOREIGN KEY (`Universidad_id` , `Universidad_nombre` )
     REFERENCES `SIR`.`Universidad` (`id` , `nombre` )
     ON DELETE NO ACTION
