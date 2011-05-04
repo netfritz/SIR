@@ -42,15 +42,19 @@ class DataBase{
       $c = __CLASS__;
       self::$instance = new $c;
     }
-    
+    self->connect();
     return self::$instance;
+  }
+
+  public function __destruct(){
+    self->close();
   }
 
   /**
    * Se encarga de crear la conexión a la base de datos. No recibe ningún 
    * parámetro.
    */
-  public function connect(){
+  private function connect(){
     $this->link = mysql_connect($this->host,$this->usr,$this->passwd) or
       die("Problemas al conectarse a la base de datos");
     $this->linked = True;
@@ -63,7 +67,7 @@ class DataBase{
    * Se encarga de cerrar la conexión con la base de datos. No recibe ningún
    * parámetro.
    */
-  public function close(){
+  private function close(){
     $this->linked = False;
     return mysql_close($this->link);
   }
