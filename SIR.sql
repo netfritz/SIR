@@ -167,24 +167,24 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `SIR`.`Estudiante_miembro_AgrupacionEstudiantil`
+-- Table `SIR`.`Estudiante_miembro_Agrupacion`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `SIR`.`Estudiante_miembro_AgrupacionEstudiantil` ;
+DROP TABLE IF EXISTS `SIR`.`Estudiante_miembro_Agrupacion` ;
 
-CREATE  TABLE IF NOT EXISTS `SIR`.`Estudiante_miembro_AgrupacionEstudiantil` (
+CREATE  TABLE IF NOT EXISTS `SIR`.`Estudiante_miembro_Agrupacion` (
   `Estudiante_documento_id` VARCHAR(25) NOT NULL ,
-  `AgrupacionEstudiantil_universidad` VARCHAR(45) NOT NULL ,
-  `AgrupacionEstudiantil_nombre` VARCHAR(45) NOT NULL ,
-  PRIMARY KEY (`Estudiante_documento_id`, `AgrupacionEstudiantil_universidad`, `AgrupacionEstudiantil_nombre`) ,
-  INDEX `fk_Estudiante_miembro_AgrupacionEstudiantil_AgrupacionEstudiantil` (`AgrupacionEstudiantil_universidad` ASC, `AgrupacionEstudiantil_nombre` ASC) ,
-  INDEX `fk_Estudiante_miembro_AgrupacionEstudiantil_Estudiante` (`Estudiante_documento_id` ASC) ,
-  CONSTRAINT `fk_Estudiante_miembro_AgrupacionEstudiantil_Estudiante`
+  `Agrupacion_universidad` VARCHAR(45) NOT NULL ,
+  `Agrupacion_nombre` VARCHAR(45) NOT NULL ,
+  PRIMARY KEY (`Estudiante_documento_id`, `Agrupacion_universidad`, `Agrupacion_nombre`) ,
+  INDEX `fk_Estudiante_miembro_Agrupacion_Agrupacion` (`Agrupacion_universidad` ASC, `Agrupacion_nombre` ASC) ,
+  INDEX `fk_Estudiante_miembro_Agrupacion_Estudiante` (`Estudiante_documento_id` ASC) ,
+  CONSTRAINT `fk_Estudiante_miembro_Agrupacion_Estudiante`
     FOREIGN KEY (`Estudiante_documento_id` )
     REFERENCES `SIR`.`Estudiante` (`documento_id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Estudiante_miembro_AgrupacionEstudiantil_AgrupacionEstudiantil`
-    FOREIGN KEY (`AgrupacionEstudiantil_universidad` , `AgrupacionEstudiantil_nombre` )
+  CONSTRAINT `fk_Estudiante_miembro_Agrupacion_Agrupacion`
+    FOREIGN KEY (`Agrupacion_universidad` , `Agrupacion_nombre` )
     REFERENCES `SIR`.`AgrupacionEstudiantil` (`universidad` , `nombre` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -253,7 +253,7 @@ CREATE  TABLE IF NOT EXISTS `SIR`.`Profesor_dicta_Materia` (
   PRIMARY KEY (`Profesor_documento_id`, `Materia_id`, `Materia_dpto`, `Estudiante_documento_id`) ,
   INDEX `fk_Profesor_dicta_Materia_Materia` (`Materia_id` ASC, `Materia_dpto` ASC) ,
   INDEX `fk_Profesor_dicta_Materia_Profesor` (`Profesor_documento_id` ASC) ,
-  INDEX `fk_Profesor_dicta_Materia_Estudiante1` (`Estudiante_documento_id` ASC) ,
+  INDEX `fk_Profesor_dicta_Materia_Estudiante` (`Estudiante_documento_id` ASC) ,
   CONSTRAINT `fk_Profesor_dicta_Materia_Profesor`
     FOREIGN KEY (`Profesor_documento_id` )
     REFERENCES `SIR`.`Profesor` (`documento_id` )
@@ -264,7 +264,7 @@ CREATE  TABLE IF NOT EXISTS `SIR`.`Profesor_dicta_Materia` (
     REFERENCES `SIR`.`Materia` (`id` , `dpto` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Profesor_dicta_Materia_Estudiante1`
+  CONSTRAINT `fk_Profesor_dicta_Materia_Estudiante`
     FOREIGN KEY (`Estudiante_documento_id` )
     REFERENCES `SIR`.`Estudiante` (`documento_id` )
     ON DELETE NO ACTION
