@@ -1,19 +1,21 @@
 <?php
-require_once("DataBase.php");
+//require_once("DataBase.php");
 
 class Carrera {
+  // Atributos de la instancia (columnas de la tabla)
   private $nombre;
   private $direccion;
   private $coordinador;
   private $codigo;
-  private $oldcodigo;
 
-  private $new = False;
+  // Cuando se altera la clave primaria, se guarda la vieja para
+  // poder ubicar la fila en la BD y actualizarla
+  private $oldcodigo;
   private $changedCodigo = False;
 
-  private function __construct() {
-    // No hago nada
-  }
+  // Determina si esta instancia ya existe o no en la BD
+  private $new = False;
+
 
   public static function all() {
     DataBase::singleton();
@@ -47,15 +49,15 @@ class Carrera {
   public function save() {
     DataBase::singleton();
     if ($this->new) {
-      mysql_query("INSERT INTO Carrera VALUES ("
-		  . $this->codigo .", ". $this->nombre .", "
-		  . $this->direccion .", ". $this->coordinador .");");
+      mysql_query("INSERT INTO Carrera VALUES ('"
+		  . $this->codigo ."', '". $this->nombre ."', '"
+		  . $this->direccion ."', '". $this->coordinador ."');");
     } else {
-      mysql_query("UPDATE Carrera SET codigo=".$this->codigo
-		  .", nombre=".$this->nombre
-		  .", direccion=".$this->direccion
-		  .", coordinador=".$this->coordinador
-		  ." WHERE codigo=".$this->oldcodigo.";");
+      mysql_query("UPDATE Carrera SET codigo='".$this->codigo
+		  ."', nombre='".$this->nombre
+		  ."', direccion='".$this->direccion
+		  ."', coordinador='".$this->coordinador
+		  ."' WHERE codigo=".$this->oldcodigo.";");
     }
     
     $this->new = False;
@@ -65,7 +67,7 @@ class Carrera {
 
   public function delete() {
     DataBase::singleton();
-    mysql_query("DELETE FROM Carrera WHERE codigo=".$this->codigo.";");
+    mysql_query("DELETE FROM Carrera WHERE codigo='".$this->codigo."';");
   }
 
   public function toString() {
@@ -115,5 +117,5 @@ class Carrera {
     }
     $this->codigo = $cod;
   }
-
+}
 ?>
