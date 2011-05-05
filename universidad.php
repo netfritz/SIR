@@ -29,15 +29,35 @@ $this->ciudad=$ciudad;
 $this->direccion=$direccion;
 $this->rector=$rector;
 $this->url=$url;
+$this->nueva=TRUE;
 }
 
 public static function all(){
 DataBase::singleton();
-$tabla= array("hola","hola2");
-return $tabla;
+$query=mysql_query("SELECT * FROM universidad;")
+  while($tupla=mysql_fetch_assoc($query)){
+    $univ=new Universidad($tupla["nombre"],$tupla["pais"],$tupla["estado"],$tupla["ciudad"],$tupla["direccion"],$tupla["rector"],$tupla["url"]);
+    $all[]=$univ;
+    $uni->nueva= FALSE;
+}
+return $query;
 }
 
- public static function getByKey($key) {}
+ public static function getByKey($key) {
+   DataBase::singleton();
+   $query=sprintf("SELECT * FROM universidad WHERE nombre='%s'",
+                  mysql_real_scape_string($key));
+   $result=mysql_query($query);
+   if(!$result){
+     return null;
+   }else{
+     $tupl=mysql_fetch_assoc($result);
+     $univ= new Universidad($tupla["nombre"],$tupla["pais"],$tupla["estado"],$tupla["ciudad"],$tupla["direccion"],$tupla["rector"],$tupla["url"]);
+     $univ->nueva=FALSE;
+     return $univ;
+   }
+
+}
  public function save() {}
 public function delete() {}
 public function toString() {}
