@@ -16,14 +16,19 @@ class Carrera {
   // Determina si esta instancia ya existe o no en la BD
   private $new = False;
 
+  // Por hacer:
+  // - Validar entrada
+  // - Verificar los errores de mysql y devolver cosas apropiadas
+  
+
 
   public static function all() {
-    $singleton = DataBase::singleton();
+    DataBase::singleton();
     $res = mysql_query("SELECT * FROM Carrera;");
     while ($row = mysql_fetch_assoc($res)) {
       $car = new Carrera($row["codigo"],
 			 $row["nombre"],
-			 $row["direccion"],
+			 $row["direccion_coordinacion"],
 			 $row["coordinador"]);
       $car->new = False;
       $car->changedCodigo = False;
@@ -35,39 +40,43 @@ class Carrera {
 
   public static function getByKey($key) {
     DataBase::singleton();
-    $res = mysql_query("SELECT * FROM Carrera WHERE codigo=".$key.";");
-    $car = new Carrera($row["codigo"],
-		       $row["nombre"],
-		       $row["direccion"],
-		       $row["coordinador"]);
-    $car->new = False;
-    $car->changedCodigo = False;
-    $car->oldcodigo = $row["codigo"];
-    return $car;
+    $res = mysql_query("SELECT * FROM Carrera WHERE codigo='".$key."';");
+    if ($row = mysql_fetch_assoc($res)) {
+      $car = new Carrera($row["codigo"],
+			 $row["nombre"],
+			 $row["direccion_coordinacion"],
+			 $row["coordinador"]);
+      $car->new = False;
+      $car->changedCodigo = False;
+      $car->oldcodigo = $row["codigo"];
+      return $car;
+    } else {
+      return NULL;
+    }
   }
   
   public function save() {
     DataBase::singleton();
     if ($this->new) {
-      mysql_query("INSERT INTO Carrera VALUES ('"
+      $res = mysql_query("INSERT INTO Carrera VALUES ('"
 		  . $this->codigo ."', '". $this->nombre ."', '"
 		  . $this->direccion ."', '". $this->coordinador ."');");
     } else {
-      mysql_query("UPDATE Carrera SET codigo='".$this->codigo
+      $res = mysql_query("UPDATE Carrera SET codigo='".$this->codigo
 		  ."', nombre='".$this->nombre
-		  ."', direccion='".$this->direccion
+		  ."', direccion_coordinacion='".$this->direccion
 		  ."', coordinador='".$this->coordinador
-		  ."' WHERE codigo=".$this->oldcodigo.";");
+		  ."' WHERE codigo='".$this->oldcodigo."';");
     }
-    
+
     $this->new = False;
-    $car->changedCodigo = False;
-    $car->oldcodigo = $row["codigo"];
+    $this->changedCodigo = False;
+    $this->oldcodigo = $this->codigo;
   }
 
   public function delete() {
     DataBase::singleton();
-    mysql_query("DELETE FROM Carrera WHERE codigo='".$this->codigo."';");
+    $res = mysql_query("DELETE FROM Carrera WHERE codigo='".$this->codigo."';");
   }
 
   public function toString() {
@@ -117,5 +126,6 @@ class Carrera {
     }
     $this->codigo = $cod;
   }
+
 }
 ?>
