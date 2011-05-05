@@ -1,14 +1,13 @@
 <?php
 class DataBase{
-  private static var $instance; // Representa la unica instancia de esta clase
+  private static $instance; // Representa la unica instancia de esta clase
 
-  private var $db = "sir";         // Estos valores deben ser cambiados manual-
-  private var $usr = "root";       // mente por los correspondientes al servidor
-  private var $passwd = "";        // mysql que cada quien esté usando. Estos 
-  private var $host = "localhost"; // son los valores por default.
+  private $db = "SIR";         // Estos valores deben ser cambiados manual-
+  private $usr = "root";       // mente por los correspondientes al servidor
+  private $passwd = "mantequilla";// mysql que cada quien esté usando. Estos 
+  private $host = "127.0.0.1"; // son los valores por default.
 
-  private var $link;               // Almacena el identificador de la conexión
-  private static var $linked;      // Verdadero si hay una conexión abierta.
+  private $link;               // Almacena el identificador de la conexión
 
   
   /**
@@ -40,14 +39,15 @@ class DataBase{
   public static function singleton() {
     if (!isset(self::$instance)) {
       $c = __CLASS__;
-      self::$instance = new $c;
+      $inst = new $c;
+      $inst->link = $inst->connect();
+      self::$instance = $inst;
     }
-    self->link = self->connect();
     return self::$instance;
   }
 
   public function __destruct(){
-    self->close();
+    return mysql_close($this->link);
   }
 
   /**
@@ -55,21 +55,11 @@ class DataBase{
    * parámetro.
    */
   private function connect(){
-    $this->link = mysql_connect($this->host,$this->usr,$this->passwd) or
+    $this->link = @mysql_connect($this->host,$this->usr,$this->passwd) or
       die("Problemas al conectarse a la base de datos");
-    $this->linked = True;
-    mysql_select_db($db,$link) or
+    @mysql_select_db($this->db,$this->link) or
       die("Problemas al seleccionar la base de datos");
     return $this->link;
-  }
-  
-  /**
-   * Se encarga de cerrar la conexión con la base de datos. No recibe ningún
-   * parámetro.
-   */
-  private function close(){
-    $this->linked = False;
-    return mysql_close($this->link);
   }
 
   public function getId(){

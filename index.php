@@ -1,3 +1,24 @@
+Hora de probar cosas en la vida
+
 <?php
-phpinfo();
+require_once("Carrera.php");
+
+$bla = Carrera::all();
+
+foreach ($bla as $ble) {
+  echo "<p>".$ble->toString(). "</p>";
+}
+
+$bli = Carrera::getByKey("0800");
+
+echo "<p>".$bli->toString()."</p>";
+
+$bli->setNombre("ING LOCA");
+$bli->save();
+
+$bla2 = new Carrera("100", "OTRA ING", "JA", "MALD");
+$bla2->save();
+
+$bla2->delete();
+
 ?>
