@@ -1,3 +1,12 @@
+Hora de probar cosas en la vida
+
 <?php
-phpinfo();
+require_once("Carrera.php");
+
+$bla = Carrera::all();
+
+foreach ($bla as $ble) {
+  echo "<p>".$ble->toString(). "</p>";
+}
+
 ?>

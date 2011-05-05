@@ -1,5 +1,5 @@
 <?php
-//require_once("DataBase.php");
+require_once("DataBase.php");
 
 class Carrera {
   // Atributos de la instancia (columnas de la tabla)
@@ -18,7 +18,7 @@ class Carrera {
 
 
   public static function all() {
-    DataBase::singleton();
+    $singleton = DataBase::singleton();
     $res = mysql_query("SELECT * FROM Carrera;");
     while ($row = mysql_fetch_assoc($res)) {
       $car = new Carrera($row["codigo"],
