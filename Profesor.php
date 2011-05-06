@@ -163,8 +163,5 @@ class Profesor {
     }
 
 }
-$re= new Profesor("100",1,"2","2","2","2");
-//$re= Profesor::getByKey("100",200);
-var_dump($re);
-echo $re;
+
 ?>
