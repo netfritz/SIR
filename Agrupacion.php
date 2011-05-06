@@ -84,11 +84,10 @@ return  null;
 
     // Devuelve una cadena con los atributos de la instancia
     public function __toString() {
-        $cadena = "'$this->universidad', '$this->nombre'.'\n'";
-        $cadena.= "Presidente = '$this->presidente'.'\n'";
-        $cadena.= "Mision = '$this->mision'.'\n'";
-        $cadena.= "Vision = '$this->vision'.'\n'";
-        return($cadena);
+    $cadena = $this->universidad;
+    $cadena.= "," .$this->nombre .",". $this->presidente;
+    $cadena.= "," .$this->mision .",". $this->vision;
+    return($cadena);
     }
 
     // Funciones para obtener los atributos
@@ -143,7 +142,6 @@ return  null;
     }
 
 }
-
 
 // Fin de la clase Agrupacion.
 ?>

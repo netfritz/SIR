@@ -119,6 +119,11 @@ class Profesor {
     }
 
     public function __toString() {
+    $cadena = $this->documento_id;
+    $cadena.= "," .$this->depto .",". $this->carnet;
+    $cadena.= "," .$this->nombre .",". $this->apellido;
+    $cadena.= "," .$this->titulo;
+    //turn($cadena); si quieren que salga separado por comas descomentar linea
         return "Nombre: $this->nombre" . PHP_EOL .
         "Apellido: $this->apellido" . PHP_EOL .
         "Departamento: $this->dpto" . PHP_EOL .
@@ -158,5 +163,8 @@ class Profesor {
     }
 
 }
-
+$re= new Profesor("100",1,"2","2","2","2");
+//$re= Profesor::getByKey("100",200);
+var_dump($re);
+echo $re;
 ?>
