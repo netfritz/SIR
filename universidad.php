@@ -34,7 +34,7 @@ $this->nueva=TRUE;
 
 public static function all(){
 DataBase::singleton();
-$query=mysql_query("SELECT * FROM universidad;")
+$query=mysql_query("SELECT * FROM universidad;");
   while($tupla=mysql_fetch_assoc($query)){
     $univ=new Universidad($tupla["nombre"],$tupla["pais"],$tupla["estado"],$tupla["ciudad"],$tupla["direccion"],$tupla["rector"],$tupla["url"]);
     $all[]=$univ;
