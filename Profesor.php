@@ -102,7 +102,7 @@ class Profesor {
     public static function getByKey($documento_id, $dpto) {
         DataBase::singleton();
         $sqlQuery = "SELECT * FROM Profesor WHERE " .
-                "documento_id = '$documento_id' AND dpto = '$dpto'";
+                "documento_id = '".$documento_id."' AND dpto = '".$dpto."';" ;
         $result = mysql_query($sqlQuery);
         $row = mysql_fetch_assoc($result);
         if ($row) {
@@ -119,7 +119,7 @@ class Profesor {
     }
 
     public function __toString() {
-        return "Nombre: $this->Nombre" . PHP_EOL .
+        return "Nombre: $this->nombre" . PHP_EOL .
         "Apellido: $this->apellido" . PHP_EOL .
         "Departamento: $this->dpto" . PHP_EOL .
         "Documento de Identidad: $this->documento_id" . PHP_EOL;
