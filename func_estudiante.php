@@ -8,18 +8,18 @@ require_once("Estudiante.php");
 // devuelve un formulario precargado con los datos
 function estudianteInput() {
   if ($_SERVER["REQUEST_METHOD"]=="POST") {
-    $obj = Estudiante::getByKey($_POST["codigo"]);
+    $obj = Estudiante::getByKey($_POST["id"]);
     echo "<form action=\"index.php?class=estudiante&cmd=edit\" method=\"post\"
           <input type=\"hidden\" name=\"type\" value=\"edit\" />";
-    estudianteFields($_POST["id"], $obj->getDocumento_Id(),
-		     $obj->Carnet(), $obj->getNombre(),
-		     $obj->getApellido(), $obj->getFecha_Nac(),
-		     $obj->getColegio());
+    estudianteFields($_POST["id"], $obj->getDoc_Id(),
+		     $obj->getCarnet(), $obj->getNombre(),
+		     $obj->getApellido(), $obj->getFecha_nac(),
+		     $obj->getColegio_origen());
   } else {
     // Insertar nuevo
     echo "<form action=\"index.php?class=estudiante&cmd=insert\" method=\"post\"
           <input type=\"hidden\" name=\"type\" value=\"new\" />";
-    carreraFields("","","","","","","");
+    estudianteFields("","","","","","","");
   }
   echo "<input type=\"submit\" value=\"Enviar\" />";
 }
@@ -58,12 +58,12 @@ function estudianteAll() {
     echo "<li>Estudiante: " . $ind. "
 
          <form action=\"index.php?class=estudiante&cmd=input\" method=\"post\">
-         <input type=\"hidden\" name=\"codigo\" value=\"" . $ind->getCodigo() . "\" />
+         <input type=\"hidden\" name=\"codigo\" value=\"" . $ind->getDoc_Id() . "\" />
          <input type=\"submit\" value=\"Editar\" />
          </form>
 
          <form action=\"index.php?class=estudiante&cmd=delete\" method=\"post\">
-         <input type=\"hidden\" name=\"codigo\" value=\"" . $ind->getCodigo() . "\" />
+         <input type=\"hidden\" name=\"codigo\" value=\"" . $ind->getDoc_Id() . "\" />
          <input type=\"submit\" value=\"Borrar\" />
          </form>
          
@@ -74,12 +74,12 @@ function estudianteAll() {
 
 function estudianteEdit() {
   $obj = Estudiante::getByKey($_POST["oldid"]);
-  $obj->setDocumento_Id($_POST["id"]);
+  $obj->setDoc_Id($_POST["id"]);
   $obj->setCarnet($_POST["carnet"]);
   $obj->setNombre($_POST["nombre"]);
   $obj->setApellido($_POST["apellido"]);
-  $obj->setFecha_Nac($_POST["fecha_nac"]);
-  $obj->setColegio($_POST["colegio"]);
+  $obj->setFecha_nac($_POST["fecha_nac"]);
+  $obj->setColegio_origen($_POST["colegio"]);
   $obj->save();
   echo "Se ha modificado un estudiante";
   estudianteAll();
