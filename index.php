@@ -1,7 +1,12 @@
 <!-- El header va aqui -->
 
 <html>
+<head>
+<title>SUGU -  Sistema Universal de Gestion Universitaria</title>
 <body>
+
+<h3>SUGU -  Sistema Universal de Gestion Universitaria</h3>
+
 <ul>
 <li><a href="index.php?class=universidad">Universidad</a></li>
 <li><a href="index.php?class=carrera">Carrera</a></li>
