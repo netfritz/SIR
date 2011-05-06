@@ -18,31 +18,32 @@ if (!preg_match($reg,$_GET["class"])) {
   echo "Http 404";
   exit();
 }
+$cmd = "All";
 
-//generarSidebar($_GET["class"]);
-
-switch ($_GET["cmd"]) {
-case "insert":
-  $cmd = "Insert";
+if (isset($_GET["cmd"])) {
+  switch ($_GET["cmd"]) {
+  case "insert":
+    $cmd = "Insert";
+    break;
+  case "finsert":
+    $cmd = "Finsert";
   break;
-case "finsert":
-  $cmd = "Finsert";
+  case "all":
+    $cmd = "All";
+    break;
+  case "edit":
+    $cmd = "Edit";
+    break;
+  case "fedit":
+    $cmd = "Fedit";
   break;
-case "all":
-  $cmd = "All";
-  break;
-case "edit":
-  $cmd = "Edit";
-  break;
-case "fedit":
-  $cmd = "Fedit";
-  break;
-case "delete":
-  $cmd = "Delete";
-  break;
-default:
-  $cmd = "All";
-  break;
+  case "delete":
+    $cmd = "Delete";
+    break;
+  default:
+    echo "Http 404";
+    exit();
+  }
 }
 
 $func = $_GET["class"].$cmd;

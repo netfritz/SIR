@@ -80,7 +80,7 @@ class Carrera {
   }
 
   public function __toString() {
-    echo $this->codigo . "  " . $this->nombre;
+    return $this->codigo . "  " . $this->nombre;
   }
 
   public function __construct($codigo, $nombre, $direccion, $coordinador) {
