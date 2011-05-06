@@ -34,15 +34,12 @@ $this->nueva=TRUE;
 
 public static function all(){
 DataBase::singleton();
-
-$all= array();
-$query=mysql_query("SELECT * FROM universidad;");
-echo $query;
+$query=mysql_query("SELECT * FROM Universidad;");
 if($query){
   while($tupla=mysql_fetch_assoc($query)){
     $univ=new Universidad($tupla["nombre"],$tupla["pais"],$tupla["estado"],$tupla["ciudad"],$tupla["direccion"],$tupla["rector"],$tupla["url"]);
     $all[]=$univ;
-    $uni->nueva= FALSE;
+    $univ->nueva= FALSE;
   }
   }else{
     return null;
@@ -52,13 +49,12 @@ return $all;
 
  public static function getByKey($key) {
    DataBase::singleton();
-   $query=sprintf("SELECT * FROM universidad WHERE nombre='%s'",
-                  mysql_real_scape_string($key));
-   $result=mysql_query($query);
+
+   $result=mysql_query("SELECT * FROM Universidad WHERE nombre='" .$key."'");
    if(!$result){
      return null;
    }else{
-     $tupl=mysql_fetch_assoc($result);
+     $tupla=mysql_fetch_assoc($result);
      $univ= new Universidad($tupla["nombre"],$tupla["pais"],$tupla["estado"],$tupla["ciudad"],$tupla["direccion"],$tupla["rector"],$tupla["url"]);
      $univ->nueva=FALSE;
      return $univ;
@@ -75,10 +71,9 @@ DataBase::singleton();
  		   '" . $this->estado . "','" .$this->ciudad."',
            '" . $this->direccion . "','" .$this->rector ."',
            '" . $this->url ."');");
-      var_dump($ins);
     } else {
-      $ins = mysql_query("UPDATE universidad SET
-          pais='".$this->pais
+      $ins = mysql_query("UPDATE Universidad SET
+          pais='kdjfhkdfj".$this->pais
 		  ."', estado='".$this->estado
 		  ."', ciudad='".$this->ciudad
 		  ."', direccion='".$this->direccion
@@ -91,10 +86,10 @@ DataBase::singleton();
 }
 public function delete() {
 DataBase::singleton();
-$del = mysql_query("DELETE FROM universidad WHERE nombre='".$this->nombre."';");
-echo $del;
+$del = mysql_query("DELETE FROM Universidad WHERE nombre='".$this->nombre."';");
 $this->nueva=TRUE;
 }
+
 public function __toString() {
 return $this->nombre . "  " . $this->rector;
 }
@@ -145,16 +140,6 @@ return $this->url;
 
 }
 
-$universidad= new Universidad("Universidad Simon Bolivar","Venezuela","Miranda","Sartenejas","un lugar","Planchart", "algo largo");
-$universidad2= new Universidad("Universidad Simon Bolivar2","Venezuela","Miranda","Sartenejas","un lugar","Planchart", "algo largo");
-
-$universidad->delete();
-$universidad2->delete();
-/*$universidad->save();
-  $universidad2->save();*/
-$laUni= Universidad::all();
-echo $universidad->getNombre();
-var_dump($laUni);
 ?>
 </body>
 </html>
