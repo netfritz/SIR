@@ -125,6 +125,13 @@ class Profesor {
         "Documento de Identidad: $this->documento_id" . PHP_EOL;
     }
 
+    public function delete() {
+        DataBase::singleton();
+        $sqlQuery = "DELETE FROM Profesor WHERE " .
+                "documento_id = '$this->documento_id' AND dpto = '$this->dpto'";
+        $res = mysql_query($sqlQuery);
+    }
+
     public function save() {
         DataBase::singleton();
         if ($this->new) {
