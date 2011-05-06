@@ -1,24 +1,58 @@
-Hora de probar cosas en la vida
+<!-- El header va aqui -->
+
+<html>
+<body>
+<ul>
+<li><a href="index.php?class=universidad">Universidad</a></li>
+<li><a href="index.php?class=carrera">Carrera</a></li>
+<li><a href="index.php?class=profesor">Profesor</a></li>
+<li><a href="index.php?class=estudiante">Estudiante</a></li>
+<li><a href="index.php?class=materia">Materia</a></li>
+<li><a href="index.php?class=departamento">Departamento</a></li>
+<li><a href="index.php?class=agrupacion">Agrupaciones</a></li>
+</ul>
 
 <?php
-require_once("Carrera.php");
 
-$bla = Carrera::all();
+   //require_once("func_carrera.php");
 
-foreach ($bla as $ble) {
-  echo "<p>".$ble->toString(). "</p>";
+$reg = "(universidad|agrupacion|carrera|departamento|profesor|estudiante|materia)";
+
+if (!preg_match($reg,$_GET["class"])) {
+  echo "Http 404";
+  exit();
+} else {
+  require_once("func_". $_GET["class"] . ".php");
 }
 
-$bli = Carrera::getByKey("0800");
+$cmd = "All";
 
-echo "<p>".$bli->toString()."</p>";
+if (isset($_GET["cmd"])) {
+  switch ($_GET["cmd"]) {
+  case "insert":
+    $cmd = "Insert";
+    break;
+  case "all":
+    $cmd = "All";
+    break;
+  case "edit":
+    $cmd = "Edit";
+    break;
+  case "delete":
+    $cmd = "Delete";
+    break;
+  case "input":
+    $cmd = "Input";
+    break;
+  default:
+    echo "Http 404";
+    exit();
+  }
+}
 
-$bli->setNombre("ING LOCA");
-$bli->save();
-
-$bla2 = new Carrera("100", "OTRA ING", "JA", "MALD");
-$bla2->save();
-
-$bla2->delete();
+$func = $_GET["class"].$cmd;
+$func();
 
 ?>
+
+<!-- El footer va aqui -->
