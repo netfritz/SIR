@@ -34,6 +34,7 @@ $this->nueva=TRUE;
 
 public static function all(){
 DataBase::singleton();
+
 $all= array();
 $query=mysql_query("SELECT * FROM universidad;");
 echo $query;
