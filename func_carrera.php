@@ -1,8 +1,6 @@
 <?php
 
-function __autoload($class_name) {
-  include $class_name . '.php';
-}
+require_once("Carrera.php");
 
 // Muestra un formulario en pantalla para la clase Carrera
 // Cuando es llamado via GET, devuelve un formulario vacio
