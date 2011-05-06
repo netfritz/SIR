@@ -1,13 +1,7 @@
-<html>
-<head>
-<tittle> <Center>Universidad <br> </Center> </tittle>
-</head>
-
-<body>
 
 <?php
 
-include("/home/jennifer/SIR/DataBase.php");
+include("DataBase.php");
 
 class Universidad{
 
@@ -141,5 +135,3 @@ return $this->url;
 }
 
 ?>
-</body>
-</html>
