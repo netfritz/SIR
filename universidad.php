@@ -12,7 +12,7 @@ include("/home/jennifer/SIR/DataBase.php");
 class Universidad{
 
 private $id; 
-private $nombre;
+public $nombre;
 private $pais;
 private $estado;
 private $ciudad;
@@ -34,13 +34,19 @@ $this->nueva=TRUE;
 
 public static function all(){
 DataBase::singleton();
-$query=mysql_query("SELECT * FROM universidad;")
+$all= array();
+$query=mysql_query("SELECT * FROM universidad;");
+echo $query;
+if($query){
   while($tupla=mysql_fetch_assoc($query)){
     $univ=new Universidad($tupla["nombre"],$tupla["pais"],$tupla["estado"],$tupla["ciudad"],$tupla["direccion"],$tupla["rector"],$tupla["url"]);
     $all[]=$univ;
     $uni->nueva= FALSE;
-}
-return $query;
+  }
+  }else{
+    return null;
+  }
+return $all;
 }
 
  public static function getByKey($key) {
@@ -58,9 +64,39 @@ return $query;
    }
 
 }
- public function save() {}
-public function delete() {}
-public function toString() {}
+
+public function save() {
+DataBase::singleton();
+    if ($this->nueva) {
+      $ins = mysql_query("INSERT INTO Universidad
+           (nombre,pais,estado,ciudad,direccion,rector,url) VALUES
+          ('" . $this->nombre ."','" .$this->pais. "',
+ 		   '" . $this->estado . "','" .$this->ciudad."',
+           '" . $this->direccion . "','" .$this->rector ."',
+           '" . $this->url ."');");
+      var_dump($ins);
+    } else {
+      $ins = mysql_query("UPDATE universidad SET
+          pais='".$this->pais
+		  ."', estado='".$this->estado
+		  ."', ciudad='".$this->ciudad
+		  ."', direccion='".$this->direccion
+          ."', rector='".$this->rector
+          ."', url='".$this->url
+		  ."' WHERE nombre='".$this->nombre."';");
+    }
+
+    $this->nueva = False;
+}
+public function delete() {
+DataBase::singleton();
+$del = mysql_query("DELETE FROM universidad WHERE nombre='".$this->nombre."';");
+echo $del;
+$this->nueva=TRUE;
+}
+public function __toString() {
+return $this->nombre . "  " . $this->rector;
+}
 
 // Funciones para obtener los valores de los atributos
 public function getNombre(){
@@ -86,9 +122,7 @@ return $this->url;
 }
 
 // Funciones para modificar los valores de los atributos
-public function setNombre(){
-return $this->nombre;
-}
+
 public function setPais(){
 return $this->pais;
 }
@@ -108,39 +142,18 @@ public function setUrl(){
 return $this->url;
 }
 
-public function insertarNombre(){}
-public function insertarPais(){}
-public function insertarEstado(){}
-public function insertarCiudad(){}
-public function insertarDireccion(){}
-public function insertarRector(){}
-public function insertarUrl(){}
-
-public function modificarID(){}
-public function modificarNombre(){}
-public function modificarPais(){}
-public function modificarEstado(){}
-public function modificarCiudad(){}
-public function modificarDireccion(){}
-public function modificarRector(){}
-public function modificarUrl(){}
-
-public function eliminarRegistro(){} // No se si este sea un metodo..
-
-public function buscarPorNombre(){}
-public function buscarPorPais(){}
-public function buscarPorEstado(){}
-public function buscarPorCiudad(){}
-public function buscarPorDireccion(){}
-public function buscarPorRector(){}
-public function buscarPorUrl(){}
-
 }
 
 $universidad= new Universidad("Universidad Simon Bolivar","Venezuela","Miranda","Sartenejas","un lugar","Planchart", "algo largo");
+$universidad2= new Universidad("Universidad Simon Bolivar2","Venezuela","Miranda","Sartenejas","un lugar","Planchart", "algo largo");
 
-$tupla= $universidad->all();
-echo $tupla;
+$universidad->delete();
+$universidad2->delete();
+/*$universidad->save();
+  $universidad2->save();*/
+$laUni= Universidad::all();
+echo $universidad->getNombre();
+var_dump($laUni);
 ?>
 </body>
 </html>
