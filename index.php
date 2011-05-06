@@ -3,21 +3,28 @@
 <html>
 <body>
 <ul>
-<li>Universidad</li>
+<li><a href="index.php?class=universidad">Universidad</a></li>
 <li><a href="index.php?class=carrera">Carrera</a></li>
-<li>Bla</li>
+<li><a href="index.php?class=profesor">Profesor</a></li>
+<li><a href="index.php?class=estudiante">Estudiante</a></li>
+<li><a href="index.php?class=materia">Materia</a></li>
+<li><a href="index.php?class=departamento">Departamento</a></li>
+<li><a href="index.php?class=agrupacion">Agrupaciones</a></li>
 </ul>
 
 <?php
 
-require_once("funciones.php");
+   //require_once("func_carrera.php");
 
 $reg = "(universidad|agrupacion|carrera|departamento|profesor|estudiante|materia)";
 
 if (!preg_match($reg,$_GET["class"])) {
   echo "Http 404";
   exit();
+} else {
+  require_once("func_". $_GET["class"] . ".php");
 }
+
 $cmd = "All";
 
 if (isset($_GET["cmd"])) {
