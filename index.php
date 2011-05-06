@@ -25,20 +25,17 @@ if (isset($_GET["cmd"])) {
   case "insert":
     $cmd = "Insert";
     break;
-  case "finsert":
-    $cmd = "Finsert";
-  break;
   case "all":
     $cmd = "All";
     break;
   case "edit":
     $cmd = "Edit";
     break;
-  case "fedit":
-    $cmd = "Fedit";
-  break;
   case "delete":
     $cmd = "Delete";
+    break;
+  case "input":
+    $cmd = "Input";
     break;
   default:
     echo "Http 404";
