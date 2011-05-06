@@ -84,51 +84,7 @@ h2 a {
 	color: #000000;
 }
 
-/* Search */
 
-#search {
-	float: right;
-	width: 280px;
-	height: 60px;
-	padding: 20px 0px 0px 0px;
-	background: #E2E2E2;
-	border-bottom: 4px solid #FFFFFF;
-}
-
-#search form {
-	height: 41px;
-	margin: 0;
-	padding: 10px 0 0 20px;
-}
-
-#search fieldset {
-	margin: 0;
-	padding: 0;
-	border: none;
-}
-
-#search-text {
-	width: 170px;
-	padding: 6px 5px 2px 5px;
-	border: 1px solid #DEDEDE;
-	background: #FFFFFF;
-	text-transform: lowercase;
-	font: normal 11px Arial, Helvetica, sans-serif;
-	color: #5D781D;
-}
-
-#search-submit {
-	width: 50px;
-	height: 22px;
-	border: none;
-	background: #B9B9B9;
-	color: #000000;
-}
-
-#banner {
-	margin-bottom: 20px;
-	border: 12px #ECECEC solid;
-}
 
 /* Menu */
 
@@ -193,6 +149,12 @@ h2 a {
 	float: right;
 	width: 570px;
 	padding: 0px 0px 0px 0px;
+}
+
+#content #banner img {
+    height: 120px;
+    width:546px;
+    padding: 0px 0px 0px 0px;
 }
 
 .post {
@@ -291,6 +253,18 @@ h2 a {
 	padding-bottom: 20px;
 }
 
+#sidebar li ul #logoAbout {
+    height: 150px;
+    width: 150px;
+    padding: 35px 0px 0px 30px;
+}
+
+#sidebar li ul #nameAbout {
+    height: 70px;
+    width: 200px;
+    padding:35px 40px 50px 0px;
+}
+
 #sidebar li li {
 	line-height: 35px;
 	margin: 0px;
@@ -334,27 +308,6 @@ h2 a {
 }
 
 #sidebar a:hover {
-}
-
-/* Calendar */
-
-#calendar {
-}
-
-#calendar_wrap {
-	padding: 20px;
-}
-
-#calendar table {
-	width: 100%;
-}
-
-#calendar tbody td {
-	text-align: center;
-}
-
-#calendar #next {
-	text-align: right;
 }
 
 /* Footer */
@@ -414,6 +367,12 @@ h2 a {
 	font-size: 12px;
 	text-align: center;
 	color: #82A2B9;
+}
+
+#footer p #logoFooter {
+    height: 30px;
+    width: 30px;
+    padding: 20px 0px 0px 0px;
 }
 
 #footer a {
