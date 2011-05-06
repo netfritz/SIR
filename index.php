@@ -1,24 +1,53 @@
-Hora de probar cosas en la vida
+<!-- El header va aqui -->
+
+<html>
+<body>
+<ul>
+<li>Universidad</li>
+<li><a href="index.php?class=carrera">Carrera</a></li>
+<li>Bla</li>
+</ul>
 
 <?php
-require_once("Carrera.php");
 
-$bla = Carrera::all();
+require_once("funciones.php");
 
-foreach ($bla as $ble) {
-  echo "<p>".$ble->toString(). "</p>";
+$reg = "(universidad|agrupacion|carrera|departamento|profesor|estudiante|materia)";
+
+if (!preg_match($reg,$_GET["class"])) {
+  echo "Http 404";
+  exit();
 }
 
-$bli = Carrera::getByKey("0800");
+//generarSidebar($_GET["class"]);
 
-echo "<p>".$bli->toString()."</p>";
+switch ($_GET["cmd"]) {
+case "insert":
+  $cmd = "Insert";
+  break;
+case "finsert":
+  $cmd = "Finsert";
+  break;
+case "all":
+  $cmd = "All";
+  break;
+case "edit":
+  $cmd = "Edit";
+  break;
+case "fedit":
+  $cmd = "Fedit";
+  break;
+case "delete":
+  $cmd = "Delete";
+  break;
+default:
+  $cmd = "All";
+  break;
+}
 
-$bli->setNombre("ING LOCA");
-$bli->save();
-
-$bla2 = new Carrera("100", "OTRA ING", "JA", "MALD");
-$bla2->save();
-
-$bla2->delete();
+$func = $_GET["class"].$cmd;
+$func();
 
 ?>
+
+<!-- El footer va aqui -->

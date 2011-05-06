@@ -3,8 +3,8 @@ class DataBase{
   private static $instance; // Representa la unica instancia de esta clase
 
   private $db = "SIR";         // Estos valores deben ser cambiados manual-
-  private $usr = "SIR";        // mente por los correspondientes al servidor
-  private $passwd = "S1rp@ss"; // mysql que cada quien esté usando. Estos 
+  private $usr = "root";        // mente por los correspondientes al servidor
+  private $passwd = ""; // mysql que cada quien esté usando. Estos 
   private $host = "127.0.0.1"; // son los valores por default.
 
   private $link;               // Almacena el identificador de la conexión

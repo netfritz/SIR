@@ -79,7 +79,7 @@ class Carrera {
     $res = mysql_query("DELETE FROM Carrera WHERE codigo='".$this->codigo."';");
   }
 
-  public function toString() {
+  public function __toString() {
     echo $this->codigo . "  " . $this->nombre;
   }
 
