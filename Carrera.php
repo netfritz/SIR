@@ -7,6 +7,7 @@ class Carrera {
   private $direccion;
   private $coordinador;
   private $codigo;
+  private $hola;
 
   // Cuando se altera la clave primaria, se guarda la vieja para
   // poder ubicar la fila en la BD y actualizarla
