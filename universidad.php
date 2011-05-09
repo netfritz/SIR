@@ -136,8 +136,5 @@ class Universidad{
     return $this->url;
   }
 }
-$resul=Universidad::getByKey("Universidad Simon Bolivar");
-
-echo $resul;
 
 ?>
