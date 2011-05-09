@@ -67,7 +67,7 @@ class Universidad{
            '" . $this->url ."');");
     } else {
       $ins = mysql_query("UPDATE Universidad SET
-          pais='kdjfhkdfj".$this->pais
+                         pais='".$this->pais
                          ."', estado='".$this->estado
                          ."', ciudad='".$this->ciudad
                          ."', direccion='".$this->direccion
@@ -85,10 +85,15 @@ class Universidad{
   }
 
   public function __toString() {
-    return $this->nombre . "  " . $this->rector;
+    $cadena = $this->nombre;
+    $cadena.= "," .$this->pais .",". $this->estado;
+    $cadena.= "," .$this->ciudad .",". $this->direccion;
+    $cadena.= "," .$this->rector .",". $this->url;
+    return($cadena);
   }
 
   // Funciones para obtener los valores de los atributos
+
   public function getNombre(){
     return $this->nombre;
   }
