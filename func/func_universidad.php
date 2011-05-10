@@ -1,6 +1,6 @@
 <?php
 
-require_once("Universidad.php");
+require_once("../class/model/Universidad.php");
 
 // Muestra un formulario en pantalla para la clase Universidad
 // Cuando es llamado via GET, devuelve un formulario vacio
@@ -9,7 +9,7 @@ require_once("Universidad.php");
 function universidadInput() {
   if ($_SERVER["REQUEST_METHOD"]=="POST") {
     $obj = Universidad::getByKey($_POST["nombre"]);
-    echo "<form action=\"index.php?class=universidad&cmd=edit\" method=\"post\"
+    echo "<form action=\"index.php?class=universidad&cmd=edit\" method=\"post\">
           <input type=\"hidden\" name=\"type\" value=\"edit\" />";
     universidadFields($_POST["nombre"], $obj->getNombre(), $obj->getPais(),
 		      $obj->getEstado(), $obj->getCiudad(),

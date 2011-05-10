@@ -27,7 +27,7 @@ if (!preg_match($reg,$_GET["class"])) {
   echo "Http 404";
   exit();
 } else {
-  require_once("func_". $_GET["class"] . ".php");
+  require_once("func/func_". $_GET["class"] . ".php");
 }
 
 $cmd = "All";
