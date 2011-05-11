@@ -34,15 +34,18 @@ class interfazCarerraForm extends interfazForm {
 
   public print() {
 
+    $campos = array();
     if ($this->instancia != NULL) {
       $campos["codigo"] = $instancia->getCodigo();
       $campos["nombre"] = $instancia->getNombre();
       $campos["direccion"] = $instancia->getDireccion();
       $campos["coordinador"] = $instancia->getCoordinador();
-      $cmd = "edit";
-    } else {
-      $campos = array();
+    }
+
+    if ($this->nuevo) {
       $cmd = "insert";
+    } else {
+      $cmd = "edit";
     }
 
     foreach ($mensajes as $msj) {

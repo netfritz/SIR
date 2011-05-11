@@ -14,13 +14,14 @@ abstract class interfazAll {
 abstract class interfazForm {
   protected $instancia;
   protected $mensajes;
+  protected $nuevo;
 
-  public __construct($instancia=NULL, $mensajes=array()) {
+  public __construct($instancia=NULL, $nuevo=False, $mensajes=array()) {
     $this->instancia = $instancia;
     $this->mensajes = $mensajes;
+    $this->nuevo = $nuevo;
   }
 
   abstract public print();
 
 }
-
