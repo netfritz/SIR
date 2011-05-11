@@ -1,34 +1,38 @@
 <?php
 
-require_once("../class/model/Universidad.php");
+require_once("class/model/Universidad.php");
 
-// Muestra un formulario en pantalla para la clase Universidad
-// Cuando es llamado via GET, devuelve un formulario vacio
-// Cuando es por POST, se asume que contiene el código de la universidad y se
-// devuelve un formulario precargado con los datos
+/* Muestra un formulario en pantalla para la clase Universidad
+ * Cuando es llamado via GET, devuelve un formulario vacio
+ * Cuando es por POST, se asume que contiene el código de la universidad y se
+ * devuelve un formulario precargado con los datos
+ */
 function universidadInput() {
   if ($_SERVER["REQUEST_METHOD"]=="POST") {
     $obj = Universidad::getByKey($_POST["nombre"]);
     echo "<form action=\"index.php?class=universidad&cmd=edit\" method=\"post\">
-          <input type=\"hidden\" name=\"type\" value=\"edit\" />";
+          <input type=\"hidden\" name=\"type\" value=\"edit\" />
+ 	      Nombre: " .$obj->getNombre(). "</br>";
     universidadFields($_POST["nombre"], $obj->getNombre(), $obj->getPais(),
-		      $obj->getEstado(), $obj->getCiudad(),
-		      $obj->getDireccion(), $obj->getRector(), $obj->getUrl());
+                      $obj->getEstado(), $obj->getCiudad(),
+                      $obj->getDireccion(), $obj->getRector(), $obj->getUrl());
   } else {
     // Insertar nuevo
     echo "<form action=\"index.php?class=universidad&cmd=insert\" method=\"post\"
-          <input type=\"hidden\" name=\"type\" value=\"new\" />";
+          <input type=\"hidden\" name=\"type\" value=\"new\" /></br>
+	      Nombre: <input type=\"text\" name=\"nombre\" />";
     universidadFields("","","","","","","","");
   }
-  echo "<input type=\"submit\" value=\"Enviar\" />";
+  echo "<input type=\"submit\" value=\"Enviar\" /> 
+	</form>";
 }
 
-// Imprime por pantalla un formulario con un campo para cada atributo necesario
-// de la clase. Permite que se le de un valor inicial a cada campo
+/* Imprime por pantalla un formulario con un campo para cada atributo necesario
+ * de la clase. Permite que se le de un valor inicial a cada campo
+ */
 function universidadFields($oldnombre, $nombre,$pais,$estado,$ciudad,$direccion,$rector,$url) {
   echo "
    <input type=\"hidden\" name=\"oldnombre\" value=\"" . $oldnombre ."\" /></br>
-   Nombre: <input type=\"text\" name=\"nombre\" value=\"".$nombre."\" /></br>
    Pais: <input type=\"text\" name=\"pais\" value=\"".$pais."\" /></br>
    Estado: <input type=\"text\" name=\"estado\" value=\"".$estado."\" /></br>
    Ciudad: <input type=\"text\" name=\"ciudad\" value=\"".$ciudad."\" /></br>
@@ -38,15 +42,29 @@ function universidadFields($oldnombre, $nombre,$pais,$estado,$ciudad,$direccion,
 }
 
 function universidadInsert() {
-  $obj = new Universidad($_POST["nombre"],
-			 $_POST["pais"],
-			 $_POST["estado"],
-			 $_POST["ciudad"],
-			 $_POST["direccion"],
-			 $_POST["rector"],
-			 $_POST["url"]);
-  $obj->save();
-  echo "Se ha agregado una nueva universidad";
+  if($_POST["nombre"]=="" || $_POST["pais"]=="" ||
+     $_POST["estado"]=="" || $_POST["ciudad"]=="" ||
+     $_POST["direccion"]=="" || $_POST["rector"]=="" ||
+     $_POST["url"]=="")
+    {
+      echo "Error. La universidad no se ha agregado. Debe llenar TODOS los campos";
+    }else {
+
+    $object = Universidad::getByKey($_POST["oldnombre"]);
+    if (!isset($object)){
+      $obj = new Universidad($_POST["nombre"],
+                             $_POST["pais"],
+                             $_POST["estado"],
+                             $_POST["ciudad"],
+                             $_POST["direccion"],
+                             $_POST["rector"],
+                             $_POST["url"]);
+      $obj->save();
+      echo "Se ha agregado una nueva universidad";
+    }else{
+      echo "Error. Esta universidad ya ha sido agregada a la Base de datos";
+    }
+  }
   universidadAll();
 }
 
@@ -75,7 +93,6 @@ function universidadAll() {
 
 function universidadEdit() {
   $obj = Universidad::getByKey($_POST["oldnombre"]);
-  //$obj->setNombre($_POST["nombre"]); No se implemento
   $obj->setPais($_POST["pais"]);
   $obj->setEstado($_POST["estado"]);
   $obj->setCiudad($_POST["ciudad"]);
