@@ -1,26 +1,49 @@
-<!-- El header va aqui -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+Basado en un diseño de Free CSS Templates
+==============================
+http://www.freecsstemplates.org
+Released for free under a Creative Commons Attribution 2.5 License
 
-<html>
+Name       : EarthlingTwo  
+Description: A two-column, fixed-width design with dark color scheme.
+Version    : 1.0
+Released   : 20090918
+==============================
+
+Modificado por:
+SIR - Solucioness Integrales Roraima Caracas - Venezuela Copyright©2011
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>SUGU -  Sistema Universal de Gestion Universitaria</title>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>SUGU - Sistema Universal de Gestión Universitaria</title>
+<link href="resources/css/style.css" rel="stylesheet" type="text/css" media="screen" />
+</head>
 <body>
-
-<h3>SUGU -  Sistema Universal de Gestion Universitaria</h3>
-
-<ul>
-<li><a href="index.php?class=universidad">Universidad</a></li>
-<li><a href="index.php?class=carrera">Carrera</a></li>
-<li><a href="index.php?class=profesor">Profesor</a></li>
-<li><a href="index.php?class=estudiante">Estudiante</a></li>
-<li><a href="index.php?class=materia">Materia</a></li>
-<li><a href="index.php?class=departamento">Departamento</a></li>
-<li><a href="index.php?class=agrupacion">Agrupaciones</a></li>
-</ul>
-
+<div id="wrapper">
+	<div id="header">
+		<div id="logo">
+			<a href="/home/"<img src="" alt="" /></a>
+		</div>
+	</div>
+	<!-- end #header -->
+	<div id="menu">
+		<ul>
+			<li class="current_page_item"><a href="#">Home</a></li>
+			<li><a href="">Universidades</a></li>
+			<li><a href="index.php?class=carrera">Carreras</a></li>
+			<li><a href="#">Profesores</a></li>
+            <li><a href="#">Departamentos</a></li>
+            <li><a href="#">Materias</a></li>
+            <li><a href="#">Agrupaciones</a></li>
+            <li><a href="#">Estudiantes</a></li>
+		</ul>
+	</div>
+	<!-- end #menu -->
 <?php
-
-   //require_once("func_carrera.php");
-
 $reg = "(universidad|agrupacion|carrera|departamento|profesor|estudiante|materia)";
 
 if (!preg_match($reg,$_GET["class"])) {
@@ -56,8 +79,12 @@ if (isset($_GET["cmd"])) {
 }
 
 $func = $_GET["class"].$cmd;
-$func();
-
+$func()->printv();
 ?>
 
-<!-- El footer va aqui -->
+<div id="footer">
+  <p> © 2011 www.sugu.com. Basado en el diseño de <a href="http://www.nodethirtythree.com">nodethirtythree</a> y <a href="http://www.freecsstemplates.org">Free CSS Templates</a>. Modificado por SIR <img id="logoFooter" src="../resources/images/logo-SIR.png" alt="" /> Soluciones Integrales Roraima.</p>
+</div>
+<!-- end #footer -->
+</body>
+</html>
