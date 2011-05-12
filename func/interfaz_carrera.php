@@ -1,59 +1,157 @@
+<?php
+
+require_once("interfaz.php");
+require_once("class/model/Carrera.php");
+
 class interfazCarreraAll extends interfazAll {
+  
+  public function printv() {
 
-  public print() {
-
-    echo "</br>
-          <a href=\"index.php?class=carrera&cmd=input\">Insertar nueva Carrera</a>
-          </br>
-          <ul>";
-
-    foreach ($mensajes as $msj) {
-      echo "{$msj} </br>";
-    }
-
-    foreach ($instancias as $inst) {
-      echo '<li>Carrera: {$inst}. 
-         <form action="index.php?class=carrera&cmd=input" method="post">
-         <input type="hidden" name="codigo" value="' . $inst->getCodigo() . '" />
-         <input type="submit" value="Editar" />
-         </form>
-
-         <form action="index.php?class=carrera&cmd=delete\" method=\"post\">
-         <input type="hidden" name="codigo" value="' . $inst->getCodigo() . '" />
-         <input type="submit" value="Borrar" />
-         </form>
-         
-         </li>';
+    // Generar bloque que representa los mensajes
+    $bloqueMsj = "";
+    foreach ($this->mensajes as $msj) {
+      $bloqueMsj .= "{$msj} </br>";
     }
     
-    echo '</ul>';
+    // Generar html para la tabla de instancias
+    $tabla = "";
+    foreach ($this->instancias as $inst) {
+      $tabla .= "
+         <tr>
+           <td>{$inst->getCodigo()}</td>
+           <td>{$inst->getNombre()}</td>
+           <td>{$inst->getDireccion()}</td>
+           <td>{$inst->getCoordinador()}</td>
+           <td> 
+             <form action='index.php?class=carrera&cmd=input' method='post'>
+               <input type='hidden' name='codigo' value='{$inst->getCodigo()}' />
+               <input type='submit' value='Editar' />
+             </form>
+           </td>
+           <td>
+             <form action='index.php?class=carrera&cmd=delete' method='post'>
+               <input type='hidden' name='codigo' value='{$inst->getCodigo()}' />
+               <input type='submit' value='Borrar' />
+             </form>         
+           </td>
+         </tr>";
+    }
+
+    // Unir todo dentro del template
+    echo "
+      <div id='page'>
+        <div id='content'>
+          <div class='post'>
+            <h2 class='title'><a href='#'>Carreras</a></h2>
+            <!-- <p class='meta'>Blabla</p> -->
+            <div class='entry'>
+              <a href='index.php?class=carrera&cmd=input'>Insertar nueva Carrera</a>
+              </ br>
+              <p>
+              {$bloqueMsj}
+
+              <table>
+                <tr>
+                  <th>Codigo</th>
+                  <th>Nombre</th>
+                  <th>Direccion</th>
+                  <th>Coordinador</th>
+                </tr>
+
+                {$tabla}
+
+              </table>
+              </p>
+            </div>
+          </div>
+          <div style='clear: both;'>&nbsp;</div>
+        </div>
+	<div style='clear: both;'>&nbsp;</div>
+      </div>
+      <!-- end #page -->";
   }
 }
 
-class interfazCarerraForm extends interfazForm {
+class interfazCarreraForm extends interfazForm {
 
-  public print() {
+  public function printv() {
 
-    if ($this->instancia != NULL) {
-      $campos["codigo"] = $instancia->getCodigo();
-      $campos["nombre"] = $instancia->getNombre();
-      $campos["direccion"] = $instancia->getDireccion();
-      $campos["coordinador"] = $instancia->getCoordinador();
-      $cmd = "edit";
-    } else {
-      $campos = array();
-      $cmd = "insert";
+    // Generar bloque de mensajes
+    $bloqueMsj = "";
+    foreach ($this->mensajes as $msj) {
+      $bloqueMsj .= "{$msj} </br>";
     }
 
-    foreach ($mensajes as $msj) {
-      echo "{$msj} </br>";
+    // Determinar a qué página se dirige este formulario
+    $cmd = $this->nuevo ? "insert" : "edit";
+
+ 
+    // Precargar los campos si se pretende editar una instancia
+    $campos = array();
+    if ($this->instancia != NULL) {
+      $campos["codigo"] = $this->instancia->getCodigo();
+      $campos["nombre"] = $this->instancia->getNombre();
+      $campos["direccion"] = $this->instancia->getDireccion();
+      $campos["coordinador"] = $this->instancia->getCoordinador();
+      $codigo = "<tr><td>Codigo:</td><td>";
+      
+      if (!$this->nuevo)
+	$codigo .= "{$campos['codigo']} <input type='hidden' name='codigo' value='{$this->instancia->getCodigo()}' maxlength='25'>";
+      else
+	$codigo .= "<input type='text' name='codigo' value='{$this->instancia->getCodigo()}' maxlength='25'>";
+      
+      $codigo .= "</td></tr>";
+      
+      $titulo = "Modificar una carrera <br />";
+
+    } else {
+      // Si es una nueva instancia entonces generar el campo en el formulario
+      $codigo = "
+        <tr>
+          <td>Codigo:</td>
+          <td><input type='text' name='codigo' maxlength='25' /></td>
+        </tr>";
+      $titulo = "Agregar una nueva carrera <br />";
     }
     
-    echo '<form action="index.php?class=carrera&cmd=${cmd}" method="post">
-          Codigo: {$codigo}. </br>
-          Nombre: <input type="text" name="nombre" value="{$nombre}" /> </br>
-          Direccion: <input type="text" name="direccion" value="{$direccion}" /> </br>
-          Coordinador: <input type="text" name="coordinador" value="{$coordinador}" /> </br>
-          <input type="submit" value="Enviar" />
-          </form>';
+    // Unir todo en el template
+    echo "
+      <div id='page'>
+        <div id='content'>
+          <div class='post'>
+            <h2 class='title'><a href='#'>Carreras</a></h2>
+            <div class='entry'>
+              
+              {$bloqueMsj}
+
+              <h3> {$titulo} </h3>
+
+              <form action='index.php?class=carrera&cmd={$cmd}' method='post'>
+                <table>
+                  {$codigo}
+                  <tr>
+                    <td>Nombre:</td>
+                    <td><input type='text' name='nombre' value='{$campos['nombre']}' maxlength='45' /> </td>
+                  </tr>
+                  <tr>
+                    <td>Direccion:</td>
+                    <td><input type='text' name='direccion' value='{$campos['direccion']}' maxlength='100' /> </td>
+                  </tr>
+                  <tr>
+                    <td>Coordinador:</td>
+                    <td><input type='text' name='coordinador' value='{$campos['coordinador']}' maxlength='100'  /> </td>
+                  <tr>
+                </table>
+                <input type='submit' value='Enviar' />
+              </form>
+            </div>
+          </div>
+	  <div style='clear: both;'>&nbsp;</div>
+	</div>
+	<div style='clear: both;'>&nbsp;</div>
+      </div>
+      <!-- end #page -->";
+  }
 }
+
+?>
