@@ -44,7 +44,6 @@ SIR - Solucioness Integrales Roraima Caracas - Venezuela Copyright©2011
 	</div>
 	<!-- end #menu -->
 <?php
-
 $reg = "(universidad|agrupacion|carrera|departamento|profesor|estudiante|materia)";
 
 if (!preg_match($reg,$_GET["class"])) {
