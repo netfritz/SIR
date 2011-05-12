@@ -21,7 +21,14 @@ class Estudiante {
    * tarse una sentencia 'INSERT' o una sentencia 'UPDATE' al hacer el query a la
    * base de datos.
    */
-  private $es_nuevo;  
+  private $es_nuevo;
+
+  /* Indica si la clave primaria fué cambiada. Se guarda la anterior para poder
+   * recuperar la tupla y hacer el correspondiente update.
+   */
+  private $keyChanged;
+  private $oldKey;
+  
 
   /* Indica si se está en fase debugging o no. */
   private static $debugging = True;
@@ -72,6 +79,11 @@ class Estudiante {
 
   public function getDoc_id(){
     return $this->doc_id;
+  }
+
+  public function setDoc_id($value){
+    $this->oldKey = $this->doc_id;
+    $this->doc_id = $value;
   }
   
   public function getCarnet(){
@@ -154,14 +166,17 @@ class Estudiante {
           $student->es_nuevo = False;
           $ret[] = $student;
         }
-      } else {        
-        return NULL;
+      } else {
+        $this->out = NULL;
+        return True;
       }
     } else {
+      $this->out = "Error al listar todos los Estudiantes.";
       self::show_mysql_errors();
-      return "Error al listar todos los Estudiantes.";
+      return False;
     }
-    return $ret;
+    $this->out = $ret;
+    return True;
   }
 
   /**
@@ -247,10 +262,12 @@ class Estudiante {
         ."', apellido='".$this->apellido
         ."', fecha_nac='".$this->fecha_nac
         ."', colegio_origen='".$this->colegio_origen
-        ."' WHERE documento_id='".$this->doc_id."'";
+        ."' WHERE documento_id='".$this->oldKey."'";
     }
     if (mysql_query($query)) {
       $this->es_nuevo = True;
+      $this->keyChanged = False;
+      $this->oldKey = $this->doc_id;
       return True;
     } else {
       $this->out = "Problema al tratar de salvar el objeto ".$this." en la base de datos.";
