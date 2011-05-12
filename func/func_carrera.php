@@ -6,23 +6,34 @@ function carreraAll() {
   echo "</br><a href='index.php?class=carrera&cmd=input'>Insertar nueva Carrera</a></br>";
 
   $res = Carrera::all();
-  echo "<ul>";
-  foreach ($res as $ind) {
-    echo "<li>Carrera: {$ind}
-
-         <form action='index.php?class=carrera&cmd=input' method='post'>
-         <input type='hidden' name='codigo' value='{$ind->getCodigo()}' />
-         <input type='submit' value='Editar' />
-         </form>
-
-         <form action='index.php?class=carrera&cmd=delete' method='post'>
-         <input type='hidden' name='codigo' value='{$ind->getCodigo()}' />
-         <input type='submit' value='Borrar' />
-         </form>
-         
-         </li>";
+  echo "<table>
+          <tr>
+            <th>Codigo</th>
+            <th>Nombre</th>
+            <th>Direccion</th>
+            <th>Coordinador</th>
+          </tr>";
+  foreach ($res as $inst) {
+    echo "<tr>
+           <td>{$inst->getCodigo()}</td>
+           <td>{$inst->getNombre()}</td>
+           <td>{$inst->getDireccion()}</td>
+           <td>{$inst->getCoordinador()}</td>
+           <td> 
+             <form action='index.php?class=carrera&cmd=input' method='post'>
+               <input type='hidden' name='codigo' value='{$inst->getCodigo()}' />
+               <input type='submit' value='Editar' />
+             </form>
+           </td>
+           <td>
+             <form action='index.php?class=carrera&cmd=delete' method='post'>
+               <input type='hidden' name='codigo' value='{$inst->getCodigo()}' />
+               <input type='submit' value='Borrar' />
+             </form>         
+           </td>
+         </tr>";
   }
-  echo "</ul>";
+  echo "</table>";
 }
 
 function carreraDelete() {
