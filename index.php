@@ -33,13 +33,13 @@ SIR - Solucioness Integrales Roraima Caracas - Venezuela Copyright©2011
 	<div id="menu">
 		<ul>
 			<li class="current_page_item"><a href="#">Home</a></li>
-			<li><a href="">Universidades</a></li>
+			<li><a href="index.php?class=universidad">Universidades</a></li>
 			<li><a href="index.php?class=carrera">Carreras</a></li>
-			<li><a href="#">Profesores</a></li>
-            <li><a href="#">Departamentos</a></li>
-            <li><a href="#">Materias</a></li>
-            <li><a href="#">Agrupaciones</a></li>
-            <li><a href="#">Estudiantes</a></li>
+			<li><a href="index.php?class=profesor">Profesores</a></li>
+            <li><a href="index.php?class=departamento">Departamentos</a></li>
+            <li><a href="index.php?class=materia">Materias</a></li>
+            <li><a href="index.php?class=agrupacion">Agrupaciones</a></li>
+            <li><a href="index.php?class=estudiante">Estudiantes</a></li>
 		</ul>
 	</div>
 	<!-- end #menu -->
