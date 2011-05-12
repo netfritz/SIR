@@ -2,11 +2,36 @@
 
 require_once("class/model/Carrera.php");
 
-// Muestra un formulario en pantalla para la clase Carrera
-// Cuando es llamado via GET, devuelve un formulario vacio
-// Cuando es por POST, se asume que contiene el código de la carrera y se
-// devuelve un formulario precargado con los datos
-// Listo
+function carreraAll() {
+  echo "</br><a href='index.php?class=carrera&cmd=input'>Insertar nueva Carrera</a></br>";
+
+  $res = Carrera::all();
+  echo "<ul>";
+  foreach ($res as $ind) {
+    echo "<li>Carrera: {$ind}
+
+         <form action='index.php?class=carrera&cmd=input' method='post'>
+         <input type='hidden' name='codigo' value='{$ind->getCodigo()}' />
+         <input type='submit' value='Editar' />
+         </form>
+
+         <form action='index.php?class=carrera&cmd=delete' method='post'>
+         <input type='hidden' name='codigo' value='{$ind->getCodigo()}' />
+         <input type='submit' value='Borrar' />
+         </form>
+         
+         </li>";
+  }
+  echo "</ul>";
+}
+
+function carreraDelete() {
+  $obj = Carrera::getByKey($_POST["codigo"]);
+  $obj->delete();
+  echo "La carrera {$obj->getNombre()} ha sido eliminada";
+  carreraAll();
+}
+
 function carreraInput() {
   if ($_SERVER["REQUEST_METHOD"]=="POST") {
     $obj = Carrera::getByKey($_POST["codigo"]);
@@ -22,21 +47,6 @@ function carreraInput() {
       carreraFields(True,"","","","");
   }
   echo "<input type='submit' value='Enviar' />";
-}
-
-// Imprime por pantalla un formulario con un campo para cada atributo necesario
-// de la clase. Permite que se le de un valor inicial a cada campo
-// Listo
-function carreraFields($nuevo, $codigo, $nombre, $direccion, $coordinador) {
-  if ($nuevo)
-    echo "Codigo: <input type='text' name='codigo' value='{$codigo}' /></br>";
-  else
-    echo "Codigo: {$codigo} <input type='hidden' name='codigo' value='{$codigo}' /></br>";
-
-  echo "
-   Nombre: <input type='text' name='nombre' value='{$nombre}' /></br>
-   Direccion: <input type='text' name='direccion' value='{$direccion}' /></br>
-   Coordinador: <input type='text' name='coordinador' value='{$coordinador}' /></br>";
 }
 
 function carreraInsert() {
@@ -84,30 +94,6 @@ function carreraInsert() {
   }
 }
 
-// Listo
-function carreraAll() {
-  echo "</br><a href='index.php?class=carrera&cmd=input'>Insertar nueva Carrera</a></br>";
-
-  $res = Carrera::all();
-  echo "<ul>";
-  foreach ($res as $ind) {
-    echo "<li>Carrera: {$ind}
-
-         <form action='index.php?class=carrera&cmd=input' method='post'>
-         <input type='hidden' name='codigo' value='{$ind->getCodigo()}' />
-         <input type='submit' value='Editar' />
-         </form>
-
-         <form action='index.php?class=carrera&cmd=delete' method='post'>
-         <input type='hidden' name='codigo' value='{$ind->getCodigo()}' />
-         <input type='submit' value='Borrar' />
-         </form>
-         
-         </li>";
-  }
-  echo "</ul>";
-}
-
 function carreraEdit() {
   $reNombres = "/^[a-zA-Z]+[a-zA-Z ]*[a-zA-Z]+$/";
   $reDireccion = "/^[a-zA-Z0-9]+[a-zA-Z0-9- ]*[a-zA-Z0-9]*$/";
@@ -143,12 +129,16 @@ function carreraEdit() {
   }
 }
 
-// Listo
-function carreraDelete() {
-  $obj = Carrera::getByKey($_POST["codigo"]);
-  $obj->delete();
-  echo "La carrera " . $obj->getNombre() . " ha sido eliminada";
-  carreraAll();
+function carreraFields($nuevo, $codigo, $nombre, $direccion, $coordinador) {
+  if ($nuevo)
+    echo "Codigo: <input type='text' name='codigo' value='{$codigo}' /></br>";
+  else
+    echo "Codigo: {$codigo} <input type='hidden' name='codigo' value='{$codigo}' /></br>";
+
+  echo "
+   Nombre: <input type='text' name='nombre' value='{$nombre}' /></br>
+   Direccion: <input type='text' name='direccion' value='{$direccion}' /></br>
+   Coordinador: <input type='text' name='coordinador' value='{$coordinador}' /></br>";
 }
 
 ?>
