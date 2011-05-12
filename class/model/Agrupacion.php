@@ -16,14 +16,14 @@ class Agrupacion {
     private $vision;
     private $nueva;
 
-    // Método Constructor
+    // Metodo Constructor
     function Agrupacion($uni, $nomb, $presi, $mi, $vi) {
         $this->universidad = $uni;
         $this->nombre = $nomb;
         $this->presidente = $presi;
         $this->mision = $mi;
         $this->vision = $vi;
-        $this->nueva = true;
+        $this->nueva = TRUE;
     }
 
     // Retorna un arreglo con todas las instancias de la clase
@@ -31,29 +31,30 @@ class Agrupacion {
         DataBase::singleton();
         $sql = "SELECT * FROM AgrupacionEstudiantil";
         $ConsultaID = @mysql_query($sql);
-	if ($ConsultaID){
-        while ($fila = mysql_fetch_assoc($ConsultaID)) {
-            $instancia = new Agrupacion($fila["universidad"], $fila["nombre"],
-                    $fila["presidente"], $fila["mision"], $fila["vision"]);
-            $instancia->nueva=FALSE;
-            $arreglo[] = $instancia;
-
-        }}else{
-return  null;
-}
-        return($arreglo);
+        $arreglo=null;
+        if ($ConsultaID){
+            while ($fila = mysql_fetch_assoc($ConsultaID)) {
+                $instancia = new Agrupacion($fila["universidad"], $fila["nombre"],
+                   $fila["presidente"], $fila["mision"], $fila["vision"]);
+                $instancia->nueva=FALSE;
+                $arreglo[] = $instancia;
+            }
+            return($arreglo);
+        }else{
+            return(null);
+        }
     }
-
+    
     // Retorna la instancia cuyo Id está compuesto de los parámetros univ y nomb
     public static function getByKey($univ, $nomb) {
         DataBase::singleton();
-        $sql = "SELECT * FROM AgrupacionEstudiantil WHERE universidad = '" . $univ . "' and '" . $nomb . "' = nombre";
+        $sql = "SELECT * FROM AgrupacionEstudiantil WHERE universidad ='$univ' and '$nomb'= nombre";
         $ConsultaID = @mysql_query($sql);
 
-        if(!($fila = @mysql_fetch_assoc($ConsultaID))) return null;
+        if(!($fila = @mysql_fetch_assoc($ConsultaID))) {return null;}
 
         $Instancia = new Agrupacion($fila["universidad"], $fila["nombre"], $fila["presidente"], $fila["mision"], $fila["vision"]);
-        $Instancia->nueva = false;
+        $Instancia->nueva = FALSE;
         return($Instancia);
     }
 
@@ -62,12 +63,12 @@ return  null;
         DataBase::singleton();
         if ($this->nueva) {
             $sql = "INSERT INTO AgrupacionEstudiantil (universidad, nombre, presidente, mision, vision)
-            VALUES ('" . $this->universidad . "' ,'" . $this->nombre . "' ,'" . $this->presidente . "' ,'" . $this->mision . "' ,'" . $this->vision . "')";
+            VALUES ('$this->universidad' ,'$this->nombre' ,'$this->presidente' ,'$this->mision' ,'$this->vision')";
             @mysql_query($sql);
         } else {
-            $sql = "UPDATE AgrupacionEstudiantil SET (universidad ='$this->universidad' ,";
-            $sql.= "nombre ='$this->nombre', presidente='$this->presidente', ";
-            $sql.= "mision ='$this->mision', vision ='$this->vision')";
+            $sql = "UPDATE AgrupacionEstudiantil SET (universidad ='$this->universidad',
+                nombre ='$this->nombre', presidente='$this->presidente',
+                mision ='$this->mision', vision ='$this->vision')";
             @mysql_query($sql);
         }
         $this->nueva = false;
@@ -125,8 +126,8 @@ return  null;
         $this->nombre = $nomb;
     }
 
-    function setPresidente($presi) {
-        $this->presidente = $presi;
+    function setPresidente($pres) {
+        $this->presidente = $pres;
     }
 
     function setMision($mi) {
