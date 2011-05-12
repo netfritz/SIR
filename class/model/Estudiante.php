@@ -241,13 +241,13 @@ class Estudiante {
         . $this->fecha_nac ."', '". $this->colegio_origen
         ."')";
     } else {
-      $query = "UPDATE Estudiante SET documento_id='".$this->doc_id
+      $query = "UPDATE Estudiante SET (documento_id='".$this->doc_id
         ."', carnet='".$this->carnet
         ."', nombre='".$this->nombre
         ."', apellido='".$this->apellido
         ."', fecha_nac='".$this->fecha_nac
         ."', colegio_origen='".$this->colegio_origen
-        ."' WHERE documento_id='".$this->doc_id."'";
+        ."') WHERE documento_id='".$this->doc_id."'";
     }
     if (mysql_query($query)) {
       $this->es_nuevo = True;

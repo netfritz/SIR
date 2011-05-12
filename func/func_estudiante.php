@@ -24,7 +24,7 @@ function estudianteInput() {
   echo "<input type=\"submit\" value=\"Enviar\" />";
 }
 
-function tableRow($id,$label,$value,$name){
+function tableRowInput($id,$label,$value,$name){
   return "<tr>
             <th>
               <label for=\"id_".$id."\">".$label."</label>
@@ -57,11 +57,11 @@ function estudianteFields($id,  $carnet, $nombre, $apellido, $fecha_nac, $colegi
          <td>".$clave."
          </td>
        </tr>".
-    tableRow("carnet","Carnet:",$carnet,"carnet").
-    tableRow("nombre","Nombre:",$nombre,"nombre").
-    tableRow("apellido","Apellido:",$apellido,"apellido").
-    tableRow("fecha_nac","Fecha de Nacimiento:",$fecha_nac,"fecha_nac").
-    tableRow("colegio","Colegio de Origen:",$colegio,"colegio").
+    tableRowInput("carnet","Carnet:",$carnet,"carnet").
+    tableRowInput("nombre","Nombre:",$nombre,"nombre").
+    tableRowInput("apellido","Apellido:",$apellido,"apellido").
+    tableRowInput("fecha_nac","Fecha de Nacimiento:",$fecha_nac,"fecha_nac").
+    tableRowInput("colegio","Colegio de Origen:",$colegio,"colegio").
     "       
      </tbody>
    </table>
@@ -76,12 +76,6 @@ function estudianteInsert() {
 			$_POST["apellido"],
 			$_POST["fecha_nac"],
 			$_POST["colegio"]);
-  echo $obj->getDoc_Id()."\n".
-    $obj->getCarnet()."\n".
-    $obj->getNombre()."\n".
-    $obj->getApellido()."\n".
-    $obj->getFecha_nac()."\n".
-    $obj->getColegio_origen()."\n";
   $obj->save();
   echo "Se ha agregado un nuevo estudiante";
   estudianteAll();
