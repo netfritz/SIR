@@ -14,6 +14,7 @@ class Carrera {
   public static function all() {
     DataBase::singleton();
     $res = mysql_query("SELECT * FROM Carrera;");
+if (mysql_num_rows($res) > 0) {
     while ($row = mysql_fetch_assoc($res)) {
       $car = new Carrera($row["codigo"],
 			 $row["nombre"],
@@ -25,6 +26,10 @@ class Carrera {
       $ret[] = $car;
     }
     return $ret;
+}else{
+return null;
+
+}
   }
 
   public static function getByKey($key) {

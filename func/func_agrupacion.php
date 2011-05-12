@@ -1,6 +1,6 @@
 <?php
 
-require_once("Agrupacion.php");
+require_once("class\model\Agrupacion.php");
 
 // Muestra un formulario en pantalla para la clase Agrupacion
 // Cuando es llamado via GET, devuelve un formulario vacio
@@ -11,7 +11,7 @@ function agrupacionInput() {
     $obj = Agrupacion::getByKey($_POST["univ"],$_POST["nombre"]);
     echo "<form action=\"index.php?class=agrupacion&cmd=edit\" method=\"post\"
           <input type=\"hidden\" name=\"type\" value=\"edit\" />";
-    agrupacionFields($_POST["univ"], $_POST["nombre"], $obj->getUniversidad(),
+    agrupacionFields($obj->getUniversidad(),
 		     $obj->getNombre(), $obj->getPresidente(), $obj->getMision(),
 		     $obj->getVision());
   } else {
@@ -25,10 +25,9 @@ function agrupacionInput() {
 
 // Imprime por pantalla un formulario con un campo para cada atributo necesario
 // de la clase. Permite que se le de un valor inicial a cada campo
-function agrupacionFields($olduniv, $oldnombre, $univ, $nombre, $pres, $mision, $vision) {
-  echo "
-   <input type=\"hidden\" name=\"olduniv\" value=\"" . $olduniv ."\" /></br>
-   <input type=\"hidden\" name=\"oldnombre\" value=\"" . $oldnombre ."\" /></br>
+function agrupacionFields($univ, $nombre, $pres, $mision, $vision) {
+ 
+    echo "   
    Universidad: <input type=\"text\" name=\"univ\" value=\"".$univ."\" /></br>
    Nombre: <input type=\"text\" name=\"nombre\" value=\"".$nombre."\" /></br>
    Presidente: <input type=\"text\" name=\"pres\" value=\"".$pres."\" /></br>
@@ -52,6 +51,7 @@ function agrupacionAll() {
 
   $res = Agrupacion::all();
   echo "<ul>";
+  if($res){
   foreach ($res as $ind) {
     echo "<li>Agrupacion: " . $ind. "
 
@@ -69,16 +69,21 @@ function agrupacionAll() {
          
          </li>";
   }
+  
+  }
+  else{
+      echo "No hay agrupaciones en la base de datos";
+  }
   echo "</ul>";
 }
 
 function agrupacionEdit() {
-  $obj = Agrupacion::getByKey($_POST["olduniv"],$_POST["oldnombre"]);
-  $obj->setUniversidad($_POST["univ"]);
-  $obj->setNombre($_POST["nombre"]);
+  $obj = Agrupacion::getByKey($_POST["univ"],$_POST["nombre"]);
+//  $obj->setUniversidad($_POST["univ"]);
+//  $obj->setNombre($_POST["nombre"]);
   $obj->setPresidente($_POST["pres"]);
   $obj->setMision($_POST["mision"]);
-  $ovj->setVision($_POST["vision"]);
+  $obj->setVision($_POST["vision"]);
   $obj->save();
   echo "Se ha modificado la agrupacion";
   agrupacionAll();

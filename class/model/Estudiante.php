@@ -21,14 +21,7 @@ class Estudiante {
    * tarse una sentencia 'INSERT' o una sentencia 'UPDATE' al hacer el query a la
    * base de datos.
    */
-  private $es_nuevo;
-
-  /* Indica si la clave primaria fué cambiada. Se guarda la anterior para poder
-   * recuperar la tupla y hacer el correspondiente update.
-   */
-  private $keyChanged;
-  private $oldKey;
-  
+  private $es_nuevo;  
 
   /* Indica si se está en fase debugging o no. */
   private static $debugging = True;
@@ -79,11 +72,6 @@ class Estudiante {
 
   public function getDoc_id(){
     return $this->doc_id;
-  }
-
-  public function setDoc_id($value){
-    $this->oldKey = $this->doc_id;
-    $this->doc_id = $value;
   }
   
   public function getCarnet(){
@@ -166,17 +154,14 @@ class Estudiante {
           $student->es_nuevo = False;
           $ret[] = $student;
         }
-      } else {
-        $this->out = NULL;
-        return True;
+      } else {        
+        return NULL;
       }
     } else {
-      $this->out = "Error al listar todos los Estudiantes.";
       self::show_mysql_errors();
-      return False;
+      return "Error al listar todos los Estudiantes.";
     }
-    $this->out = $ret;
-    return True;
+    return $ret;
   }
 
   /**
@@ -256,18 +241,16 @@ class Estudiante {
         . $this->fecha_nac ."', '". $this->colegio_origen
         ."')";
     } else {
-      $query = "UPDATE Estudiante SET documento_id='".$this->doc_id
+      $query = "UPDATE Estudiante SET (documento_id='".$this->doc_id
         ."', carnet='".$this->carnet
         ."', nombre='".$this->nombre
         ."', apellido='".$this->apellido
         ."', fecha_nac='".$this->fecha_nac
         ."', colegio_origen='".$this->colegio_origen
-        ."' WHERE documento_id='".$this->oldKey."'";
+        ."') WHERE documento_id='".$this->doc_id."'";
     }
     if (mysql_query($query)) {
       $this->es_nuevo = True;
-      $this->keyChanged = False;
-      $this->oldKey = $this->doc_id;
       return True;
     } else {
       $this->out = "Problema al tratar de salvar el objeto ".$this." en la base de datos.";
