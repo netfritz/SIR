@@ -67,7 +67,7 @@ class Universidad{
            '" . $this->url ."');");
     } else {
       $ins = mysql_query("UPDATE Universidad SET
-          pais='kdjfhkdfj".$this->pais
+                         pais='".$this->pais
                          ."', estado='".$this->estado
                          ."', ciudad='".$this->ciudad
                          ."', direccion='".$this->direccion
@@ -93,6 +93,7 @@ class Universidad{
   }
 
   // Funciones para obtener los valores de los atributos
+
   public function getNombre(){
     return $this->nombre;
   }
@@ -117,27 +118,24 @@ class Universidad{
 
   // Funciones para modificar los valores de los atributos
 
-  public function setPais(){
-    return $this->pais;
+  public function setPais($pais){
+    $this->pais=$pais;
   }
-  public function setEstado(){
-    return $this->estado;
+  public function setEstado($estado){
+    $this->estado=$estado;
   }
-  public function setCiudad(){
-    return $this->ciudad;
+  public function setCiudad($ciudad){
+    $this->ciudad=$ciudad;
   }
-  public function setDireccion(){
-    return $this->direccion;
+  public function setDireccion($direccion){
+    $this->direccion=$direccion;
   }
-  public function setRector(){
-    return $this->rector;
+  public function setRector($rector){
+    $this->rector=$rector;
   }
-  public function setUrl(){
-    return $this->url;
+  public function setUrl($url){
+    $this->url=$url;
   }
 }
-$resul=Universidad::getByKey("Universidad Simon Bolivar");
-
-echo $resul;
 
 ?>
