@@ -85,7 +85,11 @@ class Universidad{
   }
 
   public function __toString() {
-    return $this->nombre . "  " . $this->rector;
+    $cadena = $this->nombre;
+    $cadena.= "," .$this->pais .",". $this->estado;
+    $cadena.= "," .$this->ciudad .",". $this->direccion;
+    $cadena.= "," .$this->rector .",". $this->url;
+    return($cadena);
   }
 
   // Funciones para obtener los valores de los atributos
@@ -132,7 +136,8 @@ class Universidad{
     return $this->url;
   }
 }
-$resul=Universidad::getByKey("hola");
-var_dump($resul);
+$resul=Universidad::getByKey("Universidad Simon Bolivar");
+
+echo $resul;
 
 ?>
