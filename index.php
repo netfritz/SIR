@@ -80,7 +80,7 @@ if (isset($_GET["cmd"])) {
 }
 
 $func = $_GET["class"].$cmd;
-$func()->printv();
+$func();
 ?>
 
 <div id="footer">
