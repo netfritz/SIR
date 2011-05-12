@@ -19,8 +19,6 @@
 
 <?php
 
-   //require_once("func_carrera.php");
-
 $reg = "(universidad|agrupacion|carrera|departamento|profesor|estudiante|materia)";
 
 if (!preg_match($reg,$_GET["class"])) {
