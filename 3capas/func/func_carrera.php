@@ -21,11 +21,11 @@ function carreraInput() {
   if ($_SERVER["REQUEST_METHOD"]=="POST") {
     $obj = Carrera::getByKey($_POST["codigo"]);
     if ($obj != NULL) {
-      return new interfazCarreraForm($obj);
+      return new interfazCarreraForm($obj, False);
     }
   }
  
-  return new interfazCarreraForm(NULL, True); 
+  return new interfazCarreraForm(); 
 }
 
 function carreraInsert() {

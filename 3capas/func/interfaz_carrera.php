@@ -7,7 +7,7 @@ class interfazCarreraAll extends interfazAll {
   
   public function printv() {
 
-    // Generar bloque que representa los mensajes
+    // Generar el html que representa los mensajes
     $bloqueMsj = "";
     foreach ($this->mensajes as $msj) {
       $bloqueMsj .= "{$msj} </br>";
@@ -76,42 +76,35 @@ class interfazCarreraForm extends interfazForm {
 
   public function printv() {
 
-    // Generar bloque de mensajes
+    // Generar titulo
+    $titulo = $this->instancia != NULL ? "Modificar una carrera <br />" 
+      : "Agregar una nueva carrera <br />";
+
+    // Generar html para los mensajes
     $bloqueMsj = "";
     foreach ($this->mensajes as $msj) {
       $bloqueMsj .= "{$msj} </br>";
     }
 
-    // Determinar a qué página se dirige este formulario
+    // Determinar el objetivo de este formulario
     $cmd = $this->nuevo ? "insert" : "edit";
-
  
     // Precargar los campos si se pretende editar una instancia
+    // Si 
     $campos = array();
+    $codigoType = "text";
+    $codigo = "";
     if ($this->instancia != NULL) {
       $campos["codigo"] = $this->instancia->getCodigo();
       $campos["nombre"] = $this->instancia->getNombre();
       $campos["direccion"] = $this->instancia->getDireccion();
       $campos["coordinador"] = $this->instancia->getCoordinador();
-      $codigo = "<tr><td>Codigo:</td><td>";
-      
-      if (!$this->nuevo)
-	$codigo .= "{$campos['codigo']} <input type='hidden' name='codigo' value='{$this->instancia->getCodigo()}' maxlength='25'>";
-      else
-	$codigo .= "<input type='text' name='codigo' value='{$this->instancia->getCodigo()}' maxlength='25'>";
-      
-      $codigo .= "</td></tr>";
-      
-      $titulo = "Modificar una carrera <br />";
+            
+      if (!$this->nuevo) {
+	$codigo = $campos['codigo'];
+	$codigoType = 'hidden';
+      }
 
-    } else {
-      // Si es una nueva instancia entonces generar el campo en el formulario
-      $codigo = "
-        <tr>
-          <td>Codigo:</td>
-          <td><input type='text' name='codigo' maxlength='25' /></td>
-        </tr>";
-      $titulo = "Agregar una nueva carrera <br />";
     }
     
     // Unir todo en el template
@@ -128,7 +121,10 @@ class interfazCarreraForm extends interfazForm {
 
               <form action='index.php?class=carrera&cmd={$cmd}' method='post'>
                 <table>
-                  {$codigo}
+                  <tr>
+                    <td>Codigo:</td>
+                    <td>{$codigo} <input type='{$codigoType}' name='codigo' value='{$campos['codigo']}' maxlength='25' /></td>
+                  </tr>
                   <tr>
                     <td>Nombre:</td>
                     <td><input type='text' name='nombre' value='{$campos['nombre']}' maxlength='45' /> </td>
