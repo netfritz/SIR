@@ -1,6 +1,6 @@
 <?php
 
-require_once("Estudiante.php");
+require_once("class/model/Estudiante.php");
 
 // Muestra un formulario en pantalla para la clase Estudiante
 // Cuando es llamado via GET, devuelve un formulario vacio
@@ -11,30 +11,62 @@ function estudianteInput() {
     $obj = Estudiante::getByKey($_POST["id"]);
     echo "<form action=\"index.php?class=estudiante&cmd=edit\" method=\"post\"
           <input type=\"hidden\" name=\"type\" value=\"edit\" />";
-    estudianteFields($_POST["id"], $obj->getDoc_Id(),
+    estudianteFields($obj->getDoc_Id(),
 		     $obj->getCarnet(), $obj->getNombre(),
 		     $obj->getApellido(), $obj->getFecha_nac(),
-		     $obj->getColegio_origen());
+                     $obj->getColegio_origen(),True);
   } else {
     // Insertar nuevo
     echo "<form action=\"index.php?class=estudiante&cmd=insert\" method=\"post\"
           <input type=\"hidden\" name=\"type\" value=\"new\" />";
-    estudianteFields("","","","","","","");
+    estudianteFields("","","","","","",True);
   }
   echo "<input type=\"submit\" value=\"Enviar\" />";
 }
 
+function tableRowInput($id,$label,$value,$name){
+  return "<tr>
+            <th>
+              <label for=\"id_".$id."\">".$label."</label>
+            </th>
+            <td>
+              <input type=\"text\" id=\"id_".$id."\" name=\"".$name."\" value=\"".$value."\"/>
+            </td>
+          </tr>";
+}
+
 // Imprime por pantalla un formulario con un campo para cada atributo necesario
 // de la clase. Permite que se le de un valor inicial a cada campo
-function estudianteFields($oldid, $id,  $carnet, $nombre, $apellido, $fecha_nac, $colegio) {
-  echo "
-   <input type=\"hidden\" name=\"oldid\" value=\"" . $oldid ."\" /></br>
-   Documento de identidad: <input type=\"text\" name=\"id\" value=\"".$id."\" /></br>
-   Carnet: <input type=\"text\" name=\"carnet\" value=\"".$carnet."\" /></br>
-   Nombre: <input type=\"text\" name=\"nombre\" value=\"".$nombre."\" /></br>
-   Apellido: <input type=\"text\" name=\"apellido\" value=\"".$apellido."\" /></br>
-   Fecha de nacimiento: <input type=\"text\" name=\"fecha_nac\" value=\"".$fecha_nac."\" /></br>
-   Colegio de origen: <input type=\"text\" name=\"colegio\" value=\"".$colegio."\" /></br>";
+function estudianteFields($id,  $carnet, $nombre, $apellido, $fecha_nac, $colegio, $insert = False) {
+  if ($insert) {
+    $clave= "
+           <input type=\"text\" id=\"id_doc_id\" name=\"id\" value=\"".$id."\"/>";
+  } else {
+    $clave= "
+           <input type=\"hidden\" name=\"id\" value=\"" . $id ."\" />
+           <p id=\"id_doc_id\">".$id."</p>";
+  }
+  
+  $msj ="
+   <table>
+     <tbody>
+       <tr>
+         <th>
+           <label for=\"id_doc_id\">Documento de identidad:</label>
+         </th>
+         <td>".$clave."
+         </td>
+       </tr>".
+    tableRowInput("carnet","Carnet:",$carnet,"carnet").
+    tableRowInput("nombre","Nombre:",$nombre,"nombre").
+    tableRowInput("apellido","Apellido:",$apellido,"apellido").
+    tableRowInput("fecha_nac","Fecha de Nacimiento:",$fecha_nac,"fecha_nac").
+    tableRowInput("colegio","Colegio de Origen:",$colegio,"colegio").
+    "       
+     </tbody>
+   </table>
+   ";
+    echo $msj;
 }
 
 function estudianteInsert() {
@@ -54,8 +86,9 @@ function estudianteAll() {
 
   $res = Estudiante::all();
   echo "<ul>";
-  foreach ($res as $ind) {
-    echo "<li>Estudiante: " . $ind. "
+  if ($res) {
+    foreach ($res as $ind) {
+      echo "<li>Estudiante: " . $ind. "
 
          <form action=\"index.php?class=estudiante&cmd=input\" method=\"post\">
          <input type=\"hidden\" name=\"codigo\" value=\"" . $ind->getDoc_Id() . "\" />
@@ -68,6 +101,9 @@ function estudianteAll() {
          </form>
          
          </li>";
+    }
+  } else {
+    echo "<li>En este momento no hay estudiantes registrados</li>";
   }
   echo "</ul>";
 }
