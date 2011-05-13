@@ -21,19 +21,12 @@ class Estudiante {
    * tarse una sentencia 'INSERT' o una sentencia 'UPDATE' al hacer el query a la
    * base de datos.
    */
-  private $es_nuevo;
-
-  /* Indica si la clave primaria fué cambiada. Se guarda la anterior para poder
-   * recuperar la tupla y hacer el correspondiente update.
-   */
-  private $keyChanged;
-  private $oldKey;
-  
+  private $es_nuevo;  
 
   /* Indica si se está en fase debugging o no. */
-  private static $debugging = True;
+  public static $debug = True;
 
-  /* Contenedor de la salida de todas las operaciones de la clase */
+  /* Contenedor de la salida de todas los métodos dinámicos de la clase */
   protected $out;
 
   /* Métodos mágicos */
@@ -79,11 +72,6 @@ class Estudiante {
 
   public function getDoc_id(){
     return $this->doc_id;
-  }
-
-  public function setDoc_id($value){
-    $this->oldKey = $this->doc_id;
-    $this->doc_id = $value;
   }
   
   public function getCarnet(){
@@ -138,11 +126,10 @@ class Estudiante {
   /**
    * Muestra errores relacionados con consulta a la base de datos.
    */
-  public static function show_mysql_errors() {
-    if (self::debugging){
+  public static function show_mysql_errors($query) {
+    if (self::$debug){
       // ^ La idea es tener un setting para saber si se esta en fase debugging
-      $this->out .= "\nConsulta:\n\t".$query;
-      $this->out .= "\nError:\n\t".mysql_error();
+      echo "\nConsulta:\n\t".$query."\nError:\n\t".mysql_error();
     }
   }
 
@@ -166,17 +153,14 @@ class Estudiante {
           $student->es_nuevo = False;
           $ret[] = $student;
         }
-      } else {
-        $this->out = NULL;
-        return True;
+      } else {        
+        return NULL;
       }
     } else {
-      $this->out = "Error al listar todos los Estudiantes.";
-      self::show_mysql_errors();
-      return False;
+      self::show_mysql_errors($query);
+      return "Error al listar todos los Estudiantes.";
     }
-    $this->out = $ret;
-    return True;
+    return $ret;
   }
 
   /**
@@ -194,16 +178,15 @@ class Estudiante {
         return True;
       } else {
         $this->out = "Error al borrar un Estudiante de la base de datos.";
-        if (self::debugging){
+        if (self::debug){
           // ^ La idea es tener un setting para saber si se esta en fase debugging
-          $this->out .= "\nConsulta:\n\t".$query;
-          $this->out .= "\nError:\n\t".mysql_error();
+          self::show_mysql_errors($query);
         }
         return False;
       }
     } else {
       $this->out = "Error al intentar borrar al Estudiante ".$this." de la base de datos.";
-      self::show_mysql_errors();
+      self::show_mysql_errors($query);
       return False;
     }
   }
@@ -219,28 +202,24 @@ class Estudiante {
       $nr = mysql_num_rows($ans);
       if ($nr == 1) {
         if ($row = mysql_fetch_assoc($ans)) {
-          $student->setNew($row["documento_id"],
-                           $row["carnet"],
-                           $row["nombre"],
-                           $row["apellido"],
-                           $row["fecha_nac"],
-                           $row["colegio_origen"]);
+          $student = new Estudiante($row["documento_id"],
+                                    $row["carnet"],
+                                    $row["nombre"],
+                                    $row["apellido"],
+                                    $row["fecha_nac"],
+                                    $row["colegio_origen"]);
           $student->es_nuevo = False;
         } else {
-          $this->out = NULL;
-          return True;
+          return NULL;
         }
       } else if ($nr == 0) {
-        $this->out = NULL;
-        return True;
+        return NULL;
       }
     } else {
-      $this->out = "Error al buscar el Estudiante ".$this.".";
-      self::show_mysql_errors();
-      return False;
+      self::show_mysql_errors($query);
+      return "Error al buscar el Estudiante ".$this.".";
     }
-    $this->out = $student;
-    return True;
+    return $student;
   }
 
   /**
@@ -262,16 +241,14 @@ class Estudiante {
         ."', apellido='".$this->apellido
         ."', fecha_nac='".$this->fecha_nac
         ."', colegio_origen='".$this->colegio_origen
-        ."' WHERE documento_id='".$this->oldKey."'";
+        ."' WHERE documento_id='".$this->doc_id."'";
     }
     if (mysql_query($query)) {
       $this->es_nuevo = True;
-      $this->keyChanged = False;
-      $this->oldKey = $this->doc_id;
       return True;
     } else {
       $this->out = "Problema al tratar de salvar el objeto ".$this." en la base de datos.";
-      self::show_mysql_errors();
+      self::show_mysql_errors($query);
       return False;
     }
   }
