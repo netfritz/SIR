@@ -1,5 +1,9 @@
 <?php
 
+require_once("interfaz.php");
+
+//require_once("class/model/Profesor.php");
+
 class interfazProfesorAll extends interfazAll {
 
     public function printv() {
@@ -9,13 +13,21 @@ class interfazProfesorAll extends interfazAll {
             $bloqueMsj .= "$msj </br>";
         }
 
+        $output = "<table>
+                  <tr>
+                  <th>Documento de Id.</th>
+                  <th>Departamento</th>
+                  <th>Carnet</th>
+                  <th>Nombre</th>
+                  <th>Apellido</th>
+                  <th>Titulo</th>
+                  </tr>";
         if ($this->instancias != null) {
             // Generar html para la tabla de instancias
-            $tabla = "";
             foreach ($this->instancias as $ind) {
                 $id = $ind->getDocumento_id();
                 $dpto = $ind->getDpto();
-                $tabla .= "
+                $output .= "
                   <tr>
                   <td>" . $id . "</td>
                   <td>" . $dpto . "</td>
@@ -38,7 +50,11 @@ class interfazProfesorAll extends interfazAll {
                   </td>
                   </tr>";
             }
+            $output.=" </table>";
+        } else {
+            $output = "En este momento no hay profesores registrados.";
         }
+
 // Unir todo dentro del template
         echo "
       <div id='page'>
@@ -50,19 +66,8 @@ class interfazProfesorAll extends interfazAll {
               <a href='index.php?class=profesor&cmd=input'>Insertar nuevo Profesor</a>
               </ br>
               <p>
-              $bloqueMsj
-
-              <table>
-                <tr>
-                  <th>Codigo</th>
-                  <th>Nombre</th>
-                  <th>Direccion</th>
-                  <th>Coordinador</th>
-                </tr>
-
-                $tabla
-
-              </table>
+              $bloqueMsj             
+              $output              
               </p>
             </div>
           </div>
@@ -81,7 +86,7 @@ class interfazProfesorForm extends interfazForm {
 
         // Generar titulo
         $titulo = $this->instancia != NULL ? "Modificar un profesor <br />" :
-                "Agregar un nuevo profesor <br />";
+                "Agregar un nuevo profesor </br>";
 
         // Generar html para los mensajes
         $bloqueMsj = "";
@@ -136,7 +141,7 @@ class interfazProfesorForm extends interfazForm {
                 <table>
                   <tr>
                     <td>Documento de Identificación:</td>
-                    <td>$id <input type='$codigoType' name='id' value='{$campos['id']}' maxlength='25' /></td>
+                    <td>$id <input type='$idType' name='id' value='{$campos['id']}' maxlength='25' /></td>
                   </tr>
                   <tr>
                     <td>Departamento:</td>
