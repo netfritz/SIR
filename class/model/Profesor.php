@@ -141,8 +141,9 @@ class Profesor {
                     "'$this->apellido', '$this->titulo')";
             $res = mysql_query($sqlQuery);
             if (!$res) {
-                die("ERROR Profesor.save(): " . mysql_error());
+                return 1; //Retorno con error
             }
+            return 0; //Retorno exitoso
         } else {
             $sqlQuery = "UPDATE profesor " .
                     "SET documento_id='$this->documento_id', " .
@@ -153,7 +154,7 @@ class Profesor {
                     "dpto=$this->old_dpto";
             $res = mysql_query($sqlQuery);
             if (!$res) {
-                die("ERROR Profesor.save(): " . mysql_error());
+                die("ERROR: Profesor.save(): " . mysql_error());
             }
         }
     }

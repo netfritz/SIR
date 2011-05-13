@@ -8,6 +8,8 @@ function profesorInput() {
         echo "<form action=\"index.php?class=profesor&cmd=edit\" method=\"post\">
         <input type=\"hidden\" name=\"id\" value=\"{$_POST["id"]}\">
         <input type=\"hidden\" name=\"dep\" value=\"{$_POST["dep"]}\">
+        </br>
+        </br>
         Documento de Identidad: &#160 {$_POST["id"]}</br>
         Código de Departamento: &#160 {$_POST["dep"]}</br>";
         profesorFields($obj->getCarnet(), $obj->getNombre(), $obj->getApellido(), $obj->getTitulo());
@@ -40,8 +42,13 @@ function profesorInsert() {
                     $_POST["nombre"],
                     $_POST["apellido"],
                     $_POST["titulo"]);
-    $obj->save();
-    echo "Se ha agregado un nuevo profesor </br>";
+    $ret = $obj->save();
+    if ($ret) {
+        echo " </br> </br> Ya existe un profesor con ese Documento de Identidad
+            en ese Departamento";
+    } else {
+        echo "Se ha agregado un nuevo profesor </br>";
+    }
     profesorAll();
 }
 
@@ -104,7 +111,8 @@ function profesorEdit() {
 function profesorDelete() {
     $obj = Profesor::getByKey($_POST["id"], $_POST["dep"]);
     $obj->delete();
-    echo "El profesor " . $obj->getNombre() . " " . $obj->getApellido() . " ha sido eliminado </br>";
+    echo "</br></br>El profesor " . $obj->getNombre() . " " . $obj->getApellido() .
+    " ha sido eliminado </br>";
     profesorAll();
 }
 
