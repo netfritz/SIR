@@ -1,6 +1,6 @@
 <?php
 
-require_once("/class/model/Profesor.php");
+require_once("class/model/Profesor.php");
 
 function profesorInput() {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {

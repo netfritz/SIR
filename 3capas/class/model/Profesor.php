@@ -128,7 +128,7 @@ class Profesor {
 
     public function delete() {
         DataBase::singleton();
-        $sqlQuery = "DELETE FROM profesor WHERE " .
+        $sqlQuery = "DELETE FROM Profesor WHERE " .
                 "documento_id = '$this->documento_id' AND dpto = $this->dpto";
         $res = mysql_query($sqlQuery);
     }
@@ -136,7 +136,7 @@ class Profesor {
     public function save() {
         DataBase::singleton();
         if ($this->new) {
-            $sqlQuery = "INSERT INTO profesor VALUES ('$this->documento_id', " .
+            $sqlQuery = "INSERT INTO Profesor VALUES ('$this->documento_id', " .
                     "$this->dpto, '$this->carnet', '$this->nombre', " .
                     "'$this->apellido', '$this->titulo')";
             $res = mysql_query($sqlQuery);
@@ -145,7 +145,7 @@ class Profesor {
             }
             return 0; //Retorno exitoso
         } else {
-            $sqlQuery = "UPDATE profesor " .
+            $sqlQuery = "UPDATE Profesor " .
                     "SET documento_id='$this->documento_id', " .
                     "dpto=$this->dpto, carnet='$this->carnet', " .
                     "nombre='$this->nombre', apellido='$this->apellido', " .
