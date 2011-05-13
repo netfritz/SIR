@@ -132,6 +132,14 @@ class interfazUniversidadForm extends interfazForm {
 	$claveType = 'hidden';
       }
 
+    }else{
+      $campos["nombre"] = "";
+      $campos["pais"] = "";
+      $campos["estado"] = "";
+      $campos["direccion"] = "";
+      $campos["rector"] = "";
+      $campos["url"] = "";
+      $campos["ciudad"] = "";       
     }
     
     // Unir todo en el template

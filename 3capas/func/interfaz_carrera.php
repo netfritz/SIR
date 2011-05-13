@@ -105,7 +105,12 @@ class interfazCarreraForm extends interfazForm {
 	$codigoType = 'hidden';
       }
 
-    }
+    }else{
+      $campos["codigo"] = "";
+      $campos["nombre"] = "";
+      $campos["direccion"] = "";
+      $campos["coordinador"] = "";
+   }
     
     // Unir todo en el template
     echo "
