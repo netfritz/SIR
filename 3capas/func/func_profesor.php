@@ -1,6 +1,6 @@
 <?php
 
-require_once("/class/model/Profesor.php");
+require_once("class/model/Profesor.php");
 require_once("interfaz_profesor.php");
 
 function profesorInput() {
