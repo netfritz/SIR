@@ -12,7 +12,7 @@ class interfazCarreraAll extends interfazAll {
     foreach ($this->mensajes as $msj) {
       $bloqueMsj .= "{$msj} </br>";
     }
-    
+    if($this->instancias != null){
     // Generar html para la tabla de instancias
     $tabla = "";
     foreach ($this->instancias as $inst) {
@@ -36,7 +36,7 @@ class interfazCarreraAll extends interfazAll {
            </td>
          </tr>";
     }
-
+    }
     // Unir todo dentro del template
     echo "
       <div id='page'>
@@ -105,7 +105,12 @@ class interfazCarreraForm extends interfazForm {
 	$codigoType = 'hidden';
       }
 
-    }
+    }else{
+      $campos["codigo"] = "";
+      $campos["nombre"] = "";
+      $campos["direccion"] = "";
+      $campos["coordinador"] = "";
+   }
     
     // Unir todo en el template
     echo "
