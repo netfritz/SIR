@@ -1,79 +1,85 @@
 <?php
-
 require_once("DataBase.php");
 
-class Departamento{
+class Departamento {
 
-// Atributos
-private  $id;
-private $codigo;
-private $nombre;
-private $direccion;
+  // Atributos
+  private $id;
+  private $universidad;
+  private $codigo;
+  private $nombre;
+  private $direccion;
+  
+  private $new = FALSE;
 
-private $new = FALSE;
+  // funciones de modificacion 
+  function __construct($universidad, $codigo, $nombre, $direccion) {
+    $this->id = NULL;
+    $this->universidad = $universidad;
+    $this->codigo = $codigo;
+    $this->nombre = $nombre;
+    $this->direccion = $direccion;
+    $this->new = TRUE;
+  }
 
-// funciones de modificacion 
- function __construct($id,$codigo,$nombre,$direccion){
-$this->id = $id;
-$this->codigo = $codigo;
-$this->nombre = $nombre;
-$this->direccion = $direccion;
-$this->new = TRUE;
-}
-
-public static function all() {
+  public static function all() {
     DataBase::singleton();
-    $bus = mysql_query("SELECT * FROM Departamento;");
+    $res = mysql_query("SELECT * FROM Departamento");
     while ($fila = mysql_fetch_assoc($res)) {
-      $dep = new Departamento($fila["id"], $fila["codigo"], $fila["nombre"], $fila["direccion"]);
+      $dep = new Departamento ($fila["universidad"],
+			       $fila["codigo"], 
+			       $fila["nombre"], 
+			       $fila["direccion"]);
+      $dep->id = $fila["id"];
       $dep->new = False;
       $res[] = $dep;
     }
     return $res;
   }
 
-public static function getByKey($key) {
-   DataBase::singleton();
-   $bus=mysql_query("SELECT * FROM Departamento WHERE id='" .$key."'");
-   if(!$bus){
-     return null;
-   }else{
-     $fila=mysql_fetch_assoc($res);
-     $dep= new Departamento($fila["id"],$fila["codigo"],$fila["nombre"],$fila["direccion"]);
-     $dep->nueva=FALSE;
-     return $dep;
-   }
-
-
-
-public function save() {
+  public static function getByKey($id) {
+    DataBase::singleton();
+    $bus=mysql_query("SELECT * FROM Departamento WHERE id={$id}");
+    if ($fila=mysql_fetch_assoc($bus)) {
+      $dep= new Departamento($fila["universidad"],$fila["codigo"],$fila["nombre"],$fila["direccion"]);
+      $dep->id = $fila["id"];
+      $dep->new = False;
+      return $dep;
+    } else {
+      return NULL;
+    }
+  }
+    
+  public function save() {
     DataBase::singleton();
     if ($this->new) {
-      $res = mysql_query("INSERT INTO Departamento VALUES ('"
-		  . $this->id ."', '". $this->codigo ."', '"
-		  . $this->nombre ."', '". $this->direccion ."');");
+      $res = mysql_query("INSERT INTO Departamento (universidad, codigo, nombre, direccion) 
+                         VALUES ('{$this->universidad}', '{$this->codigo}', '{$this->nombre}', '{$this->direccion}')") or die (mysql_error());;
     } else {
-      $res = mysql_query("UPDATE Departamento SET id='" .$this->id ."', codigo='".$this->codigo
-		  ."', nombre='".$this->nombre  ."', direccion='" .$this->direccion."';");
+      $res = mysql_query("UPDATE Departamento SET codigo='{$this->codigo}', 
+                          nombre='{$this->nombre}', direccion='{$this->direccion}' 
+                          WHERE id='{$this->id}'") or die (mysql_error());;
     }
-
     $this->new = False;
   }
 
 
   public function delete() {
     DataBase::singleton();
-    $res = mysql_query("DELETE FROM Departamento WHERE id='".$this->id."';");
+    $res = mysql_query("DELETE FROM Departamento WHERE id='{$this->id}'");
   }
 
   public function __toString() {
-    return $this->id ;
+    return "{$this->id}";
   }
 
-// funciones de modificacion directa y obtencion de atributos
-
-  public function geID() {
-    return $this->ID;
+  // funciones de modificacion directa y obtencion de atributos
+  public function getId() {
+    return $this->id;
+  }
+  
+  public function getUniversidad() {
+    return $this->universidad;
   }
 
   public function getCodigo() {
@@ -81,10 +87,10 @@ public function save() {
   }
 
   public function getNombre() {
-    return $this->nombrer;
+    return $this->nombre;
   }
 
-  public function geDireccion() {
+  public function getDireccion() {
     return $this->direccion;
   }
 
@@ -92,18 +98,28 @@ public function save() {
     $this->nombre = $nom;
   }
 
-  public function setDireccion($dir) {
-    $this->direccion = $dir;
+  public function setCodigo($cod) {
+    $this->codigo = $cod;
   }
 
   public function setDireccion($dir) {
     $this->direccion = $dir;
   }
 
-  public function setId($ide) {
-    $this->id = $ide
+  public function setUniversidad($uni) {
+    $this->universidad = $uni;
   }
-
+    
 }
+
+echo "Probando\n";
+
+$tmp = new Departamento("USB","CI","COMPUTACION","MYS");
+$tmp->save();
+
+$tmp2 = Departamento::getByKey(1);
+$tmp2->setNombre("COPU");
+$tmp2->save();
+
 ?>
 

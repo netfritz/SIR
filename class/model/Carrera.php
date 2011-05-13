@@ -53,7 +53,7 @@ class Carrera {
       $res = mysql_query("UPDATE Carrera SET nombre='{$this->nombre}', 
                          direccion_coordinacion='{$this->direccion}', 
                          coordinador='{$this->coordinador}' 
-                         WHERE codigo='{$this->oldcodigo}'");
+                         WHERE codigo='{$this->codigo}'");
     }
     $this->new = False;
   }
