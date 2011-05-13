@@ -113,7 +113,13 @@ class interfazAgrupacionForm extends interfazForm {
         $nombre = $campos['nombre'];
 	$nombreType = 'hidden';
       }
-
+    }
+    else{
+      $campos["universidad"] = "";
+      $campos["nombre"] = "";
+      $campos["pres"] = "";
+      $campos["mision"] = "";
+      $campos["vision"] = "";
     }
     
     // Unir todo en el template
@@ -132,17 +138,17 @@ class interfazAgrupacionForm extends interfazForm {
                 <table>
                   <tr>
                     <td>Universidad:</td>
-                    <td>{$universidad} <input type='{$universidadType}' name='universidad' value='{$campos['universidad']}' maxlength='25' /></td>
+                    <td>{$universidad} <input type='{$universidadType}' name='universidad' value='{$campos["universidad"]}' maxlength='25' /></td>
                   <td>Nombre:</td>
-                    <td>{$nombre} <input type='{$nombreType}' name='nombre' value='{$campos['nombre']}' maxlength='40' /></td>
+                    <td>{$nombre} <input type='{$nombreType}' name='nombre' value='{$campos["nombre"]}' maxlength='40' /></td>
                   </tr>
                   <tr>
                     <td>Presidente:</td>
-                    <td><input type='text' name='pres' value='{$campos['pres']}' maxlength='45' /> </td>
+                    <td><input type='text' name='pres' value='{$campos["pres"]}' maxlength='45' /> </td>
                   </tr>
                   <tr>
                     <td>Mision:</td>
-                    <td><input type='text' name='mision' value='{$campos['mision']}' maxlength='100' /> </td>
+                    <td><input type='text' name='mision' value='{$campos["mision"]}' maxlength='100' /> </td>
                   </tr>
                   <tr>
                     <td>Vision:</td>
