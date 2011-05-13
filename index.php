@@ -84,7 +84,7 @@ $func();
 ?>
 
 <div id="footer">
-  <p> © 2011 www.sugu.com. Basado en el diseño de <a href="http://www.nodethirtythree.com">nodethirtythree</a> y <a href="http://www.freecsstemplates.org">Free CSS Templates</a>. Modificado por SIR <img id="logoFooter" src="resources/images/logo-SIR.png" alt="" /> Soluciones Integrales Roraima.</p>
+  <p> © 2011 www.sugu.com. Basado en el diseño de <a href="http://www.nodethirtythree.com">nodethirtythree</a> y <a href="http://www.freecsstemplates.org">Free CSS Templates</a>. Modificado por SIR <img id="logoFooter" src="resources/images/logo-SIR.png" alt="" /> Sistemas Integrales Roraima.</p>
 </div>
 <!-- end #footer -->
 </body>
