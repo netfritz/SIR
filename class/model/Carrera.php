@@ -14,14 +14,13 @@ class Carrera {
   public static function all() {
     DataBase::singleton();
     $res = mysql_query("SELECT * FROM Carrera;");
+    $ret = array();
     while ($row = mysql_fetch_assoc($res)) {
       $car = new Carrera($row["codigo"],
 			 $row["nombre"],
 			 $row["direccion_coordinacion"],
 			 $row["coordinador"]);
       $car->new = False;
-      $car->changedCodigo = False;
-      $car->oldcodigo = $row["codigo"];
       $ret[] = $car;
     }
     return $ret;
