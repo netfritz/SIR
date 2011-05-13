@@ -80,12 +80,11 @@ DROP TABLE IF EXISTS `SIR`.`Departamento` ;
 
 CREATE  TABLE IF NOT EXISTS `SIR`.`Departamento` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `universidad_id` INT NOT NULL ,
-  `universidad_nombre` VARCHAR(100) NOT NULL ,
+  `universidad` VARCHAR(100) NOT NULL ,
   `codigo` VARCHAR(5) NOT NULL ,
   `nombre` VARCHAR(45) NOT NULL ,
   `direccion` VARCHAR(100) NOT NULL ,
-  PRIMARY KEY (`id`, `universidad_id`, `universidad_nombre`) ,
+  PRIMARY KEY (`id`) ,
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) );				 
  
 
