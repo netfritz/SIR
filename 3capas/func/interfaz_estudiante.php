@@ -81,6 +81,8 @@ class interfazEstudianteAll extends interfazAll {
   }
 }
 
+
+
 /*
  * Cómo funciona interfazCLASEForm
  * Primero se generan las partes dinámicas de la página y se guardan en variables
@@ -95,7 +97,7 @@ class interfazEstudianteAll extends interfazAll {
  * Lean bien el codigo para que vean como funciona esta parte
  */
 class interfazEstudianteForm extends interfazForm {
-
+    
   public function tableRowInput($id,$label,$value,$name){
     return "<tr>
             <th>
@@ -106,8 +108,53 @@ class interfazEstudianteForm extends interfazForm {
             </td>
           </tr>";
   }
-
-  public function printv() {
+  
+  function dateInput($id,$label,$value,$name, $day, $month, $year){
+    $dias = range (1, 31);
+    $meses = array (1 => 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio','Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
+    $anios = range (1900, 2000);
+    $html = "<tr>
+                 <th>
+                   <label for=\"id_".$id."\">".$label."</label>
+                 </th>
+                 <td>
+                   <div id=\"id_".$id."\" >";
+    
+    $html .= 'Día: <select id="id_'.$id.'_dia" name="'.$name.'_dia">';
+    foreach ($dias as $val) {
+        if ($val == $day) {
+          $html .= '<option selected value="'.$val.'">'.$val.'</option>\n';
+        } else {
+          $html .= '<option value="'.$val.'">'.$val.'</option>\n';
+        }
+    } 
+    $html .= '</select>';
+    
+    $html .= 'Mes: <select id="id_'.$id.'_mes" name="'.$name.'_mes">';
+    foreach ($meses as $val) {
+        if ($val == $month) {
+        $html .= '<option selected value="'.$val.'">'.$val.'</option>\n';
+        } else {
+        $html .= '<option value="'.$val.'">'.$val.'</option>\n';
+        }
+    }
+    $html .= '</select>';
+    
+    $html .= 'Año: <select id="id_'.$id.'_anio" name="'.$name.'_anio">';
+    foreach ($anios as $val) {
+        if ($val == $year) {
+          $html .= '<option selected value="'.$val.'">'.$val.'</option>\n';
+        } else {
+          $html .= '<option value="'.$val.'">'.$val.'</option>\n';
+        }
+    }
+    
+    $html .= "   </div>
+                 </td>
+               </tr>";
+    return $html;
+  }
+    public function printv() {
 
     // Generar titulo
     $titulo = $this->instancia != NULL ? "Modificar un Estudiante <br />" 
@@ -132,24 +179,30 @@ class interfazEstudianteForm extends interfazForm {
       $campos["nombre"] = $this->instancia->getNombre();
       $campos["apellido"] = $this->instancia->getApellido();
       $campos["fecha_nac"] = $this->instancia->getFecha_nac();
-            
+      $campos["colegio"] = $this->instancia->getColegio_origen();
+    } else {
+      $campos["id"] = "";
+      $campos["carnet"] = "";
+      $campos["nombre"] = "";
+      $campos["apellido"] = "";
+      $campos["fecha_nac"] = "";
+      $campos["colegio"] = "";
+    }             
       if (!$this->nuevo) {
-        $doc_id = $campos['id'];
+        $doc_id = $campos["id"];
         $claveType = 'hidden';
       }
-
-    }
-
-    if ($campos["fecha_nac"] == NULL) {
-      $dia = NULL;
-      $mes = NULL;
-      $anio = NULL;
-    } else {
-      $aux = explode('-',$fecha_nac);
-      $dia = $aux[2];
-      $mes = $aux[1];
-      $anio = $aux[0];
-    }
+      
+      if ($campos["fecha_nac"] == NULL) {
+        $dia = NULL;
+        $mes = NULL;
+        $anio = NULL;
+      } else {
+        $aux = explode('-',$fecha_nac);
+        $dia = $aux[2];
+        $mes = $aux[1];
+        $anio = $aux[0];
+      }
     
     // Unir todo en el template
     echo "
@@ -168,26 +221,14 @@ class interfazEstudianteForm extends interfazForm {
                   <tbody>
                     <tr>
                       <th><label for=\"id_doc_id\">Documento de identificación:</label></th>
-                      <td>{$doc_id} <input type='{$claveType}' name='id' id='id_doc_id' value='{$campos['id']}' maxlength='25' /></td>
+                      <td>{$doc_id} <input type='{$claveType}' name='id' id='id_doc_id' value=\"".$campos["id"]."\" maxlength='25' /></td>
                     </tr>".
-                    tableRowInput("carnet","Carnet:",$carnet,"carnet").
-                    tableRowInput("nombre","Nombre:",$nombre,"nombre").
-                    tableRowInput("apellido","Apellido:",$apellido,"apellido").
-                    dateInput("fecha_nac","Fecha de Nacimiento:",$fecha_nac,"fecha_nac",$dia,$mes,$anio).
-                    tableRowInput("colegio","Colegio de Origen:",$colegio,"colegio").
+                    $this->tableRowInput("carnet","Carnet:",$campos["carnet"],"carnet").
+                    $this->tableRowInput("nombre","Nombre:",$campos["nombre"],"nombre").
+                    $this->tableRowInput("apellido","Apellido:",$campos["apellido"],"apellido").
+                    $this->dateInput("fecha_nac","Fecha de Nacimiento:",$campos["fecha_nac"],"fecha_nac",$dia,$mes,$anio).
+                    $this->tableRowInput("colegio","Colegio de Origen:",$campos["colegio"],"colegio").
                     "
-                    <tr>
-                      <td>ATRIBUTO:</td>
-                      <td><input type='text' name='ATRIBUTO' value='{$campos['ATRIBUTO']}' maxlength='45' /> </td>
-                    </tr>
-                    <tr>
-                      <td>ATRIBUTO:</td>
-                      <td><input type='text' name='ATRIBUTO' value='{$campos['ATRIBUTO']}' maxlength='100' /> </td>
-                    </tr>
-                    <tr>
-                      <td>ATRIBUTO:</td>
-                      <td><input type='text' name='ATRIBUTO' value='{$campos['ATRIBUTO']}' maxlength='100'  /> </td>
-                    <tr>
                   </tbody>
                 </table>
                 <input type='submit' value='Enviar' />

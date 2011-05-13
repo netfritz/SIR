@@ -47,17 +47,17 @@ function estudianteInsert() {
 
   $existe = Estudiante::getByKey($id);
   if ($existe != NULL)
-    $msjs[] = "Ya existe otra carrera con el mismo código";
+    $msjs[] = "Ya existe otro Estudiante con el mismo documento de identidad";
 
   $obj = new Estudiante($id, $nombre,$apellido,$fecha_nac,$colegio);
 
-  if (!($codigo && $nombre && $direccion && $coordinador && $existe == NULL) )
+  if (!( $existe == NULL) )
     return new interfazEstudianteForm($obj, True, $msjs);
 
   $obj->save();
 
   return new interfazEstudianteAll(Estudiante::all(),
-				array("Se ha agregado una nueva carrera"));
+				array("Se ha agregado un nuevo Estudiante"));
 }
 
 
