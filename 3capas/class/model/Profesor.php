@@ -86,6 +86,7 @@ class Profesor {
         DataBase::singleton();
         $sqlQuery = "SELECT * FROM Profesor";
         $result = mysql_query($sqlQuery);
+        $array = array();
         while ($row = mysql_fetch_assoc($result)) {
             $objectRow = new profesor($row["documento_id"], $row["dpto"],
                             $row["carnet"], $row["nombre"], $row["apellido"],
@@ -119,11 +120,6 @@ class Profesor {
     }
 
     public function __toString() {
-    $cadena = $this->documento_id;
-    $cadena.= "," .$this->depto .",". $this->carnet;
-    $cadena.= "," .$this->nombre .",". $this->apellido;
-    $cadena.= "," .$this->titulo;
-    //turn($cadena); si quieren que salga separado por comas descomentar linea
         return "Nombre: $this->nombre" . PHP_EOL .
         "Apellido: $this->apellido" . PHP_EOL .
         "Departamento: $this->dpto" . PHP_EOL .
@@ -145,8 +141,9 @@ class Profesor {
                     "'$this->apellido', '$this->titulo')";
             $res = mysql_query($sqlQuery);
             if (!$res) {
-                die("ERROR Profesor.save(): " . mysql_error());
+                return 1; //Retorno con error
             }
+            return 0; //Retorno exitoso
         } else {
             $sqlQuery = "UPDATE profesor " .
                     "SET documento_id='$this->documento_id', " .
@@ -157,7 +154,7 @@ class Profesor {
                     "dpto=$this->old_dpto";
             $res = mysql_query($sqlQuery);
             if (!$res) {
-                die("ERROR Profesor.save(): " . mysql_error());
+                die("ERROR: Profesor.save(): " . mysql_error());
             }
         }
     }

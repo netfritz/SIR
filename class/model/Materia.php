@@ -9,67 +9,67 @@ class Materia{
   private $nombre;
   
   private $new = False;
-  private $oldcodigo;
-  private $changedCodigo = False;
-
+  
   // - funcion all, muestra todas las materias en la tabla
 
   public static function all(){
     DataBase::singleton();
     $rsql = mysql_query("SELECT * FROM Materia;");
+    $ret = array();
     while ($fila = mysql_fetch_assoc($rsql)) {
-      $mate = new Materia($fila["id"],$fila["dpto"],$fila["codigo"],$fila["nombre"]);
+      $mate = new Materia($fila["dpto"],
+			  $fila["codigo"],
+			  $fila["nombre"]);
       $mate->new = False;
-      $mate->changedCodigo = False;
-      $mate->oldcodigo = $fila["id"];
+      $mate->id = $fila["id"];
       $ret[] = $mate;
     }
     return $ret;
   }
 
-  public static function getbyKey($key){
+  public static function getByKey($key){
     Database::singleton();
-    $rsql = mysql_query("SELECT * FROM Materia WHERE codigo='".$key.";");
+    $key = mysql_real_escape_string(stripslashes($key));
+    $rsql = mysql_query("SELECT * FROM Materia WHERE id=".$key.";");
     if ($fila = mysql_fetch_assoc($rsql)){
-      $mate = new Materia($fila["id"],$fila["dpto"],$fila["codigo"],$fila["nombre"]);          $mate->new = False;
-      $mate->changedCodigo = False;
-      $mate->oldcodigo = $row["id"];
-      return $fila;
+      $mate = new Materia($fila["dpto"],
+			  $fila["codigo"],
+			  $fila["nombre"]);
+      $mate->id = $fila["id"];
+      $mate->new = False;
+      return $mate;
     } else {
       return NULL;
     }
   } 
-  
-  public function save() {
+   public function save() {
     DataBase::singleton();
     if ($this->new) {
-      $res = mysql_query("INSERT INTO Materia VALUES ('"
-			 . $this->id ."', '". $this->dpto ."', '"
-			 . $this->codigo ."', '". $this->nombre ."');");
+      $res = mysql_query("INSERT INTO Materia (dpto,codigo,nombre) VALUES (
+                         '{$this->dpto}', '{$this->codigo}', '{$this->nombre}')") or die(mysql_error());
     } else {
-      $res = mysql_query("UPDATE Materia SET id='".$this->id
-			 ."', dpto='".$this->dpto
-			 ."', codigo='".$this->codigo
-			 ."', nombre='".$this->nombre
-			 ."' WHERE codigo='".$this->oldcodigo."';");
+      $res = mysql_query("UPDATE Materia SET dpto='{$this->dpto}', 
+                         codigo='{$this->codigo}', 
+                         nombre='{$this->nombre}' 
+                         WHERE id={$this->id}");
     }
-
     $this->new = False;
-    $this->changedCodigo = False;
-    $this->oldcodigo = $this->codigo;
   }
+
+ 
   
   public function delete() {
     DataBase::singleton();
-    $res = mysql_query("DELETE FROM Carrera WHERE codigo='".$this->codigo."';");
+    $res = mysql_query("DELETE FROM Materia WHERE id=".$this->id.";");
   }
+
   
   public function __toString() {
     return $this->codigo . "  " . $this->nombre;
   }
   
-  public function __construct($id, $dpto, $codigo, $nombre) {
-    $this->id = $id;
+  public function __construct($dpto, $codigo, $nombre) {
+    $this->id = NULL;
     $this->dpto = $dpto;
     $this->codigo = $codigo;
     $this->nombre = $nombre;
@@ -104,13 +104,7 @@ class Materia{
     $this->codigo = $codigo;
   }
 
-  public function setid($id) {
-    if (!$this->changedCodigo) {
-      $this->oldcodigo = $this->id;
-      $this->changedCodigo = True;
-    }
-    $this->id = $id;
-  }
+ 
 
  
   
