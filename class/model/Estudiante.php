@@ -24,9 +24,9 @@ class Estudiante {
   private $es_nuevo;  
 
   /* Indica si se está en fase debugging o no. */
-  private static $debugging = True;
+  public static $debug = True;
 
-  /* Contenedor de la salida de todas las operaciones de la clase */
+  /* Contenedor de la salida de todas los métodos dinámicos de la clase */
   protected $out;
 
   /* Métodos mágicos */
@@ -126,11 +126,10 @@ class Estudiante {
   /**
    * Muestra errores relacionados con consulta a la base de datos.
    */
-  public static function show_mysql_errors() {
-    if (self::debugging){
+  public static function show_mysql_errors($query) {
+    if (self::$debug){
       // ^ La idea es tener un setting para saber si se esta en fase debugging
-      $this->out .= "\nConsulta:\n\t".$query;
-      $this->out .= "\nError:\n\t".mysql_error();
+      echo "\nConsulta:\n\t".$query."\nError:\n\t".mysql_error();
     }
   }
 
@@ -158,7 +157,7 @@ class Estudiante {
         return NULL;
       }
     } else {
-      self::show_mysql_errors();
+      self::show_mysql_errors($query);
       return "Error al listar todos los Estudiantes.";
     }
     return $ret;
@@ -179,16 +178,15 @@ class Estudiante {
         return True;
       } else {
         $this->out = "Error al borrar un Estudiante de la base de datos.";
-        if (self::debugging){
+        if (self::debug){
           // ^ La idea es tener un setting para saber si se esta en fase debugging
-          $this->out .= "\nConsulta:\n\t".$query;
-          $this->out .= "\nError:\n\t".mysql_error();
+          self::show_mysql_errors($query);
         }
         return False;
       }
     } else {
       $this->out = "Error al intentar borrar al Estudiante ".$this." de la base de datos.";
-      self::show_mysql_errors();
+      self::show_mysql_errors($query);
       return False;
     }
   }
@@ -204,28 +202,24 @@ class Estudiante {
       $nr = mysql_num_rows($ans);
       if ($nr == 1) {
         if ($row = mysql_fetch_assoc($ans)) {
-          $student->setNew($row["documento_id"],
-                           $row["carnet"],
-                           $row["nombre"],
-                           $row["apellido"],
-                           $row["fecha_nac"],
-                           $row["colegio_origen"]);
+          $student = new Estudiante($row["documento_id"],
+                                    $row["carnet"],
+                                    $row["nombre"],
+                                    $row["apellido"],
+                                    $row["fecha_nac"],
+                                    $row["colegio_origen"]);
           $student->es_nuevo = False;
         } else {
-          $this->out = NULL;
-          return True;
+          return NULL;
         }
       } else if ($nr == 0) {
-        $this->out = NULL;
-        return True;
+        return NULL;
       }
     } else {
-      $this->out = "Error al buscar el Estudiante ".$this.".";
-      self::show_mysql_errors();
-      return False;
+      self::show_mysql_errors($query);
+      return "Error al buscar el Estudiante ".$this.".";
     }
-    $this->out = $student;
-    return True;
+    return $student;
   }
 
   /**
@@ -241,20 +235,20 @@ class Estudiante {
         . $this->fecha_nac ."', '". $this->colegio_origen
         ."')";
     } else {
-      $query = "UPDATE Estudiante SET (documento_id='".$this->doc_id
+      $query = "UPDATE Estudiante SET documento_id='".$this->doc_id
         ."', carnet='".$this->carnet
         ."', nombre='".$this->nombre
         ."', apellido='".$this->apellido
         ."', fecha_nac='".$this->fecha_nac
         ."', colegio_origen='".$this->colegio_origen
-        ."') WHERE documento_id='".$this->doc_id."'";
+        ."' WHERE documento_id='".$this->doc_id."'";
     }
     if (mysql_query($query)) {
       $this->es_nuevo = True;
       return True;
     } else {
       $this->out = "Problema al tratar de salvar el objeto ".$this." en la base de datos.";
-      self::show_mysql_errors();
+      self::show_mysql_errors($query);
       return False;
     }
   }
