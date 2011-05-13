@@ -6,6 +6,7 @@ function carreraAll() {
   echo "</br><a href='index.php?class=carrera&cmd=input'>Insertar nueva Carrera</a></br>";
 
   $res = Carrera::all();
+ if ($res) {
   echo "<table>
           <tr>
             <th>Codigo</th>
@@ -34,6 +35,9 @@ function carreraAll() {
          </tr>";
   }
   echo "</table>";
+}else{
+echo "En este momento no hay carreras registradas";
+}
 }
 
 function carreraDelete() {
