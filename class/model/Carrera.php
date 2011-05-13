@@ -14,22 +14,17 @@ class Carrera {
   public static function all() {
     DataBase::singleton();
     $res = mysql_query("SELECT * FROM Carrera;");
-if (mysql_num_rows($res) > 0) {
+    $ret = array();
     while ($row = mysql_fetch_assoc($res)) {
       $car = new Carrera($row["codigo"],
 			 $row["nombre"],
 			 $row["direccion_coordinacion"],
 			 $row["coordinador"]);
       $car->new = False;
-      $car->changedCodigo = False;
-      $car->oldcodigo = $row["codigo"];
       $ret[] = $car;
     }
     return $ret;
-}else{
-return null;
 
-}
   }
 
   public static function getByKey($key) {
@@ -58,7 +53,7 @@ return null;
       $res = mysql_query("UPDATE Carrera SET nombre='{$this->nombre}', 
                          direccion_coordinacion='{$this->direccion}', 
                          coordinador='{$this->coordinador}' 
-                         WHERE codigo='{$this->oldcodigo}'");
+                         WHERE codigo='{$this->codigo}'");
     }
     $this->new = False;
   }
