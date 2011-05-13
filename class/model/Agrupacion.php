@@ -17,10 +17,10 @@ class Agrupacion {
     private $nueva;
 
     // Metodo Constructor
-    function Agrupacion($uni, $nomb, $presi, $mi, $vi) {
-        $this->universidad = $uni;
-        $this->nombre = $nomb;
-        $this->presidente = $presi;
+    function __construct($uni, $nomb, $presi, $mi, $vi) {
+        $this->universidad = mysql_real_escape_string(stripslashes($uni));
+        $this->nombre = mysql_real_escape_string(stripslashes($nomb));
+        $this->presidente = mysql_real_escape_string(stripslashes($presi));
         $this->mision = $mi;
         $this->vision = $vi;
         $this->nueva = TRUE;

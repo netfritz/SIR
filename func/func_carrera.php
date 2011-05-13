@@ -1,67 +1,31 @@
 <?php
 
 require_once("class/model/Carrera.php");
+require_once("interfaz_carrera.php");
+
 
 function carreraAll() {
-  echo "</br><a href='index.php?class=carrera&cmd=input'>Insertar nueva Carrera</a></br>";
-
-  $res = Carrera::all();
- if ($res) {
-  echo "<table>
-          <tr>
-            <th>Codigo</th>
-            <th>Nombre</th>
-            <th>Direccion</th>
-            <th>Coordinador</th>
-          </tr>";
-  foreach ($res as $inst) {
-    echo "<tr>
-           <td>{$inst->getCodigo()}</td>
-           <td>{$inst->getNombre()}</td>
-           <td>{$inst->getDireccion()}</td>
-           <td>{$inst->getCoordinador()}</td>
-           <td> 
-             <form action='index.php?class=carrera&cmd=input' method='post'>
-               <input type='hidden' name='codigo' value='{$inst->getCodigo()}' />
-               <input type='submit' value='Editar' />
-             </form>
-           </td>
-           <td>
-             <form action='index.php?class=carrera&cmd=delete' method='post'>
-               <input type='hidden' name='codigo' value='{$inst->getCodigo()}' />
-               <input type='submit' value='Borrar' />
-             </form>         
-           </td>
-         </tr>";
-  }
-  echo "</table>";
-}else{
-echo "En este momento no hay carreras registradas";
-}
+  return new interfazCarreraAll(Carrera::all());
 }
 
 function carreraDelete() {
   $obj = Carrera::getByKey($_POST["codigo"]);
   $obj->delete();
-  echo "La carrera {$obj->getNombre()} ha sido eliminada";
-  carreraAll();
+
+  return new interfazCarreraAll(Carrera::all(),
+				array("La carrera {$obj->getNombre()} ha sido eliminada"));
 }
 
 function carreraInput() {
+
   if ($_SERVER["REQUEST_METHOD"]=="POST") {
     $obj = Carrera::getByKey($_POST["codigo"]);
-    echo "<form action='index.php?class=carrera&cmd=edit' method='post'
-          <input type='hidden' name='type' value='edit' />";
-      carreraFields(False, $obj->getCodigo(),
-		    $obj->getNombre(), $obj->getDireccion(),
-		    $obj->getCoordinador());
-  } else {
-    // Insertar nuevo
-    echo "<form action='index.php?class=carrera&cmd=insert' method='post'
-          <input type='hidden' name='type' value='new' />";
-      carreraFields(True,"","","","");
+    if ($obj != NULL) {
+      return new interfazCarreraForm($obj, False);
+    }
   }
-  echo "<input type='submit' value='Enviar' />";
+ 
+  return new interfazCarreraForm(); 
 }
 
 function carreraInsert() {
@@ -79,37 +43,35 @@ function carreraInsert() {
 			 array("options"=>array("regexp"=>$reDireccion)));
   $coordinador = filter_input(INPUT_POST, 'coordinador', FILTER_VALIDATE_REGEXP, 
 			 array("options"=>array("regexp"=>$reNombres)));
+  $msjs = array();
 
   if (!$codigo)
-    echo "El codigo es invalido. Solo se permiten letras, numeros, espacios y guiones. </br>";
+    $msjs[] = "El codigo es invalido. Solo se permiten letras, numeros, espacios y guiones.";
   if (!$nombre)
-    echo "El nombre es invalido. Solo se permiten letras y espacios. Debe comenzar y terminar por una letra. </br>";
+    $msjs[] = "El nombre es invalido. Solo se permiten letras y espacios. Debe comenzar y terminar por una letra.";
   if (!$direccion)
-    echo "La direccion es invalida. Solo se permiten letras, numeros, espacios y guiones.</br>";
+    $msjs[] = "La direccion es invalida. Solo se permiten letras, numeros, espacios y guiones.";
   if (!$coordinador)
-    echo "El coordinador es invalido. Solo se permiten letras y espacios. Debe comenzar y terminar por una letra.</br>";
+    $msjs[] = "El coordinador es invalido. Solo se permiten letras y espacios. Debe comenzar y terminar por una letra.";
 
   $existe = Carrera::getByKey($codigo);
   if ($existe != NULL)
-    echo "Ya existe otra carrera con el mismo código. </br>";
+    $msjs[] = "Ya existe otra carrera con el mismo código";
 
   $obj = new Carrera($codigo, $nombre, $direccion, $coordinador);
 
-  if (!($codigo && $nombre && $direccion && $coordinador && $existe == NULL) ) {
-    // Error de validacion, reimprimir formulario
-    echo "<form action='index.php?class=carrera&cmd=edit' method='post'
-          <input type='hidden' name='type' value='edit' />";
-    carreraFields(True, $codigo, $nombre, $direccion, $coordinador);
-    echo "<input type='submit' value='Enviar' />";
-  } else {
-    // Ningún error, todo corre bien
-    $obj->save();
-    echo "Se ha agregado una nueva carrera";
-    carreraAll();
-  }
+  if (!($codigo && $nombre && $direccion && $coordinador && $existe == NULL) )
+    return new interfazCarreraForm($obj, True, $msjs);
+
+  $obj->save();
+
+  return new interfazCarreraAll(Carrera::all(),
+				array("Se ha agregado una nueva carrera"));
 }
 
+
 function carreraEdit() {
+
   $reNombres = "/^[a-zA-Z]+[a-zA-Z ]*[a-zA-Z]+$/";
   $reDireccion = "/^[a-zA-Z0-9]+[a-zA-Z0-9- ]*[a-zA-Z0-9]*$/";
 
@@ -120,40 +82,27 @@ function carreraEdit() {
 			 array("options"=>array("regexp"=>$reDireccion)));
   $coordinador = filter_input(INPUT_POST, 'coordinador', FILTER_VALIDATE_REGEXP, 
 			 array("options"=>array("regexp"=>$reNombres)));
+  $msjs = array();
+
   if (!$nombre)
-    echo "El nombre es invalido. Solo se permiten letras y espacios. Debe comenzar y terminar por una letra.</br>";
+    $msjs[] = "El nombre es invalido. Solo se permiten letras y espacios. Debe comenzar y terminar por una letra.";
   if (!$direccion)
-    echo "La direccion es invalida. Solo se permiten letras, numeros, espacios y guiones.</br>";
+    $msjs[] = "La direccion es invalida. Solo se permiten letras, numeros, espacios y guiones.";
   if (!$coordinador)
-    echo "El coordinador es invalido. Solo se permiten letras y espacios. Debe comenzar y terminar por una letra.</br>";
+    $msjs[] = "El coordinador es invalido. Solo se permiten letras y espacios. Debe comenzar y terminar por una letra.";
 
   $obj = Carrera::getByKey($_POST["codigo"]);
   $obj->setNombre($nombre);
   $obj->setDireccion($direccion);
   $obj->setCoordinador($coordinador);
 
-  if (!($nombre && $direccion && $coordinador)) {
-    echo "<form action='index.php?class=carrera&cmd=edit' method='post'
-          <input type='hidden' name='type' value='edit' />";
-    carreraFields(False, $_POST["codigo"], $nombre, $direccion, $coordinador);
-    echo "<input type='submit' value='Enviar' />";
-  } else {
-    $obj->save();
-    echo "Se ha modificado la carrera";
-    carreraAll();
-  }
+  if (!($nombre && $direccion && $coordinador))
+    return new interfazCarreraForm($obj, False, $msjs);
+  
+  $obj->save();
+  return new interfazCarreraAll(Carrera::all(),
+				array("Se ha modificado una carrera"));
 }
 
-function carreraFields($nuevo, $codigo, $nombre, $direccion, $coordinador) {
-  if ($nuevo)
-    echo "Codigo: <input type='text' name='codigo' value='{$codigo}' /></br>";
-  else
-    echo "Codigo: {$codigo} <input type='hidden' name='codigo' value='{$codigo}' /></br>";
-
-  echo "
-   Nombre: <input type='text' name='nombre' value='{$nombre}' /></br>
-   Direccion: <input type='text' name='direccion' value='{$direccion}' /></br>
-   Coordinador: <input type='text' name='coordinador' value='{$coordinador}' /></br>";
-}
 
 ?>
