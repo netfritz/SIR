@@ -95,8 +95,8 @@ DROP TABLE IF EXISTS `SIR`.`Materia` ;
 
 CREATE  TABLE IF NOT EXISTS `SIR`.`Materia` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `dpto` INT NOT NULL ,
-  `codigo` DECIMAL(10,0)  NOT NULL ,
+  `dpto` VARCHAR(15) NOT NULL ,
+  `codigo` VARCHAR(15)  NOT NULL ,
   `nombre` VARCHAR(45) NOT NULL ,
   PRIMARY KEY (`id`, `dpto`) ,
   UNIQUE INDEX `id_UNIQUE` (`id` ASC));
