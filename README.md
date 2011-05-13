@@ -1,4 +1,4 @@
-Soluciones Integrales Roraima
+Sistemas Integrales Roraima
 =============================
 Repositorio de proyectos
 ------------------------
