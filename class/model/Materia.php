@@ -15,12 +15,13 @@ class Materia{
   public static function all(){
     DataBase::singleton();
     $rsql = mysql_query("SELECT * FROM Materia;");
+    $ret = array();
     while ($fila = mysql_fetch_assoc($rsql)) {
-      $mate = new Materia($fila["id"],
-			  $fila["dpto"],
+      $mate = new Materia($fila["dpto"],
 			  $fila["codigo"],
 			  $fila["nombre"]);
       $mate->new = False;
+      $mate->id = $fila["id"];
       $ret[] = $mate;
     }
     return $ret;
@@ -31,10 +32,10 @@ class Materia{
     $key = mysql_real_escape_string(stripslashes($key));
     $rsql = mysql_query("SELECT * FROM Materia WHERE id=".$key.";");
     if ($fila = mysql_fetch_assoc($rsql)){
-      $mate = new Materia($fila["id"],
-			  $fila["dpto"],
+      $mate = new Materia($fila["dpto"],
 			  $fila["codigo"],
 			  $fila["nombre"]);
+      $mate->id = $fila["id"];
       $mate->new = False;
       return $mate;
     } else {
@@ -44,14 +45,13 @@ class Materia{
    public function save() {
     DataBase::singleton();
     if ($this->new) {
-      $res = mysql_query("INSERT INTO Materia VALUES (
-                         '{$this->id}', '{$this->dpto}', 
-                         '{$this->codigo}', '{$this->nombre}')");
+      $res = mysql_query("INSERT INTO Materia (dpto,codigo,nombre) VALUES (
+                         '{$this->dpto}', '{$this->codigo}', '{$this->nombre}')") or die(mysql_error());
     } else {
       $res = mysql_query("UPDATE Materia SET dpto='{$this->dpto}', 
                          codigo='{$this->codigo}', 
                          nombre='{$this->nombre}' 
-                         WHERE id='{$this->id}'");
+                         WHERE id={$this->id}");
     }
     $this->new = False;
   }
@@ -60,7 +60,7 @@ class Materia{
   
   public function delete() {
     DataBase::singleton();
-    $res = mysql_query("DELETE FROM Materia WHERE id='".$this->id."';");
+    $res = mysql_query("DELETE FROM Materia WHERE id=".$this->id.";");
   }
 
   
@@ -68,8 +68,8 @@ class Materia{
     return $this->codigo . "  " . $this->nombre;
   }
   
-  public function __construct($id, $dpto, $codigo, $nombre) {
-    $this->id = $id;
+  public function __construct($dpto, $codigo, $nombre) {
+    $this->id = NULL;
     $this->dpto = $dpto;
     $this->codigo = $codigo;
     $this->nombre = $nombre;

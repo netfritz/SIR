@@ -9,27 +9,21 @@ require_once("class/model/Materia.php");
 function materiaInput() {
   if ($_SERVER["REQUEST_METHOD"]=="POST") {
     $obj = Materia::getByKey($_POST["id"]);
-    echo "<form action=\"index.php?class=materia&cmd=edit\" method=\"post\"
-          <input type=\"hidden\" name=\"type\" value=\"edit\" />";
-    materiaFields(False, $obj->getid(), $obj->getdpto(),
+    echo "<form action=\"index.php?class=materia&cmd=edit\" method=\"post\">";
+    materiaFields($obj->getid(), $obj->getdpto(),
 		  $obj->getcodigo(), $obj->getnombre());
   } else {
     // Insertar nuevo
-    echo "<form action=\"index.php?class=materia&cmd=insert\" method=\"post\"
-          <input type=\"hidden\" name=\"type\" value=\"new\" />";
-    materiaFields(True,"","","","");
+    echo "<form action=\"index.php?class=materia&cmd=insert\" method=\"post\">";
+    materiaFields("","","","");
   }
   echo "<input type=\"submit\" value=\"Enviar\" />";
 }
 
 // Imprime por pantalla un formulario con un campo para cada atributo necesario
 // de la clase. Permite que se le de un valor inicial a cada campo
-function materiaFields($nuevo, $id, $dpto, $codigo, $nombre) {
-  if ($nuevo)
-    echo "id: <input type='text' name='id'value='{$id}'  /></br>";
-  else
-    echo "id: {$id} <input type='hidden' name='id' value='{$id}' /></br>"; 
- echo "
+function materiaFields($id, $dpto, $codigo, $nombre) {
+  echo "<input type='hidden' name='id'value='{$id}'  /></br>
    Nombre: <input type='text' name='nombre' value='{$nombre}' /></br>
    Codigo: <input type='text' name='codigo' value='{$codigo}' /></br>  
    Departamento: <input type='text' name='dpto' value='{$dpto}' /></br>";
@@ -40,7 +34,7 @@ function materiaInsert() {
   
   $reNombres = "/^[a-zA-Z]+[a-zA-Z ]*[a-zA-Z]+$/";
   $reCodigo = "/^[a-zA-Z0-9]+[a-zA-Z0-9- ]*[a-zA-Z0-9]*$/";
-  $reDpto = "/^*$/";
+  $reDpto = "/^.*$/";
 
 // Validar formulario
   $codigo = filter_input(INPUT_POST, 'codigo', FILTER_VALIDATE_REGEXP, 
@@ -55,17 +49,12 @@ function materiaInsert() {
     echo "El nombre es invalido. Solo se permiten letras y espacios. Debe comenzar y terminar por una letra. </br>";
   if (!$dpto)
     echo "El departamento es invalido. Solo se permiten letras, numeros, espacios y guiones.</br>";
-
-  $existe = Materia::getByKey($id);
-  if ($existe != NULL)
-    echo "Ya existe otra materia con el mismo id. </br>"; 
   
-  $obj = new Materia($id,$dpto,$codigo,$nombre);
-  if (!($id && $dpto && $codigo && $nombre && $existe == NULL) ) {
+  $obj = new Materia($dpto,$codigo,$nombre);
+  if (!($dpto && $codigo && $nombre) ) {
     // Error de validacion, reimprimir formulario
-    echo "<form action='index.php?class=materia&cmd=edit' method='post'
-          <input type='hidden' name='type' value='edit' />";
-    materiaFields(True, $dpto, $codigo, $nombre);
+    echo "<form action='index.php?class=materia&cmd=edit' method='post'>";
+    materiaFields("", $dpto, $codigo, $nombre);
     echo "<input type='submit' value='Enviar' />";
   } else {
    // Ningún error, todo corre bien
@@ -81,14 +70,12 @@ function materiaAll() {
   $res = Materia::all();
   echo "<table>
         <tr>       
-         <th>Id</th>
          <th>Departamento</th>
          <th>Codigo</th>
          <th>Nombre</th>
         </tr>";
   foreach ($res as $ind) {
     echo "<tr>
-      <td>{$ind->getid()}</td>
       <td>{$ind->getdpto()}</td>
       <td>{$ind->getcodigo()}</td>
       <td>{$ind->getnombre()}</td>
@@ -134,9 +121,8 @@ function materiaEdit() {
   $obj->setcodigo($codigo);
 
   if (!($nombre && $dpto && $codigo)) {
-    echo "<form action='index.php?class=materia&cmd=edit' method='post'
-          <input type='hidden' name='type' value='edit' />";
-    materiaFields(False, $_POST["id"], $dpto, $codigo, $nombre);
+    echo "<form action='index.php?class=materia&cmd=edit' method='post'>";
+    materiaFields($_POST["id"], $dpto, $codigo, $nombre);
     echo "<input type='submit' value='Enviar' />";
   } else {
     $obj->save();
