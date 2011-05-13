@@ -5,30 +5,32 @@ require_once("/class/model/Profesor.php");
 function profesorInput() {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $obj = Profesor::getByKey($_POST["id"], $_POST["dep"]);
-        echo "<form action=\"index.php?class=profesor&cmd=edit\" method=\"post\"
-          <input type=\"hidden\" name=\"type\" value=\"edit\" />";
-        profesorFields($_POST["id"], $_POST["dep"], $obj->getDocumento_Id(), $obj->getCarnet(), $obj->getDpto(), $obj->getNombre(), $obj->getApellido(), $obj->getTitulo());
+        echo "<form action=\"index.php?class=profesor&cmd=edit\" method=\"post\">
+        <input type=\"hidden\" name=\"id\" value=\"{$_POST["id"]}\">
+        <input type=\"hidden\" name=\"dep\" value=\"{$_POST["dep"]}\">
+        Documento de Identidad: &#160 {$_POST["id"]}</br>
+        Código de Departamento: &#160 {$_POST["dep"]}</br>";
+        profesorFields($obj->getCarnet(), $obj->getNombre(), $obj->getApellido(), $obj->getTitulo());
     } else {
         // Insertar nuevo
-        echo "<form action=\"index.php?class=profesor&cmd=insert\" method=\"post\"
-          <input type=\"hidden\" name=\"type\" value=\"new\" />";
-        profesorFields("", "", "", "", "", "", "", "");
+        echo "<form action=\"index.php?class=profesor&cmd=insert\" method=\"post\">
+        </br>
+        </br>
+        Documento de Identidad: <input type=\"text\" name=\"id\"/></br>
+        Código de Departamento: <input type=\"text\" name=\"dep\"></br>";
+        profesorFields("", "", "", "");
     }
     echo "<input type=\"submit\" value=\"Enviar\" />";
 }
 
 // Imprime por pantalla un formulario con un campo para cada atributo necesario
 // de la clase. Permite que se le de un valor inicial a cada campo
-function profesorFields($oldid, $olddep, $id, $dep, $carnet, $nombre, $apellido, $titulo) {
-    echo "
-   <input type=\"hidden\" name=\"oldid\" value=\"" . $oldid . "\" /></br>
-   <input type=\"hidden\" name=\"olddep\" value=\"" . $olddep . "\" /></br>
-   Documento de Identidad: $id</br>
-   Código de Departamento: $dep</br>
-   Carnet: <input type=\"text\" name=\"carnet\" value=\"" . $carnet . "\" /></br>
-   Nombre: <input type=\"text\" name=\"nombre\" value=\"" . $nombre . "\" /></br>
-   Apellido: <input type=\"text\" name=\"apellido\" value=\"" . $apellido . "\" /></br>
-   Titulo: <input type=\"text\" name=\"titulo\" value=\"" . $titulo . "\" /></br>";
+function profesorFields($carnet, $nombre, $apellido, $titulo) {
+    echo "   
+        Carnet: <input type=\"text\" name=\"carnet\" value=\"" . $carnet . "\" /></br>
+        Nombre: <input type=\"text\" name=\"nombre\" value=\"" . $nombre . "\" /></br>
+        Apellido: <input type=\"text\" name=\"apellido\" value=\"" . $apellido . "\" /></br>
+        Titulo: <input type=\"text\" name=\"titulo\" value=\"" . $titulo . "\" /></br>";
 }
 
 function profesorInsert() {
@@ -39,52 +41,70 @@ function profesorInsert() {
                     $_POST["apellido"],
                     $_POST["titulo"]);
     $obj->save();
-    echo "Se ha agregado un nuevo profesor";
+    echo "Se ha agregado un nuevo profesor </br>";
     profesorAll();
 }
 
 function profesorAll() {
-    echo "</br><a href=\"index.php?class=profesor&cmd=input\">Insertar nuevo Profesor</a></br>";
-
+    echo "</br><a href=\"index.php?class=profesor&cmd=input\">Insertar nuevo profesor</a></br>";
     $res = Profesor::all();
-    echo "<ul>";
-    foreach ($res as $ind) {
-        echo "<li>Profesor: " . $ind . "
+    if (empty($res)) {
+        echo "No existen profesores registrados actualmente.";
+    } else {
 
-         <form action=\"index.php?class=profesor&cmd=input\" method=\"post\">
-         <input type=\"hidden\" name=\"id\" value=\"" . $ind->getDocument_Id() . "\" />
-         <input type=\"hidden\" name=\"dep\" value=\"" . $ind->getDpto() . "\" />
-         <input type=\"submit\" value=\"Editar\" />
-         </form>
-
-         <form action=\"index.php?class=profesor&cmd=delete\" method=\"post\">
-         <input type=\"hidden\" name=\"id\" value=\"" . $ind->getDocument_Id() . "\" />
-         <input type=\"hidden\" name=\"dep\" value=\"" . $ind->getDpto() . "\" />
-         <input type=\"submit\" value=\"Borrar\" />
-         </form>
-         
-         </li>";
+        echo "<table>
+              <tr>
+              <th> Documento de Identidad </th>
+              <th> Departamento </th>
+              <th> Carnet </th>
+              <th> Nombre </th>
+              <th> Apellido </th>
+              <th> Titulo </th>
+              </tr>";
+        foreach ($res as $ind) {
+            $id = $ind->getDocumento_id();
+            $dpto = $ind->getDpto();
+            echo "<tr>
+                  <td>" . $id . "</td>
+                  <td>" . $dpto . "</td>
+                  <td>" . $ind->getCarnet() . "</td>
+                  <td>" . $ind->getNombre() . "</td>
+                  <td>" . $ind->getApellido() . "</td>
+                  <td>" . $ind->getTitulo() . "</td>
+                  <td>
+                  <form action=\"index.php?class=profesor&cmd=input\" method=\"post\">
+                  <input type=\"hidden\" name=\"id\" value=\"" . $id . "\" />
+                  <input type=\"hidden\" name=\"dep\" value=\"" . $dpto . "\" />
+                  <input type=\"submit\" value=\"Editar\" />
+                  </form>
+                  </td>
+                  <td>
+                  <form action=\"index.php?class=profesor&cmd=delete\" method=\"post\">
+                  <input type=\"hidden\" name=\"id\" value=\"" . $id . "\" />
+                  <input type=\"hidden\" name=\"dep\" value=\"" . $dpto . "\" />
+                  <input type=\"submit\" value=\"Eliminar\" />
+                  </td>
+                  </tr>";
+        }
+        echo "</table>";
     }
-    echo "</ul>";
 }
 
 function profesorEdit() {
-    $obj = Profesor::getByKey($_POST["oldid"], $_POST["olddep"]);
-    $obj->setDocumento_Id($_POST["id"]);
-    $obj->setDpto($_POST["dep"]);
+    $obj = Profesor::getByKey($_POST["id"], $_POST["dep"]);
     $obj->setCarnet($_POST["carnet"]);
     $obj->setNombre($_POST["nombre"]);
     $obj->setApellido($_POST["apellido"]);
     $obj->setTitulo($_POST["titulo"]);
     $obj->save();
-    echo "Se ha modificado un profesor";
+    echo "Se ha modificado exitosamente un profesor </br>";
     profesorAll();
 }
 
 function profesorDelete() {
     $obj = Profesor::getByKey($_POST["id"], $_POST["dep"]);
     $obj->delete();
-    echo "El profesor " . $obj . " ha sido eliminado";
+    echo "El profesor " . $obj->getNombre() . " " . $obj->getApellido() . " ha sido eliminado </br>";
     profesorAll();
 }
 
