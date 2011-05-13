@@ -12,16 +12,17 @@ function universidadInput() {
     $obj = Universidad::getByKey($_POST["nombre"]);
     echo "<form action=\"index.php?class=universidad&cmd=edit\" method=\"post\">
           <input type=\"hidden\" name=\"type\" value=\"edit\" />
- 	      Nombre: " .$obj->getNombre(). "</br>";
-    universidadFields($_POST["nombre"], $obj->getNombre(), $obj->getPais(),
+	  <input type=\"hidden\" name=\"nombre\" value=\"".$_POST["nombre"]."\"/>
+ 	      Nombre: " .$_POST["nombre"]. "</br>";
+    universidadFields($_POST["nombre"], $obj->getPais(),
                       $obj->getEstado(), $obj->getCiudad(),
                       $obj->getDireccion(), $obj->getRector(), $obj->getUrl());
   } else {
     // Insertar nuevo
     echo "<form action=\"index.php?class=universidad&cmd=insert\" method=\"post\"
           <input type=\"hidden\" name=\"type\" value=\"new\" /></br>
-	      Nombre: <input type=\"text\" name=\"nombre\" />";
-    universidadFields("","","","","","","","");
+          Nombre: <input type=\"text\" name=\"nombre\" /></br>";
+    universidadFields("","","","","","","");
   }
   echo "<input type=\"submit\" value=\"Enviar\" /> 
 	</form>";
@@ -30,9 +31,8 @@ function universidadInput() {
 /* Imprime por pantalla un formulario con un campo para cada atributo necesario
  * de la clase. Permite que se le de un valor inicial a cada campo
  */
-function universidadFields($oldnombre, $nombre,$pais,$estado,$ciudad,$direccion,$rector,$url) {
+function universidadFields($nombre,$pais,$estado,$ciudad,$direccion,$rector,$url) {
   echo "
-   <input type=\"hidden\" name=\"oldnombre\" value=\"" . $oldnombre ."\" /></br>
    Pais: <input type=\"text\" name=\"pais\" value=\"".$pais."\" /></br>
    Estado: <input type=\"text\" name=\"estado\" value=\"".$estado."\" /></br>
    Ciudad: <input type=\"text\" name=\"ciudad\" value=\"".$ciudad."\" /></br>
@@ -50,7 +50,7 @@ function universidadInsert() {
       echo "Error. La universidad no se ha agregado. Debe llenar TODOS los campos";
     }else {
 
-    $object = Universidad::getByKey($_POST["oldnombre"]);
+    $object = Universidad::getByKey($_POST["nombre"]);
     if (!isset($object)){
       $obj = new Universidad($_POST["nombre"],
                              $_POST["pais"],
@@ -73,6 +73,7 @@ function universidadAll() {
 
   $res = Universidad::all();
   echo "<ul>";
+ if ($res) {
   foreach ($res as $ind) {
     echo "<li>Universidad: " . $ind. "
 
@@ -88,11 +89,14 @@ function universidadAll() {
          
          </li>";
   }
+ } else {
+    echo "<li>En este momento no hay universidades registrados</li>";
+  }
   echo "</ul>";
 }
 
 function universidadEdit() {
-  $obj = Universidad::getByKey($_POST["oldnombre"]);
+  $obj = Universidad::getByKey($_POST["nombre"]);
   $obj->setPais($_POST["pais"]);
   $obj->setEstado($_POST["estado"]);
   $obj->setCiudad($_POST["ciudad"]);

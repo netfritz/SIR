@@ -15,13 +15,13 @@ class Universidad{
   private $nueva= FALSE;
 
   public function __construct($nombre,$pais,$estado,$ciudad,$direccion,$rector,$url) {
-    $this->nombre= $nombre; 
-    $this->pais= $pais;
-    $this->estado=$estado;
-    $this->ciudad=$ciudad;
-    $this->direccion=$direccion;
-    $this->rector=$rector;
-    $this->url=$url;
+    $this->nombre= mysql_real_escape_string(stripslashes($nombre)); 
+    $this->pais=  mysql_real_escape_string(stripslashes($pais));
+    $this->estado= mysql_real_escape_string(stripslashes($estado));
+    $this->ciudad= mysql_real_escape_string(stripslashes($ciudad));
+    $this->direccion= mysql_real_escape_string(stripslashes($direccion));
+    $this->rector= mysql_real_escape_string(stripslashes($rector));
+    $this->url= mysql_real_escape_string(stripslashes($url));
     $this->nueva=TRUE;
   }
 
@@ -29,20 +29,25 @@ class Universidad{
     DataBase::singleton();
     $query=mysql_query("SELECT * FROM Universidad;");
     if($query){
-      while($tupla=mysql_fetch_assoc($query)){
-        $univ=new Universidad($tupla["nombre"],$tupla["pais"],$tupla["estado"],$tupla["ciudad"],$tupla["direccion"],$tupla["rector"],$tupla["url"]);
-        $all[]=$univ;
-        $univ->nueva= FALSE;
+      if (mysql_num_rows($query) > 0) {
+        while($tupla=mysql_fetch_assoc($query)){
+          $univ=new Universidad($tupla["nombre"],$tupla["pais"],$tupla["estado"],$tupla["ciudad"],$tupla["direccion"],$tupla["rector"],$tupla["url"]);
+          $all[]=$univ;
+          $univ->nueva= FALSE;
+        }
+        return $all;
+      }else{
+        return null;
       }
     }else{
       return null;
     }
-    return $all;
+   
   }
 
   public static function getByKey($key) {
     DataBase::singleton();
-
+    $key= mysql_real_escape_string(stripslashes($key));
     $result=mysql_query("SELECT * FROM Universidad WHERE nombre='" .$key."'");
     $tupla=mysql_fetch_assoc($result);
     if(!$tupla){
@@ -119,22 +124,22 @@ class Universidad{
   // Funciones para modificar los valores de los atributos
 
   public function setPais($pais){
-    $this->pais=$pais;
+    $this->pais=mysql_real_escape_string(stripslashes($pais));
   }
   public function setEstado($estado){
-    $this->estado=$estado;
+    $this->estado=mysql_real_escape_string(stripslashes($estado));
   }
   public function setCiudad($ciudad){
-    $this->ciudad=$ciudad;
+    $this->ciudad=mysql_real_escape_string(stripslashes($ciudad));
   }
   public function setDireccion($direccion){
-    $this->direccion=$direccion;
+    $this->direccion=mysql_real_escape_string(stripslashes($direccion));
   }
   public function setRector($rector){
-    $this->rector=$rector;
+    $this->rector=mysql_real_escape_string(stripslashes($rector));
   }
   public function setUrl($url){
-    $this->url=$url;
+    $this->url=mysql_real_escape_string(stripslashes($url));
   }
 }
 

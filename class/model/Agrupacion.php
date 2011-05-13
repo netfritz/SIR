@@ -48,7 +48,8 @@ class Agrupacion {
     // Retorna la instancia cuyo Id está compuesto de los parámetros univ y nomb
     public static function getByKey($univ, $nomb) {
         DataBase::singleton();
-        $sql = "SELECT * FROM AgrupacionEstudiantil WHERE universidad ='$univ' and '$nomb'= nombre";
+        $sql = "SELECT * FROM AgrupacionEstudiantil WHERE universidad ='{$univ}' 
+            and '{$nomb}'= nombre";
         $ConsultaID = @mysql_query($sql);
 
         if(!($fila = @mysql_fetch_assoc($ConsultaID))) {return null;}
@@ -62,13 +63,14 @@ class Agrupacion {
     public function save() {
         DataBase::singleton();
         if ($this->nueva) {
-            $sql = "INSERT INTO AgrupacionEstudiantil (universidad, nombre, presidente, mision, vision)
-            VALUES ('$this->universidad' ,'$this->nombre' ,'$this->presidente' ,'$this->mision' ,'$this->vision')";
+            $sql = "INSERT INTO AgrupacionEstudiantil VALUES ('$this->universidad',
+                '$this->nombre', '$this->presidente', '$this->mision', '$this->vision')";
             @mysql_query($sql);
         } else {
-            $sql = "UPDATE AgrupacionEstudiantil SET (universidad ='$this->universidad',
-                nombre ='$this->nombre', presidente='$this->presidente',
-                mision ='$this->mision', vision ='$this->vision')";
+            $sql = "UPDATE AgrupacionEstudiantil 
+                SET presidente='{$this->presidente}',
+                mision ='$this->mision', vision ='$this->vision' 
+                WHERE (universidad= '{$this->universidad}' AND nombre = '{$this->nombre}')";
             @mysql_query($sql);
         }
         $this->nueva = false;

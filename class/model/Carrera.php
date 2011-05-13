@@ -24,6 +24,7 @@ class Carrera {
       $ret[] = $car;
     }
     return $ret;
+
   }
 
   public static function getByKey($key) {
