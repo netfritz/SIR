@@ -11,7 +11,7 @@ function materiaInput() {
     $obj = Materia::getByKey($_POST["id"]);
     echo "<form action=\"index.php?class=materia&cmd=edit\" method=\"post\"
           <input type=\"hidden\" name=\"type\" value=\"edit\" />";
-    materiaFields($_POST["id"], $obj->getid(), $obj->getdpto(),
+    materiaFields(False, $obj->getid(), $obj->getdpto(),
 		  $obj->getcodigo(), $obj->getnombre());
   } else {
     // Insertar nuevo
