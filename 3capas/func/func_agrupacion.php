@@ -9,7 +9,7 @@ function agrupacionAll() {
 }
 
 function agrupacionDelete() {
-  $obj = Agrupacion::getByKey($_POST["univ"], $_POST["nombre"]);
+  $obj = Agrupacion::getByKey($_POST["universidad"], $_POST["nombre"]);
   $obj->delete();
 
   return new interfazAgrupacionAll(Agrupacion::all(),
@@ -19,7 +19,7 @@ function agrupacionDelete() {
 function agrupacionInput() {
 
   if ($_SERVER["REQUEST_METHOD"]=="POST") {
-    $obj = Agrupacion::getByKey($_POST["universidad"], $_POST["nombre"]);
+    $obj = Agrupacion::getByKey($_POST['universidad'], $_POST['nombre']);
     if ($obj != NULL) {
       return new interfazAgrupacionForm($obj, False);
     }
@@ -96,10 +96,10 @@ function agrupacionEdit() {
   if (!$vision)
     $msjs[] = "La vision es invalida. Solo se permiten letras, numeros, guiones y espacios."; 
 
-  $obj = Agrupacion::getByKey($_POST["univ"], $_POST["nombre"]);
-  $obj->setNombre($pres);
-  $obj->setDireccion($mision);
-  $obj->setCoordinador($vision);
+  $obj = Agrupacion::getByKey($_POST["universidad"], $_POST["nombre"]);
+  $obj->setPresidente($pres);
+  $obj->setMision($mision);
+  $obj->setVision($vision);
 
   if (!($pres && $mision && $vision))
     return new interfazAgrupacionForm($obj, False, $msjs);

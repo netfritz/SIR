@@ -25,15 +25,15 @@ class interfazAgrupacionAll extends interfazAll {
            <td>{$inst->getVision()}</td>
            <td> 
              <form action='index.php?class=agrupacion&cmd=input' method='post'>
-               <input type='hidden' name='Universidad' value='{$inst->getUniversidad()}' />
-               <input type='hidden' name='Nombre' value='{$inst->getNombre()}' />
+               <input type='hidden' name='universidad' value='{$inst->getUniversidad()}' />
+               <input type='hidden' name='nombre' value='{$inst->getNombre()}' />
                <input type='submit' value='Editar' />
              </form>
            </td>
            <td>
              <form action='index.php?class=agrupacion&cmd=delete' method='post'>
-               <input type='hidden' name='Universidad' value='{$inst->getUniversidad()}' />
-               <input type='hidden' name='Nombre' value='{$inst->getNombre()}' />
+               <input type='hidden' name='universidad' value='{$inst->getUniversidad()}' />
+               <input type='hidden' name='nombre' value='{$inst->getNombre()}' />
                <input type='submit' value='Borrar' />
              </form>         
            </td>
