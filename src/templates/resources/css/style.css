@@ -1,0 +1,231 @@
+body {
+	margin: 0;
+	padding: 0;
+    /*
+	background: #F7F7F7 url(../images/img01.jpg) repeat left top;
+	font-family: Georgia, "Times New Roman", Times, serif;
+    */
+    font-family: Verdana, Arial, Helvetica, sans-serif;c
+	font-size: 14px;
+	/*color: #5A554E;*/
+}
+
+div {
+    display: block;
+}
+
+h1, h2, h3 {
+	margin: 0;
+	padding: 0;
+	font-weight: normal;
+	/*color: #32639A;*/
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+h1 {
+	font-size:  2.4em;
+    font-weight: 600;
+}
+
+h2 {
+	font-size: 2em;
+}
+
+h3 {
+	font-size: 1.6em;
+}
+
+p, ul, ol {
+	margin-top: 0;
+	/*line-height: 200%;*/
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+ul, ol {
+	margin: 0px;
+	padding: 0px;
+	list-style: none;
+}
+
+a {
+	text-decoration: underline;
+	color: #516C00;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+#wrapper {
+	margin: 0px;
+	padding: 0px;
+	/*background: url(../images/img02.jpg) repeat-x left top;*/
+}
+
+/* Header */
+
+#header-menu {
+	width: auto;
+	height: 50px;
+	padding: 0px;
+    display: inline;
+    position: fixed;
+	/*background: url(../images/usb.jpg);*/
+}
+
+#barleft {
+    float:left;
+    top: 0px;
+    left: 0px;
+}
+
+#header-content {
+	/*padding: 0px 30px 0px 30px;*/
+    position: relative;
+    left: 30px;
+    right: 30px;
+    height:50px;
+	margin: 0px 60px 0px 0px;
+    background-color: black;
+}
+
+#header-content #search {
+    width:auto;
+    height:auto;
+    float:right;
+    padding: 10px 150px 0px 0px;
+}
+
+#imgLogo{
+    float:left;
+    width:250px;
+    height:50px;
+}
+
+#header-content #menu {
+   position: relative;
+   right:30px;
+   top: 0px;
+}
+
+#header-content ul {
+    height: 50px;
+    width: auto;
+/*    line-height: 100%;*/
+    float: right;
+    clear:none;
+}
+
+#barright {
+    float:right;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+/* Logo */
+
+#logo {
+    width: 250px;
+    height: 50px;
+	margin: 0px;
+	padding: 0px 0px 0px 0px;
+	color: #000000;
+    float:left;
+}
+
+
+/* Menu */
+
+#menu {
+    float:right;
+	width: auto;
+	height: 50px;
+	margin: 0 auto;
+	padding: 0;
+    display: inline;
+	/*background: url(../images/inter-top-body.png) repeat left top;*/
+}
+
+#menu li {
+    display: inline;
+}
+
+
+/* Page */
+
+#page {
+	width: 1024pxpx;
+	padding: 150px 0px 0px 0px;
+	background: #FFFFFF;
+    clear:both;
+}
+
+/* Content */
+
+#content {
+    float:left;
+	width: 720px;
+	padding: 0px 0px 0px 0px;
+    display: block;
+}
+
+#content h1 {
+    color: #ff6600;
+    padding: 0px 0px 10px 0px;
+}
+#content h4 {
+    color: #ff6600;
+    padding: 0px 0px 20px 0px;
+}
+
+/* Sidebar */
+
+#left-sidebar {
+	float: left;
+	width: 256px;
+	padding: 0px;
+	color: #787878;
+    display: block;
+}
+
+#actions {
+    padding: 50px 0px 0px 50px;
+}
+
+#news {
+    padding: 50px 0px 0px 50px;
+}
+
+#right-sidebar {
+	float: right;
+	width: 256px;
+	padding: 0px;
+	color: #787878;
+    display: block;
+}
+
+#USB {
+    width: 256px;
+    height: auto;
+}
+
+/* Footer */
+
+#footer {
+    clear: both;
+    width: 1024px;
+	height: 50px;
+	font-size: 12px;
+	color: #887450;
+	font-family: Arial, Helvetica, sans-serif;
+    position:fixed;
+    bottom:0px;
+	padding: 0px 0px 0px 0px;
+	margin: 0px 0px 0px 0px;
+    background: url(../images/img04.gif) repeat-x;
+}
+
+#footer p {
+    text-align:center;
+}
