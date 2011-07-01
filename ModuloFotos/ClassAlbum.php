@@ -5,7 +5,7 @@
  *
  * @author jennifer DOSREIS
  */
-class ClassAlbum {
+abstract class ClassAlbum {
     private $id;
     private $nombre;
     private $lugar;
