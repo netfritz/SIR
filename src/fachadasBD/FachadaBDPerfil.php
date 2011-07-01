@@ -37,7 +37,7 @@ class FachadaBDPerfil {
 
     public function existePerfil($user) {
         DataBase::singleton(); //Conexion a BD establecida.
-        $sqlQuery = "SELECT user FROM Pinf.Perfil WHERE user = '$user'";
+        $sqlQuery = mysql_real_escape_string ("SELECT user FROM Pinf.Perfil WHERE user = '$user'");
         $queryResult = mysql_query($sqlQuery);
         if (!$queryResult) {
             die("ERROR: PerfilMapper.existePerfil(): " . mysql_error());
@@ -62,10 +62,20 @@ class FachadaBDPerfil {
         $att["lastname"] = $perfil->getApellido();
 	$att["isAdmin"] = $perfil->getisNew();
         
-       
+	if($perfil->isNew){ 
 
-        $sqlQuery = "INSERT INTO Pinf.Perfil VALUES " .
-                "('$att[user]', '$att[pswd]', '$att[mail]', '$att[fechaN]', '$att[secId]','att[wallId]','$att[name]', '$att[lastname]', 'att[isAdmin]') ";
+	  $sqlQuery = mysql_real_escape_string ( "INSERT INTO Pinf.Perfil VALUES " .
+	  "('$att[user]', '$att[pswd]', '$att[mail]', '$att[fechaN]', '$att[secId]', ".
+          "'att[wallId]','$att[name]', '$att[lastname]', 'att[isAdmin]'");
+
+	}else{
+	  
+	    $sqlQuery = mysql_real_escape_string ("UPDATE Pinf.Perfil SET " .
+	  "usuario='$att[user]',password= '$att[pswd]', email='$att[mail]', fechaNacimiento='$att[fechaN]',".
+	  "Seguridad_ID='$att[secId]',Muro_ID='att[wallId]',nombre='$att[name]', apellido='$att[lastname]', 
+           es_Admin='att[isAdmin]'  WHERE id=$att[user]") ;
+	  
+	}
         $queryResult = mysql_query($sqlQuery);
         return $queryResult;
     }
