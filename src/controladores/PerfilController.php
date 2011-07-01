@@ -16,6 +16,7 @@ if (isset($_GET["Action"])) {
       $data["passwd"] = $_POST["passwd"];
       $data["passwd2"] = $_POST["passwd2"];
       $data["email"] = $_POST["email"];
+      $data["email2"] = $_POST["email2"];
       $data["bdate"] = $_POST["bdate"];
       $data["name"] = $_POST["name"];
       $data["lastname"] = $_POST["lastname"];
@@ -49,6 +50,7 @@ if (isset($_GET["Action"])) {
           $data["passwd"] = $_POST["passwd"];
           $data["passwd2"] = $_POST["passwd2"];
           $data["email"] = $_POST["email"];
+          $data["email2"] = $_POST["email2"];
           $data["bdate"] = $_POST["bdate"];
           $data["name"] = $_POST["name"];
           $data["lastname"] = $_POST["lastname"];
@@ -67,7 +69,7 @@ if (isset($_GET["Action"])) {
       echo $vista->viewError("Parámetros inválidos: No se envió el modo de edición!");
     }
   } else if (strcmp($_GET["Action"],"show")) {
-    if (isset($_POST("usrname"))) {
+    if (isset($_POST["usrname"])) {
       $fachada = PerfilFachada::getInstance();
       $perfil = $fachada->getPerfil($_POST["usrname"]);
       echo $vista->viewShowPerfil($perfil);

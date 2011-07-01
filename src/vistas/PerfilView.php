@@ -46,11 +46,62 @@ class PerfilView {
   //#####################################################################//
 
   public function viewRegisterEmpty(){
-    echo "";
+    return "<form name=\"registro\" action=\"bienvenida.php\" method=\"POST\">
+                      <table>
+                        <tbody>
+                          <tr>
+                            <label>Username:</label>
+                          </tr><br/><br/>
+                          <tr>
+                            <input name=\"usrname\" type=\"text\" class=\"field\"/>
+                          </tr><br/><br/>
+			              <tr>
+                            <label>Nombre:</label>
+                          </tr><br/><br/>
+                          <tr>
+                            <input name=\"name\" type=\"text\" class=\"field\"/>
+                          </tr><br/><br/>
+                          <tr>
+                            <label>Apellido:</label>
+                          </tr><br/><br/>
+                          <tr>
+                            <input name=\"lastname\" type=\"text\" class=\"field\"/>
+                          </tr><br/><br/>
+                          <tr>
+                            <label> E-Mail: </label>
+                          </tr><br/><br/>
+                          <tr>
+                            <input name=\"email\" type=\"text\" class=\"field\"/>
+                          </tr><br/><br/>
+                          <tr>
+                            <label> Reescriba su email:</label>
+                          </tr><br/><br/>
+                          <tr>
+                            <input name=\"email2\" type=\"text\" class=\"field\"/>
+                          </tr><br/><br/>
+                          <tr>
+                            <label>Contraseña:</label>
+                          </tr><br/><br/>
+                          <tr>
+                            <input name=\"passwd\" type=\"password\" class=\"field\"/>
+                          </tr><br/><br/>
+                          <tr>
+                            <label>Reescriba su Contraseña:</label>
+                          </tr><br/><br/>
+                          <tr>
+                            <input name=\"passwd2\" type=\"password\" class=\"field\"/>
+                          </tr><br/><br/>
+                          <tr>
+                            <label>Fecha de Nacimiento:</label>
+                          </tr><br/><br/>
+                          <tr>
+                            <input name=\"bdate\" type=\"text\" class=\"field\"/>
+                          </tr><br/><br/>
+                          <input type=\"submit\" value=\"Enviar!\">
+                        </tbody>
+                      </table>
+                    </form>";
   }
-
-  
-  viewCreatePerfil(NULL,"success");
   
 }
 ?>
