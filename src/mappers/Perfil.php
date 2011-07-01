@@ -51,7 +51,7 @@ class Perfil {
         return FALSE;
     }
 
-    public function setDatosPerfil($password, $segId, $muroId, $nombre, $apellido, $correo, $fecha_nac, $isAdmin) {
+    public function setDatosPerfil($password, $segId, $muroId, $nombre, $apellido, $correo, $fecha_nac, $isAdmin=false) {
         $this->password = $password;
 	$this->secId = $secId;
 	$this->wallId = $muroId;
@@ -107,6 +107,10 @@ class Perfil {
     
     private function gewallId(){
       return $this->wallId;
+    }
+   
+    private function getisAdmin(){
+      return $this->isAdmin;
     }
 
     private function setisNew($isnew){
