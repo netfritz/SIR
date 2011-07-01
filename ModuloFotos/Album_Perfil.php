@@ -8,15 +8,17 @@
 class Album_Perfil extends ClassAlbum {
     
     
-     public function __construct($nombre,$lugar){
-        $this->nombre= $nombre;
-        $this->lugar= $lugar;
-        $this->fotos= array();
-    }    
-    public function __construct($nombre){
-        $this->nombre= $nombre;
-        $this->lugar= NULL;
-        $this->fotos= array();
+    public function __construct(){
+   if (func_num_args() == 1) {
+     $this->nombre= $func_get_arg(0);
+     $this->fotos= array();
+   }
+
+    if (func_num_args() == 2) {
+      $this->nombre= $func_get_arg(0);
+      $this->lugar= $func_get_arg(1);
+      $this->fotos= array();
+    }
     }
     /**
      * Función que crea un Album asociado a un Perfil
