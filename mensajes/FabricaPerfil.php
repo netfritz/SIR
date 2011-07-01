@@ -1,9 +1,9 @@
 <?php
-require_once("../mappers/Perfil.php");
-public class PerfilFactory {
+class FabricaPerfil {
   private static $instance;
 
-  /* Arreglo asociativo que mapea identificadores de perfiles a perfiles */
+  // Arreglo asociativo que mapea identificadores de Mensaje a instancias de
+  // Mensaje
   private $perfiles;
 
   private function __construct() {
@@ -25,15 +25,16 @@ public class PerfilFactory {
    * instancia y se devuelve.
    * Sirve para evitar instanciar más de una vez la misma instancia.
    */
-  public function getPerfil($usrname) {
-    if (isset($this->perfiles["{$usrname}"])) {
-      return $this->perfiles["{$usrname}"];
+  public function getPerfil($pid) {
+    if (isset($this->perfiles["{$pid}"])) {
+      return $this->perfiles["{$pid}"];
     } else {
-      $p = new Perfil($usrname);
-      if (!$p->isEmpty()) {
-        $this->perfiles["{$usrname}"] = $p;
+      $p = new Perfil($pid);
+      if ($p != NULL) {
+        $this->perfiles["{$pid}"] = $p;
+	return $p;
       } else {
-        return NULL;
+	return NULL;
       }
     }
   }
