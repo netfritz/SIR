@@ -151,8 +151,7 @@ class Perfil {
     
     private function setisAdmin($isAdmin){
       return $this->isAdmin = $isAdmin;
-    }
-    
+    }    
 }
 
 ?>
