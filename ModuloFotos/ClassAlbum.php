@@ -1,13 +1,14 @@
 <?php
 
 /**
- * Description of ClassAlbum
- *
+ * Clase abstracta que describe un album, este podra ser instanciado 
+ * dependiendo de su relación con un ente en particular que podria ser
+ * un perfil, un muro, un evento o un grupo.
  * @author jennifer DOSREIS
  */
-class ClassAlbum {
-    private $nombre;
-    private $lugar;
+abstract class ClassAlbum {
+    private $nombre; // Nombre del album
+    private $lugar; // Lugar especificado para describir el album
     private $fotos; // Arreglo de fotos
     
     public function __construct($nombre,$lugar){
