@@ -6,7 +6,7 @@ Hoja de Estilos para Cacatúa
 body {
 	margin: 0;
 	padding: 0;
-	background: #FFFFFF url(images/img01.jpg) repeat-x;
+	background: #FFFFFF url(../images/img01.jpg) repeat-x;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 14px;
 	color: #303030;
@@ -77,7 +77,7 @@ img.aligncenter {
 }
 
 #wrapper {
-	background: url(images/img02.jpg) no-repeat center top;
+	background: url(../images/img02.jpg) no-repeat center top;
 }
 
 /* Estilo para el encabezado */
@@ -95,7 +95,7 @@ img.aligncenter {
     padding: 0px;
     height: 200px;
     width:400;
-    background: url(images/nombrePinfHuge.png) no-repeat;
+    background: url(../images/nombrePinfHuge.png) no-repeat;
 }
 
 #logo {
@@ -163,7 +163,7 @@ img.aligncenter {
 	height: 30px;
 	padding: 0px 10px 0px 10px;
 	border: none;
-	background: url(images/img09.jpg) no-repeat left top;
+	background: url(../images/img09.jpg) no-repeat left top;
 	text-transform: lowercase;
 	font: normal 11px Arial, Helvetica, sans-serif;
 	color: #303030;
@@ -198,7 +198,7 @@ img.aligncenter {
 	height: 25px;
 	margin: 0px 2px 0px 15px;
 	padding: 10px 15px 0px 15px;
-	background: url(images/img04.gif) no-repeat left 14px;
+	background: url(../images/img04.gif) no-repeat left 14px;
 	text-decoration: none;
 	text-transform: uppercase;
 	font-family: Arial, Helvetica, sans-serif;
@@ -304,7 +304,7 @@ img.aligncenter {
 #barlateral #registroForm .field {
     float:right;
     margin-right: 40px;
-    /*background: url(images/searchBox.png) no-repeat left top;*/
+    /*background: url(../images/searchBox.png) no-repeat left top;*/
 }
 
 #barlateral #registroForm label {
@@ -336,7 +336,7 @@ img.aligncenter {
 #barlateral li li {
 	padding-left: 15px;
 	line-height: 35px;
-	background: url(images/img07.gif) no-repeat left 14px;
+	background: url(../images/img07.gif) no-repeat left 14px;
 }
 
 #barlateral li li span {
@@ -419,14 +419,14 @@ img.aligncenter {
 /* pie de pagina */
 
 #pie-wrapper {
-	background: url(images/img01.jpg) repeat-x left bottom;
+	background: url(../images/img01.jpg) repeat-x left bottom;
 }
 
 #pie {
 	width: 1000px;
 	height: 300px;
 	margin: -80px auto 0px auto;
-	background: url(images/img08.jpg) no-repeat center top;
+	background: url(../images/img08.jpg) no-repeat center top;
 }
 
 #pie p {
