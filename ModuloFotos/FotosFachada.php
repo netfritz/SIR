@@ -4,16 +4,30 @@ require_once("ClassAlbum.php");
  * Fachada logica para el modulo Gestion de Fotos
  * Version 1.0
  */
-// Hay que hacer que esto sea una clase singleton
-function crearAlbum($nombre,$lugar,$propietario){
-    $album=new  Album($nombre,$lugar);
-    if ($album.existe()== true )
-        return FALSE;
-    $album.saveAlbum();
-} 
-function crearAlbum($nombre){
-    $album=new  Album($nombre);
-    $album.saveAlbum();
-} 
+class FotosFachada {
 
+    private static $instance;
+
+    private function __construct() {
+        
+    }
+    
+    public static function getInstance() { //metodo Singleton
+        if (!isset(self::$instance)) {
+            $c = __CLASS__;
+            self::$instance = new $c;
+        }
+        return self::$instance;
+    }
+    
+public function crearAlbumPerfil($nombre,$lugar,$usuario){
+    $perfil= new Perfil($usuario);
+    $ok=$perfil.crearAlbum($nombre,$lugar);
+    if (!ok)
+        RETURN FALSE;
+    RETURN TRUE;
+    
+} 
+ 
+}
 ?>
