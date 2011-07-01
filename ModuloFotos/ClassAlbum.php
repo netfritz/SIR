@@ -3,7 +3,7 @@
 /**
  * Description of ClassAlbum
  *
- * @author jennifer DOSREIS
+ * 
  */
 abstract class ClassAlbum {
     private $id;
