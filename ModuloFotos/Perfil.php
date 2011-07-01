@@ -8,9 +8,12 @@ class Perfil {
     private $apellido;
     private $correo;
     private $fecha_nac;
+    private $listaFotos[];
+    private $foto_act
 
     public function __construct($username) {
         $this->username = $username;
+        $this->foto_act = 0;
     }
 
     public function existe() {
@@ -33,6 +36,10 @@ class Perfil {
         if ($P->salvarPerfil($this))
             return TRUE;
         return FALSE;
+    }
+
+    public function crearAlbum($nombre, $lugar)  {
+       listaFotos[foto_act] = Albm_Perfil($nombre, $lugar);    
     }
 
     public function getUsername() {
