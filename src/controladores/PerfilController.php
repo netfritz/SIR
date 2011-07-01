@@ -6,7 +6,7 @@ require_once("../vistas/PerfilView.php");
  * muestra el formulario vacío. Si no, se muestra lo que corresponda, según
  * lo recibido.
  */
-$vista = PerfilView::getInstance();
+$vista = PerfilView::Singleton();
 if (isset($_GET["Action"])) {
   if (strcmp($_GET["Action"],"create")) {
     if (isset($_POST["usrname"]) && isset($_POST["passwd"]) && 

@@ -27,19 +27,19 @@ class Perfil {
 	if ($att==false){
 	  return null;
 	}else{
-	  $this->username = $args[0];
-	  $this->password = att["password"];
-	  $this->email = att["email"];
-	  $this->bdate = att["fechaNacimiento"];
-	  $this->secId = att["Seguridad_ID"];
-	  $this->wallId = att["Muro_ID"];
-	  $this->name = att["nombre"];
-	  $this->lastname = att["apellido"];
-	  $this->isAdmin = att["es_Admin"];
-	  $this->isNew = False;
+        $this->username = $args[0];
+        $this->password = $att["password"];
+        $this->email = $att["email"];
+        $this->bdate = $att["fechaNacimiento"];
+        $this->secId = $att["Seguridad_ID"];
+        $this->wallId = $att["Muro_ID"];
+        $this->name = $att["nombre"];
+        $this->lastname = $att["apellido"];
+        $this->isAdmin = $att["es_Admin"];
+        $this->isNew = False;
 	} 
       }else{
-	return null;
+        return null;
       }
 
     }

@@ -1,6 +1,6 @@
 <?php
 require_once("../mappers/Perfil.php");
-public class PerfilFactory {
+class PerfilFactory {
   private static $instance;
 
   /* Arreglo asociativo que mapea identificadores de perfiles a perfiles */

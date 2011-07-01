@@ -1,7 +1,7 @@
 <?php
 
-require_once 'DataBase.php';
-require_once 'Perfil.php';
+require_once('../bd/DataBase.php');
+require_once('../mappers/Perfil.php');
 
 //Utiliza el patron Singleton
 class FachadaBDPerfil {
