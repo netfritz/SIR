@@ -7,6 +7,7 @@ require_once("../vistas/PerfilView.php");
  * lo recibido.
  */
 $vista = PerfilView::Singleton();
+$_SESSION['usrname'] = "jose";
 if (isset($_GET["Action"])) {
   if (strcmp($_GET["Action"],"create")) {
     if (isset($_POST["usrname"]) && isset($_POST["passwd"]) && 
