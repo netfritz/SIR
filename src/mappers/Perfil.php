@@ -1,5 +1,9 @@
 <?php
-require_once("../fachadasBD/FachadaBDPerfil.php");
+$srcFolder = "/home/victor/projects/ingSoftware/SIR/src/";
+$classes = array("fachadasBD/FachadaBDPerfil.php"
+                 );
+foreach ($classes as $class)
+  require_once($srcFolder.$class);
 class Perfil {
 
     private $username;
@@ -17,64 +21,70 @@ class Perfil {
     public function __construct() {
       if (func_num_args()==0){
 
-	$this->isNew = True;
+        $this->isNew = True;
 
       }elseif(func_num_args()==1){
 
-	$args = func_get_args();
+        $args = func_get_args();
        	$P = FachadaBDPerfil::getInstance();
-	$att = $P -> buscarPerfil($args[0]);
-	if ($att==false){
-	  return null;
-	}else{
-        $this->username = $args[0];
-        $this->password = $att["password"];
-        $this->email = $att["email"];
-        $this->bdate = $att["fechaNacimiento"];
-        $this->secId = $att["Seguridad_ID"];
-        $this->wallId = $att["Muro_ID"];
-        $this->name = $att["nombre"];
-        $this->lastname = $att["apellido"];
-        $this->isAdmin = $att["es_Admin"];
-        $this->isNew = False;
-	} 
+        $att = $P -> buscarPerfil($args[0]);
+        if ($att==false){
+          return null;
+        }else{
+          $this->username = $args[0];
+          $this->password = $att["contrasena"];
+          $this->email = $att["correo"];
+          $this->bdate = $att["fechaNac"];
+          $this->secId = $att["idSeguridad"];
+          $this->wallId = $att["idMuro"];
+          $this->name = $att["nombre"];
+          $this->lastname = $att["apellido"];
+          $this->isAdmin = $att["Is_Admin"];
+          $this->isNew = False;
+        } 
       }else{
         return null;
       }
 
     }
 
-    public function existe() {
-        $P = FachadaBDPerfil::getInstance();
-        if ($P->existePerfil($this->username))
-            return TRUE;
+    public static function existe($value, $attr = "usrname") {
+      $fachadaBD = FachadaBDPerfil::getInstance();
+      if (strcmp($attr,"usrname") == 0) {
+        if ($fachadaBD->existePerfil($value))
+          return TRUE;
         return FALSE;
+      } else if (strcmp($attr,"email") == 0) {
+        if ($fachadaBD->existePerfil($value,"email"))
+          return TRUE;
+        return FALSE;
+      }
     }
 
     public function setDatosPerfil($password, $segId, $muroId, $nombre, $apellido, $correo, $fecha_nac, $isAdmin=false) {
-        $this->password = $password;
-	$this->secId = $secId;
-	$this->wallId = $muroId;
-	$this->isAdmin = $isAdmin;
-        $this->name = $nombre;
-        $this->lastname = $apellido;
-        $this->email = $correo;
-        $this->bdate = $fecha_nac;
+      $this->password = $password;
+      $this->secId = $secId;
+      $this->wallId = $muroId;
+      $this->isAdmin = $isAdmin;
+      $this->name = $nombre;
+      $this->lastname = $apellido;
+      $this->email = $correo;
+      $this->bdate = $fecha_nac;
     }
 
     public function save() {
-        $P = FachadaBDPerfil::getInstance();
-        if ($P->salvarPerfil($this))
-            return TRUE;
-        return FALSE;
+      $P = FachadaBDPerfil::getInstance();
+      if ($P->salvarPerfil($this))
+        return TRUE;
+      return FALSE;
     }
 
     public function getUsername() {
-        return $this->username;
+      return $this->username;
     }
 
     public function getPassword() {
-        return $this->password;
+      return $this->password;
     }
 
     public function getName() {
@@ -82,74 +92,74 @@ class Perfil {
     }
 
     public function getApellido() {
-        return $this->lastname;
+      return $this->lastname;
     }
 
     public function getEmail() {
-        return $this->email;
+      return $this->email;
     }
 
     public function getFecha_nac() {
-        return $this->bdate;
+      return $this->bdate;
     }
 
     public function getbday() {
       return $this->bdate;
     }
     
-    private function getisNew(){
+    public function getisNew(){
       return $this->isNew;
     }
 
-    private function getsecId(){
+    public function getsecId(){
       return $this->secId;
     }
     
-    private function gewallId(){
+    public function getwallId(){
       return $this->wallId;
     }
    
-    private function getisAdmin(){
+    public function getisAdmin(){
       return $this->isAdmin;
     }
 
-    private function setisNew($isnew){
+    public function setisNew($isnew){
       return $this->isNew = $isnew;
     }
 
     public function setUsername($username) {
-        $this->username = $username;
+      $this->username = $username;
     }
 
     public function setPassword($password) {
-        $this->password = $password;
+      $this->password = $password;
     }
 
     public function setName($nombre) {
-        $this->name = $nombre;
+      $this->name = $nombre;
     }
 
     public function setApellido($apellido) {
-        $this->lastname = $apellido;
+      $this->lastname = $apellido;
     }
 
     public function setEmail($correo) {
-        $this->email = $correo;
+      $this->email = $correo;
     }
 
     public function setFecha_nac($fecha_nac) {
-        $this->bdate = $fecha_nac;
+      $this->bdate = $fecha_nac;
     }
 
-    private function setsecId($secId){
+    public function setsecId($secId){
       return $this->secId = $secId;
     }
 
-    private function setwallId($wallId){
+    public function setwallId($wallId){
       return $this->isNew = $isnew;
     }
     
-    private function setisAdmin($isAdmin){
+    public function setisAdmin($isAdmin){
       return $this->isAdmin = $isAdmin;
     }    
 }

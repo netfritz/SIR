@@ -8,10 +8,11 @@
 <head>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
   <meta HTTP-EQUIV="Pragma" CONTENT="no-cache"/>
-    <meta name="keywords" content="" />
-    <meta name="description" content="" />
-    <title>PINF</title>
-    <link href="css/style.css" rel="stylesheet" type="text/css" media="screen" />
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <title>PINF</title>
+  <link href="css/style.css" rel="stylesheet" type="text/css" media="screen" />
+  <meta HTTP-EQUIV="Pragma" CONTENT="no-cache">
 </head>
 
 <body>
@@ -76,8 +77,7 @@
 				<div id="barlateral">
 					<h3>Registrarse es facil, y gratis!!!</h3>
                     <legend><h3>Adelante...</h3></legend>
-                    <?php require_once("../controladores/PerfilController.php");
-                    ?>
+                    <?php require_once("../src/controladores/PerfilController.php");?>
 				</div>
 				<!-- fin barra lateral -->
 				
@@ -102,5 +102,6 @@
 </div>
 <!-- fin pie de pagina -->
 </body>
-
+<script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
+<script type="text/javascript" src="js/inicio.js"></script>
 </html>

@@ -1,5 +1,9 @@
 <?php
-require_once("../mappers/Perfil.php");
+$srcFolder = "/home/victor/projects/ingSoftware/SIR/src/";
+$classes = array("mappers/Perfil.php"
+                 );
+foreach ($classes as $class)
+  require_once($srcFolder.$class);
 class PerfilFactory {
   private static $instance;
 
@@ -30,8 +34,9 @@ class PerfilFactory {
       return $this->perfiles["{$usrname}"];
     } else {
       $p = new Perfil($usrname);
-      if (!$p->isEmpty()) {
+      if (!is_null($p)) {
         $this->perfiles["{$usrname}"] = $p;
+        return $p;
       } else {
         return NULL;
       }

@@ -1,7 +1,11 @@
 <?php
+$srcFolder = "/home/victor/projects/ingSoftware/SIR/src/";
+$classes = array("bd/DataBase.php",
+                 "mappers/Perfil.php"
+                 );
+foreach ($classes as $class)
+  require_once($srcFolder.$class);
 
-require_once('../bd/DataBase.php');
-require_once('../mappers/Perfil.php');
 
 //Utiliza el patron Singleton
 class FachadaBDPerfil {
@@ -22,31 +26,36 @@ class FachadaBDPerfil {
 
     public function buscarPerfil($user) {
         DataBase::singleton(); //Conexion a BD establecida.
-        $sqlQuery = "SELECT user FROM Pinf.Perfil WHERE user = '$user'";
+        $sqlQuery = "SELECT * FROM Perfil WHERE user = '".$user."'";
         $queryResult = mysql_query($sqlQuery);
         if (!$queryResult) {
-            $row = false;
-        }elseif (mysql_num_rows()<=0){
-	  $row = false;
-	}else{ 
-	  $row = mysql_fetch_assoc($queryResult);
-	}
+          $row = false;
+        }elseif (mysql_num_rows($queryResult)!=1){
+          $row = false;
+        }else{
+          $row = mysql_fetch_assoc($queryResult);
+        }
         return $row;
         
     }
 
-    public function existePerfil($user) {
+    public function existePerfil($value, $attr = "usrname") {
         DataBase::singleton(); //Conexion a BD establecida.
-        $sqlQuery = mysql_real_escape_string ("SELECT user FROM Pinf.Perfil WHERE user = '$user'");
+        if (strcmp($attr,"usrname") == 0) {
+          $sqlQuery = "SELECT * FROM Perfil WHERE user = '".mysql_real_escape_string($value)."'";
+        } else if (strcmp($attr,"email") == 0) {
+          $sqlQuery = "SELECT * FROM Perfil WHERE correo = '".mysql_real_escape_string($value)."'";          
+        }
+
         $queryResult = mysql_query($sqlQuery);
         if (!$queryResult) {
-            die("ERROR: PerfilMapper.existePerfil(): " . mysql_error());
+          die("ERROR: FachadaBDPerfil.existePerfil(): " . mysql_error());
         }
         $row = mysql_fetch_assoc($queryResult);
         if (!($row)) {
-            return FALSE;
+          return FALSE;
         } else {
-            return TRUE;
+          return TRUE;
         }
     }
 
@@ -64,16 +73,16 @@ class FachadaBDPerfil {
         
 	if($perfil->isNew){ 
 
-	  $sqlQuery = mysql_real_escape_string ( "INSERT INTO Pinf.Perfil VALUES " .
-	  "('$att[user]', '$att[pswd]', '$att[mail]', '$att[fechaN]', '$att[secId]', ".
-          "'att[wallId]','$att[name]', '$att[lastname]', 'att[isAdmin]'");
+	  $sqlQuery = mysql_real_escape_string ( "INSERT INTO Perfil VALUES " .
+	  "('{$att[user]}', '{$att[pswd]}', '{$att[mail]}', '{$att[fechaN]}', '{$att[secId]}', ".
+          "'{$att[wallId]}','{$att[name]}', '{$att[lastname]}', '{$att[isAdmin]}'");
 
 	}else{
 	  
-	    $sqlQuery = mysql_real_escape_string ("UPDATE Pinf.Perfil SET " .
-	  "usuario='$att[user]',password= '$att[pswd]', email='$att[mail]', fechaNacimiento='$att[fechaN]',".
-	  "Seguridad_ID='$att[secId]',Muro_ID='att[wallId]',nombre='$att[name]', apellido='$att[lastname]', 
-           es_Admin='att[isAdmin]'  WHERE id=$att[user]") ;
+	    $sqlQuery = mysql_real_escape_string ("UPDATE Perfil SET " .
+	  "usuario='{$att[user]}',password= '{$att[pswd]}', email='{$att[mail]}', fechaNacimiento='{$att[fechaN]}',".
+	  "Seguridad_ID='{$att[secId]}',Muro_ID='{$att[wallId]}',nombre='{$att[name]}', apellido='{$att[lastname]}', 
+           es_Admin='{$att[isAdmin]}'  WHERE id={$att[user]}") ;
 	  
 	}
         $queryResult = mysql_query($sqlQuery);

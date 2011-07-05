@@ -1,15 +1,30 @@
 <?php
-require_once("../fachadas/PerfilFachada.php");
-require_once("../vistas/PerfilView.php");
+//echo "\n\n".getcwd()."\n\n";
+$srcFolder = "/home/victor/projects/ingSoftware/SIR/src/";
+$classes = array("fachadas/PerfilFachada.php",
+                 "vistas/PerfilView.php"
+                 );
+
+foreach ($classes as $class)
+  require_once($srcFolder.$class);
+
+/*************************************************************************/
+/**                   Sección de cableado jejeje  =)                    **/
+/*************************************************************************/
+$_SESSION['usrname'] = "jose";                                         /**/ 
+//$_GET["Action"] = "edit";                                            /**/
+//$_GET["mode"] = "request";                                           /**/
+/*************************************************************************/
+/*************************************************************************/
+
 /**
  * Se buscan los parámetros recibidos por GET. Si se recibe un 'Action', se
  * muestra el formulario vacío. Si no, se muestra lo que corresponda, según
  * lo recibido.
  */
 $vista = PerfilView::Singleton();
-$_SESSION['usrname'] = "jose";
 if (isset($_GET["Action"])) {
-  if (strcmp($_GET["Action"],"create")) {
+  if (strcmp($_GET["Action"],"create") == 0) {
     if (isset($_POST["usrname"]) && isset($_POST["passwd"]) && 
         isset($_POST["email"]) && isset($_POST["bdate"]) && 
         isset($_POST["name"]) && isset($_POST["lastname"])) {
@@ -29,21 +44,21 @@ if (isset($_GET["Action"])) {
         echo $vista->viewErrors($creacion);
       }
     }
-  } else if (strcmp($_GET["Action"],"edit")) {
+  } else if (strcmp($_GET["Action"],"edit") == 0) {
     if (isset($_GET["mode"])) {
-      if (strcmp($_GET["mode"],"request")) {
+      if (strcmp($_GET["mode"],"request") == 0) {
         if (isset($_SESSION["usrname"])) {
-          $fachada = PerfilFachada::getInstance();
+          $fachada = PerfilFachada::singleton();
           $perfil = $fachada->getPerfil($_SESSION["usrname"]);
           if (!is_null($perfil)) {
-            echo $vista->viewEditPerfil($perfil,"edit");
+            echo $vista->viewEditPerfil($perfil,"request");
           } else {
             echo $vista->viewError("Problemas buscando la información del usuario: (".$_SESSION["usrname"].")");
           }
         } else {
           echo $vista->viewError("No se ha iniciado sesión.");
         }
-      } else if (strcmp($_GET["mode"],"submit")) {
+      } else if (strcmp($_GET["mode"],"submit") == 0) {
         if (isset($_POST["usrname"]) && isset($_POST["passwd"]) && 
             isset($_POST["email"]) && isset($_POST["bdate"]) && 
             isset($_POST["name"]) && isset($_POST["lastname"])) {
@@ -69,7 +84,7 @@ if (isset($_GET["Action"])) {
     } else {
       echo $vista->viewError("Parámetros inválidos: No se envió el modo de edición!");
     }
-  } else if (strcmp($_GET["Action"],"show")) {
+  } else if (strcmp($_GET["Action"],"show") == 0) {
     if (isset($_POST["usrname"])) {
       $fachada = PerfilFachada::getInstance();
       $perfil = $fachada->getPerfil($_POST["usrname"]);
