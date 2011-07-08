@@ -22,62 +22,6 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- Base de datos: `pinf`
 --
 
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `cuerpo`
---
-
-CREATE TABLE IF NOT EXISTS `cuerpo` (
-  `ID` varchar(8) NOT NULL,
-  `contenido` text NOT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcar la base de datos para la tabla `cuerpo`
---
-
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `esamigo`
---
-
-CREATE TABLE IF NOT EXISTS `esamigo` (
-  `usuarioA` varchar(20) NOT NULL,
-  `usuarioB` varchar(20) NOT NULL,
-  PRIMARY KEY (`usuarioA`,`usuarioB`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcar la base de datos para la tabla `esamigo`
---
-
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `grupo`
---
-
-CREATE TABLE IF NOT EXISTS `grupo` (
-  `ID` varchar(8) NOT NULL,
-  `nombre` varchar(20) NOT NULL,
-  `id_lider` varchar(20) NOT NULL,
-  `id_muro` varchar(8) NOT NULL,
-  `descripcion` text NOT NULL,
-  `num_gusta` int(10) unsigned NOT NULL,
-  `num_nogusta` int(10) unsigned NOT NULL,
-  `num_miembros` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Tabla de Grupo';
-
---
--- Volcar la base de datos para la tabla `grupo`
---
-
 
 -- --------------------------------------------------------
 
@@ -132,16 +76,33 @@ CREATE TABLE IF NOT EXISTS `noticia` (
 --
 
 CREATE TABLE IF NOT EXISTS `perfil` (
-  `usuario` varchar(20) NOT NULL,
+  `usrname` varchar(20) NOT NULL,
   `password` varchar(40) NOT NULL,
-  `email` varchar(50) NOT NULL,
-  `fechaNacimiento` date NOT NULL,
-  `Seguridad_ID` int(10) unsigned,
-  `Muro_ID` int(10) unsigned,
-  `nombre` varchar(20) NOT NULL,
-  `apellido` varchar(20) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `fechaNac` date NOT NULL,
+  `carnet` varchar(8) NOT NULL,
+  `nombre` varchar(20),
+  `apellido` varchar(30),
+  `sexo` tinyint(1) NOT NULL,
+  `telefono` varchar(15),
+  `email_alt` varchar(100),
+  `tweeter` varchar(50),
+  `ciudad` varchar(50),
+  `carrera` varchar(100),
+  `colegio` varchar(100),
+  `actividadesExtra` TEXT,
+  `foto` int(10),
+  `trabajo` varchar(100),
+  `bio` TEXT,
+  `Seguridad_ID` int(10) unsigned NOT NULL,
+  `Muro_ID` int(10) unsigned NOT NULL,
   `es_Admin` tinyint(1) NOT NULL,
-  PRIMARY KEY (`usuario`)
+  PRIMARY KEY (`usuario`),
+  CONSTRAINT `FK_perfil_foto`
+    FOREIGN KEY (`foto` )
+    REFERENCES `pinf`.`Foto` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --

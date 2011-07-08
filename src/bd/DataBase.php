@@ -2,9 +2,9 @@
 class DataBase{
   private static $instance; // Representa la unica instancia de esta clase
 
-  private $db = "Pinf";        // Estos valores deben ser cambiados manual-
+  private $db = "pinf";        // Estos valores deben ser cambiados manual-
   private $usr = "SIR";        // mente por los correspondientes al servidor
-  private $passwd = "S1rp@ss"; // mysql que cada quien esté usando. Estos 
+  private $passwd = "S1rp@ss"; // mysql que cada quien esté usando. Estos
   private $host = "127.0.0.1"; // son los valores por default.
 
   private $link;               // Almacena el identificador de la conexión
@@ -29,9 +29,9 @@ class DataBase{
   }
 
   /**
-   * Método que garantiza que sólo habrá una instancia de esta clase, con los 
-   * dos métodos anteriores junto con este, se crea un "Singleton Pattern" 
-   * con lo cual emulamos lo que sería una clase estática (lo que en java 
+   * Método que garantiza que sólo habrá una instancia de esta clase, con los
+   * dos métodos anteriores junto con este, se crea un "Singleton Pattern"
+   * con lo cual emulamos lo que sería una clase estática (lo que en java
    * hacemos con "public static class blah {}").
    * (Tomado del manual de php:
    *             http://php.net/manual/en/language.oop5.patterns.php)
@@ -51,7 +51,7 @@ class DataBase{
   }
 
   /**
-   * Se encarga de crear la conexión a la base de datos. No recibe ningún 
+   * Se encarga de crear la conexión a la base de datos. No recibe ningún
    * parámetro.
    */
   private function connect(){

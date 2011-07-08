@@ -20,17 +20,35 @@ class PerfilFachada {
       $fabrica = PerfilFactory::getInstance();
       $perfil = $fabrica->getPerfil($data["usrname"]);
       if (is_null($perfil)) {
-        $errors[] = "error!";
+        $errors[] = "PerfilFachada.editPerfil(): error instanciando el perfil!";
         return $errors;
       }
       // Seteo los nuevos atributos:
-      $perfil->setDatosPerfil($data["passwd"],
-                              NULL,
-                              NULL,
-                              $data["name"],
-                              $data["lastname"],
+      $perfil->setDatosPerfil($data["usrname"],
+                              $data["passwd"],
                               $data["email"],
-                              $data["bdate"]);
+                              $data["fechaNac"],
+                              $data["carnet"],
+                              $data["tipo"],
+                              $data["nombre"],
+                              $data["apellido"],
+                              $data["sexo"],
+                              $data["telefono"],
+                              $data["emailAlt"],
+                              $data["tweeter"],
+                              $data["ciudad"],
+                              $data["carrera"],
+                              $data["colegio"],
+                              $data["actividadesExtra"],
+                              $data["foto"],
+                              $data["trabajo"],
+                              $data["bio"],
+                              $data["seguridad_ID"],
+                              $data["muro_ID"],
+                              False,
+                              False
+                              );
+
       return $perfil->save();
     } else {
       return $errors;
@@ -42,34 +60,45 @@ class PerfilFachada {
     $perfil = $fabrica->getPerfil($usrname);
     if (is_null($perfil)) {
       return NULL;
-    } else {
-      $data["usrname"] = $perfil->getUsername();
-      $data["email"] = $perfil->getEmail();
-      $data["name"] = $perfil->getName();
-      $data["lastname"] = $perfil->getApellido();
-      $data["bdate"] = $perfil->getFecha_nac();
-      return $data;
+    } else {;
+      $answer = $perfil->asArrayAssoc();
+      return $perfil->asArrayAssoc();
     }
   }
 
-  public function createPerfil($date) {
+  public function createPerfil($data) {
     $errors = $this->perfilValidator($data);
     if (is_null($errors)) {
-      $fabrica = PerfilFactory::getInstance();
-      $perfil = $fabrica->getPerfil($data["usrname"]);
+      $perfil = new Perfil();
       if (is_null($perfil)) {
-        $errors[] = "error!";
+        $errors[] = "PerfilFachada.editPerfil(): error creando el Perfil!";
         return $errors;
       }
       // Seteo los nuevos atributos:
-      $perfil->setUsername($data["usrname"]);
-      $perfil->setDatosPerfil($data["passwd"],
-                              NULL,
-                              NULL,
-                              $data["name"],
-                              $data["lastname"],
+      $perfil->setDatosPerfil($data["usrname"],
+                              $data["passwd"],
                               $data["email"],
-                              $data["bdate"]);
+                              $data["fechaNac"],
+                              $data["carnet"],
+                              $data["tipo"],
+                              $data["nombre"],
+                              $data["apellido"],
+                              $data["sexo"],
+                              $data["telefono"],
+                              $data["emailAlt"],
+                              $data["tweeter"],
+                              $data["ciudad"],
+                              $data["carrera"],
+                              $data["colegio"],
+                              $data["actividadesExtra"],
+                              $data["foto"],
+                              $data["trabajo"],
+                              $data["bio"],
+                              1,
+                              1,
+                              False,
+                              True
+                              );
       return $perfil->save();
     } else {
       return $errors;

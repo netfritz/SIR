@@ -55,39 +55,10 @@
 				
 				<!-- inicio contenido -->
 				<div id="contenido">
-                  <div class="nombrePinf">
-                    
-                  </div>
-                  <div id="msg">
-                    <h2>
-                      Bienvenido a PINF!!!
-                    </h2><br/>
-                    <h3>
-                    un lugar para ser computista en su máxima expresión!
-                    </h3><br/><br/>
-                    <p>
-                      Disfrutarás de comunicación paralela y concurrente con todos tus compañeros computistas, ahora más facil y rápido. Creado y mantenido por nosotros mismos, preguntanos: <a href="" class="links"> Cómo puedes colaborar?</a>
-
-
-<br/><br/><br/>
-
-<a href="editarPerfil.php?Action=edit&mode=request">Probar Editar</a>
-
-<br/><br/><br/>
-                    </p>
-                  </div>
-				  <div style="clear: both;">&nbsp;</div>
-				</div>
-				<!-- fin contenido -->
-				
-				<!-- inicio barra lateral -->
-				<div id="barlateral">
-					<h3>Registrarse es facil, y gratis!!!</h3>
-                    <legend><h3>Adelante...</h3></legend>
+                    <h2>Editar Perfil</h2>
                     <?php require_once("../src/controladores/PerfilController.php");?>
 				</div>
-				<!-- fin barra lateral -->
-				
+				<!-- fin contenido -->				
 				<div style="clear: both;">&nbsp;</div>
 			</div>
 		</div>

@@ -10,18 +10,6 @@ class PerfilFactory {
   /* Arreglo asociativo que mapea identificadores de perfiles a perfiles */
   private $perfiles;
 
-  private function __construct() {
-
-  }
-
-  public static function getInstance() { //metodo Singleton
-    if (!isset(self::$instance)) {
-      $c = __CLASS__;
-      self::$instance = new $c;
-    }
-    return self::$instance;
-  }
-
   /*
    * $pid: string, identificador del perfil que se quiere obtener
    * Clase que maneja a las instancias de Perfil
@@ -42,5 +30,22 @@ class PerfilFactory {
       }
     }
   }
+
+  //#####################################################################//
+  //                        Inicio del Singleton                         //
+  //#####################################################################//
+
+  private function __construct() {
+
+  }
+
+  public static function getInstance() { //metodo Singleton
+    if (!isset(self::$instance)) {
+      $c = __CLASS__;
+      self::$instance = new $c;
+    }
+    return self::$instance;
+  }
+
 }
 ?>

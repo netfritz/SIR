@@ -11,9 +11,19 @@ foreach ($classes as $class)
 /*************************************************************************/
 /**                   Sección de cableado jejeje  =)                    **/
 /*************************************************************************/
-$_SESSION['usrname'] = "jose";                                         /**/ 
-//$_GET["Action"] = "edit";                                            /**/
-//$_GET["mode"] = "request";                                           /**/
+$_SESSION['k_username'] = "throoze";                                   /**/
+//$_GET["Action"] = "edit";
+//$_GET["mode"] = "submit";
+//$_GET["Action"] = "create";
+//$_POST["usrname"] = "profe";
+/*$_POST["passwd"] = "holaa";
+$_POST["passwd2"] = "holaa";
+$_POST["email"] = "throoze@gmail.com";
+$_POST["email2"] = "throoze@gmail.com";
+$_POST["bdate"] = "0000-00-00";
+$_POST["name"] = "Victor";
+$_POST["lastname"] = "De Ponte";
+$_POST["tipo"] = "Estudiante";*/
 /*************************************************************************/
 /*************************************************************************/
 
@@ -25,21 +35,37 @@ $_SESSION['usrname'] = "jose";                                         /**/
 $vista = PerfilView::Singleton();
 if (isset($_GET["Action"])) {
   if (strcmp($_GET["Action"],"create") == 0) {
-    if (isset($_POST["usrname"]) && isset($_POST["passwd"]) && 
-        isset($_POST["email"]) && isset($_POST["bdate"]) && 
+    if (isset($_POST["usrname"]) && isset($_POST["passwd"]) &&
+        isset($_POST["email"]) && isset($_POST["bdate"]) &&
         isset($_POST["name"]) && isset($_POST["lastname"])) {
-      $data["username"] = $_POST["username"];
+      $data["usrname"] = $_POST["usrname"];
       $data["passwd"] = $_POST["passwd"];
       $data["passwd2"] = $_POST["passwd2"];
       $data["email"] = $_POST["email"];
       $data["email2"] = $_POST["email2"];
-      $data["bdate"] = $_POST["bdate"];
-      $data["name"] = $_POST["name"];
-      $data["lastname"] = $_POST["lastname"];
-      $fachada = PerfilFachada::getInstance();
+      $data["fechaNac"] = $_POST["bdate"];
+      $data["nombre"] = $_POST["name"];
+      $data["apellido"] = $_POST["lastname"];
+      $data["carnet"] = NULL;
+      $data["tipo"] = $_POST["tipo"];
+      $data["sexo"] = NULL;
+      $data["telefono"] = NULL;
+      $data["emailAlt"] = NULL;
+      $data["tweeter"] = NULL;
+      $data["ciudad"] = NULL;
+      $data["carrera"] = NULL;
+      $data["colegio"] = NULL;
+      $data["actividadesExtra"] = NULL;
+      $data["foto"] = NULL;
+      $data["trabajo"] = NULL;
+      $data["bio"] = NULL;
+      $data["seguridad_ID"] = 1; // cableado para que funcione
+      $data["muro_ID"] = 1;      // cableado para que funcione
+      $data["esAdmin"] = False;
+      $fachada = PerfilFachada::singleton();
       $creacion = $fachada->createPerfil($data);
-      if (is_null($creacion)) {
-        echo $vista->viewCreatePerfil(NULL,"success");
+      if ($creacion == True) {
+        echo $vista->viewCreatePerfil();
       } else {
         echo $vista->viewErrors($creacion);
       }
@@ -47,30 +73,46 @@ if (isset($_GET["Action"])) {
   } else if (strcmp($_GET["Action"],"edit") == 0) {
     if (isset($_GET["mode"])) {
       if (strcmp($_GET["mode"],"request") == 0) {
-        if (isset($_SESSION["usrname"])) {
+        if (isset($_SESSION["k_username"])) {
           $fachada = PerfilFachada::singleton();
-          $perfil = $fachada->getPerfil($_SESSION["usrname"]);
+          $perfil = $fachada->getPerfil($_SESSION["k_username"]);
           if (!is_null($perfil)) {
             echo $vista->viewEditPerfil($perfil,"request");
           } else {
-            echo $vista->viewError("Problemas buscando la información del usuario: (".$_SESSION["usrname"].")");
+            echo $vista->viewError("Problemas buscando la información del usuario: (".$_SESSION["k_username"].")");
           }
         } else {
           echo $vista->viewError("No se ha iniciado sesión.");
         }
       } else if (strcmp($_GET["mode"],"submit") == 0) {
-        if (isset($_POST["usrname"]) && isset($_POST["passwd"]) && 
-            isset($_POST["email"]) && isset($_POST["bdate"]) && 
+        if (isset($_SESSION["k_username"]) && isset($_POST["passwd"]) &&
+            isset($_POST["email"]) && isset($_POST["bdate"]) &&
             isset($_POST["name"]) && isset($_POST["lastname"])) {
-          $data["username"] = $_POST["username"];
+          $data["usrname"] = $_SESSION["k_username"];
           $data["passwd"] = $_POST["passwd"];
           $data["passwd2"] = $_POST["passwd2"];
           $data["email"] = $_POST["email"];
           $data["email2"] = $_POST["email2"];
-          $data["bdate"] = $_POST["bdate"];
-          $data["name"] = $_POST["name"];
-          $data["lastname"] = $_POST["lastname"];
-          $fachada = PerfilFachada::getInstance();
+          $data["fechaNac"] = $_POST["bdate"];
+          $data["nombre"] = $_POST["name"];
+          $data["apellido"] = $_POST["lastname"];
+          $data["carnet"] = $_POST["carnet"];
+          $data["tipo"] = $_POST["tipo"];
+          $data["sexo"] = $_POST["sexo"];
+          $data["telefono"] = $_POST["telefono"];
+          $data["emailAlt"] = $_POST["emailAlt"];
+          $data["tweeter"] = $_POST["tweeter"];
+          $data["ciudad"] = $_POST["ciudad"];
+          $data["carrera"] = $_POST["carrera"];
+          $data["colegio"] = $_POST["colegio"];
+          $data["actividadesExtra"] = $_POST["actividadesExtra"];
+          $data["foto"] = $_POST["foto"];
+          $data["trabajo"] = $_POST["trabajo"];
+          $data["bio"] = $_POST["bio"];
+          $data["seguridad_ID"] = 1; // cableado para que funcione
+          $data["muro_ID"] = 1;      // cableado para que funcione
+          $data["esAdmin"] = False;
+          $fachada = PerfilFachada::singleton();
           $actualizacion = $fachada->editPerfil($data);
           if ($actualizacion == True || is_null($actualizacion)) {
             echo $vista->viewEditPerfil(NULL,"success");
@@ -86,7 +128,7 @@ if (isset($_GET["Action"])) {
     }
   } else if (strcmp($_GET["Action"],"show") == 0) {
     if (isset($_POST["usrname"])) {
-      $fachada = PerfilFachada::getInstance();
+      $fachada = PerfilFachada::singleton();
       $perfil = $fachada->getPerfil($_POST["usrname"]);
       echo $vista->viewShowPerfil($perfil);
     } else {

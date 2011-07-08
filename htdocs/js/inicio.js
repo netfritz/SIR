@@ -15,20 +15,10 @@ function desplazar(target,focused){
     });
 }
 
-function testCoincidencia(selector){
-    if($("#"+selector+"2TBox").val() != $("#"+selector+"TBox").val()) {
-        $("."+selector+"2St").attr('style', '')
-            .attr('style', "color:red;")
-            .html('No coinciden');
-    } else {
-        $("."+selector+"2St").attr('style', '')
-            .attr('style', "color:green;")
-            .html('Coinciden!!!');
-        $("."+selector+"2St").fadeOut(2500);
-    }
-}
-
 $(document).ready(function(){
+/******************************************************************************/
+/**********************   CHEQUEOS DURANTE LA ESCRITURA    ********************/
+/******************************************************************************/
     $(".error").hide();
     $("#usrnameTBox").focus();
     $("#usrnameTBox").after('<span id="usrSt" class="usrSt"></span>');
@@ -39,8 +29,8 @@ $(document).ready(function(){
     /**
      * Informa al usuario si el las contraseñas coinciden
      */
-    $("#passwd2TBox").keyup(testCoincidencia("passwd"));
-/*
+    //$("#passwd2TBox").keyup(function(){testCoincidencia("passwd")});
+
     $("#passwd2TBox").keyup(function(){
         if($(this).val() != $("#passwdTBox").val()) {
             $(".passwd2St").attr('style', '')
@@ -53,26 +43,26 @@ $(document).ready(function(){
             $(".passwd2St").fadeOut(2500);
         }
     });
-*/
+
     
     /**
-     * Informa al usuario si el las contraseñas coinciden
+     * Informa al usuario si el los correos electrónicos coinciden
      */
-    $("#email2TBox").keyup(testCoincidencia("email"));
-/*
+//    $("#email2TBox").keyup(function(){testCoincidencia('email')});
+
     $("#email2TBox").keyup(function(){
-        if($(this).val() != $("#passwdTBox").val()) {
-            $(".passwd2St").attr('style', '')
+        if($(this).val() != $("#emailTBox").val()) {
+            $(".email2St").attr('style', '')
                 .attr('style', "color:red;")
                 .html('No coinciden');
         } else {
-            $(".passwd2St").attr('style', '')
+            $(".email2St").attr('style', '')
                 .attr('style', "color:green;")
                 .html('Coinciden!!!');
-            $(".passwd2St").fadeOut(2500);
+            $(".email2St").fadeOut(2500);
         }
     });
- */               
+                
 
     /**
      * Informa al usuario si el username introducido está disponible
@@ -94,6 +84,7 @@ $(document).ready(function(){
                     $(".usrSt").attr('style', '')
                         .attr('style', "color:green;")
                         .html('Disponible!!!');
+                    //$(".usrSt").fadeOut(2500);
                 }
             },
             error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -104,6 +95,13 @@ $(document).ready(function(){
             $(".usrSt").attr('style', '')
                 .attr('style', "display:none;")
                 .html('');
+        }
+    });
+    $("#usrnameTBox").focusout(function(){
+        if ($(this).val().length != 0 &&
+            $("#usrSt").html() == 'Disponible!!!'
+           ) {
+            $(".usrSt").fadeOut(2500);
         }
     });
 
@@ -127,6 +125,7 @@ $(document).ready(function(){
                         $(".emailSt").attr('style', '')
                             .attr('style', "color:green;")
                             .html('Disponible!!!');
+                        //$(".emailSt").fadeOut(2500);
                     }
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -139,5 +138,41 @@ $(document).ready(function(){
                 .html('');
         }
     });
+    $("#emailTBox").focusout(function(){
+        if ($(this).val().length != 0 &&
+            $("#emailSt").html() == 'Disponible!!!'
+           ) {
+            $(".emailSt").fadeOut(2500);
+        }
+    });
     
+    
+/******************************************************************************/
+/**********************     VALIDACIONES DEL FORMULARIO    ********************/
+/******************************************************************************/
+
+    $(".button").click(function() {
+        $('.error').hide();
+        // validar y procesar de aqui en adelante:
+        var name = $("input#name").val();
+        if (name == "") {
+            $("label#name_error").show();
+            $("input#name").focus();
+            return false;
+        }
+        var email = $("input#email").val();
+        if (email == "") {
+            $("label#email_error").show();
+            $("input#email").focus();
+            return false;
+        }
+        var phone = $("input#phone").val();
+        if (phone == "") {
+            $("label#phone_error").show();
+            $("input#phone").focus();
+            return false;
+        }
+      
+    });
+
 });
