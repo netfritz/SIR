@@ -36,19 +36,22 @@ $vista = PerfilView::Singleton();
 if (isset($_GET["Action"])) {
   if (strcmp($_GET["Action"],"create") == 0) {
     if (isset($_POST["usrname"]) && isset($_POST["passwd"]) &&
-        isset($_POST["email"]) && isset($_POST["bdate"]) &&
-        isset($_POST["name"]) && isset($_POST["lastname"])) {
+        isset($_POST["email"]) && isset($_POST["fechaNac_anio"]) &&
+        isset($_POST["fechaNac_mes"]) && isset($_POST["fechaNac_dia"]) &&
+        isset($_POST["nombre"]) && isset($_POST["apellido"])) {
       $data["usrname"] = $_POST["usrname"];
       $data["passwd"] = $_POST["passwd"];
       $data["passwd2"] = $_POST["passwd2"];
       $data["email"] = $_POST["email"];
       $data["email2"] = $_POST["email2"];
-      $data["fechaNac"] = $_POST["bdate"];
-      $data["nombre"] = $_POST["name"];
-      $data["apellido"] = $_POST["lastname"];
+      $data["fechaNac"] = $_POST["fechaNac_anio"]."-".
+                          (((int)$_POST["fechaNac_mes"]) < 10 ? "0".$_POST["fechaNac_mes"] : $_POST["fechaNac_mes"] )."-".
+                          (((int)$_POST["fechaNac_dia"]) < 10 ? "0".$_POST["fechaNac_dia"] : $_POST["fechaNac_dia"] );
+      $data["nombre"] = $_POST["nombre"];
+      $data["apellido"] = $_POST["apellido"];
       $data["carnet"] = NULL;
       $data["tipo"] = $_POST["tipo"];
-      $data["sexo"] = NULL;
+      $data["sexo"] = $_POST["sexo"];
       $data["telefono"] = NULL;
       $data["emailAlt"] = NULL;
       $data["tweeter"] = NULL;
@@ -59,8 +62,8 @@ if (isset($_GET["Action"])) {
       $data["foto"] = NULL;
       $data["trabajo"] = NULL;
       $data["bio"] = NULL;
-      $data["seguridad_ID"] = 1; // cableado para que funcione
-      $data["muro_ID"] = 1;      // cableado para que funcione
+      $data["seguridad_ID"] = 1; // cableado, seguridad default
+      $data["muro_ID"] = 1;      // cableado, hay que cambiarlo.
       $data["esAdmin"] = False;
       $fachada = PerfilFachada::singleton();
       $creacion = $fachada->createPerfil($data);
@@ -93,9 +96,11 @@ if (isset($_GET["Action"])) {
           $data["passwd2"] = $_POST["passwd2"];
           $data["email"] = $_POST["email"];
           $data["email2"] = $_POST["email2"];
-          $data["fechaNac"] = $_POST["bdate"];
-          $data["nombre"] = $_POST["name"];
-          $data["apellido"] = $_POST["lastname"];
+          $data["fechaNac"] = $_POST["fechaNac_anio"]."-".
+                          (((int)$_POST["fechaNac_mes"]) < 10 ? "0".$_POST["fechaNac_mes"] : $_POST["fechaNac_mes"] )."-".
+                          (((int)$_POST["fechaNac_dia"]) < 10 ? "0".$_POST["fechaNac_dia"] : $_POST["fechaNac_dia"] );
+          $data["nombre"] = $_POST["nombre"];
+          $data["apellido"] = $_POST["apellido"];
           $data["carnet"] = $_POST["carnet"];
           $data["tipo"] = $_POST["tipo"];
           $data["sexo"] = $_POST["sexo"];

@@ -1,4 +1,26 @@
 <?php
+/*    $usrname = ;
+    $passwd = ;
+    $email = ;
+    $fechaNac = ;
+    $carnet = ;
+    $tipo = ;
+    $nombre = ;
+    $apellido = ;
+    $sexo = ;
+    $telefono = ;
+    $emailAlt = ;
+    $tweeter = ;
+    $ciudad = ;
+    $carrera = ;
+    $colegio = ;
+    $actividadesExtra = ;
+    $foto = ;
+    $trabajo = ;
+    $bio = ;
+    $seguridad_ID = ;
+    $muro_ID = ;
+    $esAdmin = ;*/
 $srcFolder = "/home/victor/projects/ingSoftware/SIR/src/";
 $classes = array("bd/DataBase.php",
                  "mappers/Perfil.php"
@@ -50,56 +72,83 @@ class FachadaBDPerfil {
   public function salvarPerfil($perfil) {
     DataBase::singleton();
 
+
+    $usrname = (is_null($perfil["usrname"]) ? "NULL" : "'".mysql_real_escape_string($perfil["usrname"])."'");
+    $passwd = (is_null($perfil["passwd"]) ? "NULL" : "'".mysql_real_escape_string($perfil["passwd"])."'");
+    $email = (is_null($perfil["email"]) ? "NULL" : "'".mysql_real_escape_string($perfil["email"])."'");
+    $fechaNac =(is_null($perfil["fechaNac"]) ? "NULL" : "'".mysql_real_escape_string($perfil["fechaNac"])."'");
+    $carnet = (is_null($perfil["carnet"]) ? "00-00000" : "'".mysql_real_escape_string($perfil["carnet"])."'");
+    $tipo = (is_null($perfil["tipo"]) ? "NULL" : "'".mysql_real_escape_string($perfil["tipo"])."'");
+    $nombre =(is_null($perfil["nombre"]) ? "NULL" : "'".mysql_real_escape_string($perfil["nombre"])."'");
+    $apellido =(is_null($perfil["apellido"]) ? "NULL" : "'".mysql_real_escape_string($perfil["apellido"])."'");
+    $sexo = (is_null($perfil["sexo"]) ? "NULL" : "'".mysql_real_escape_string($perfil["sexo"])."'");
+    $telefono =(is_null($perfil["telefono"]) ? "NULL" : "'".mysql_real_escape_string($perfil["telefono"])."'");
+    $emailAlt =(is_null($perfil["emailAlt"]) ? "NULL" : "'".mysql_real_escape_string($perfil["emailAlt"])."'");
+    $tweeter =(is_null($perfil["tweeter"]) ? "NULL" : "'".mysql_real_escape_string($perfil["tweeter"])."'");
+    $ciudad = (is_null($perfil["ciudad"]) ? "NULL" : "'".mysql_real_escape_string($perfil["ciudad"])."'");
+    $carrera =(is_null($perfil["carrera"]) ? "NULL" : "'".mysql_real_escape_string($perfil["carrera"])."'");
+    $colegio =(is_null($perfil["colegio"]) ? "NULL" : "'".mysql_real_escape_string($perfil["colegio"])."'");
+    $actividadesExtra = (is_null($perfil["actividadesExtra"]) ? "NULL" : "'".mysql_real_escape_string($perfil["actividadesExtra"])."'");
+    $foto = (is_null($perfil["foto"]) ? "NULL" : "'".mysql_real_escape_string($perfil["foto"])."'");
+    $trabajo = (is_null($perfil["trabajo"]) ? "NULL" : "'".mysql_real_escape_string($perfil["trabajo"])."'");
+    $bio = (is_null($perfil["bio"]) ? "NULL" : "'".mysql_real_escape_string($perfil["bio"])."'");
+    $seguridad_ID =(is_null($perfil["seguridad_ID"]) ? "NULL" : "'".mysql_real_escape_string($perfil["seguridad_ID"])."'");
+    $muro_ID = (is_null($perfil["muro_ID"]) ? "NULL" : "'".mysql_real_escape_string($perfil["muro_ID"])."'");
+    $esAdmin = (is_null($perfil["esAdmin"]) ? "NULL" : "'".mysql_real_escape_string($perfil["esAdmin"])."'");
+
     if($perfil["isNew"]){
-      $sqlQuery = "INSERT INTO Perfil VALUES ('".mysql_real_escape_string($perfil["usrname"])."', '"
-                                                .mysql_real_escape_string($perfil["passwd"])."', '"
-                                                .mysql_real_escape_string($perfil["email"])."', '"
-                                                .mysql_real_escape_string($perfil["fechaNac"])."', '"
-                                                .mysql_real_escape_string($perfil["carnet"])."', '"
-                                                .mysql_real_escape_string($perfil["tipo"])."', '"
-                                                .mysql_real_escape_string($perfil["nombre"])."', '"
-                                                .mysql_real_escape_string($perfil["apellido"])."', '"
-                                                .mysql_real_escape_string($perfil["sexo"])."', '"
-                                                .mysql_real_escape_string($perfil["telefono"])."', '"
-                                                .mysql_real_escape_string($perfil["emailAlt"])."', '"
-                                                .mysql_real_escape_string($perfil["tweeter"])."', '"
-                                                .mysql_real_escape_string($perfil["ciudad"])."', '"
-                                                .mysql_real_escape_string($perfil["carrera"])."', '"
-                                                .mysql_real_escape_string($perfil["colegio"])."', '"
-                                                .mysql_real_escape_string($perfil["actividadesExtra"])."', '"
-                                                .mysql_real_escape_string($perfil["foto"])."', '"
-                                                .mysql_real_escape_string($perfil["trabajo"])."', '"
-                                                .mysql_real_escape_string($perfil["bio"])."', '"
-                                                .mysql_real_escape_string($perfil["seguridad_ID"])."', '"
-                                                .mysql_real_escape_string($perfil["muro_ID"])."', '"
-                                                .mysql_real_escape_string($perfil["esAdmin"])."')";
+      $sqlQuery = "INSERT INTO Perfil VALUES (".
+                                               $usrname.",".
+                                               $passwd.",".
+                                               $email.",".
+                                               $fechaNac.",".
+                                               $carnet.",".
+                                               $tipo.",".
+                                               $nombre.",".
+                                               $apellido.",".
+                                               $sexo.",".
+                                               $telefono.",".
+                                               $emailAlt.",".
+                                               $tweeter.",".
+                                               $ciudad.",".
+                                               $carrera.",".
+                                               $colegio.",".
+                                               $actividadesExtra.",".
+                                               $foto.",".
+                                               $trabajo.",".
+                                               $bio.",".
+                                               $seguridad_ID.",".
+                                               $muro_ID.",".
+                                               $esAdmin.
+                                            ")";
     } else {
       $sqlQuery = "UPDATE Perfil SET ".
-                                     "usrname = '".mysql_real_escape_string($perfil["usrname"])."',".
-                                     "passwd = '".mysql_real_escape_string($perfil["passwd"])."',".
-                                     "email = '".mysql_real_escape_string($perfil["email"])."',".
-                                     "fechaNac = '".mysql_real_escape_string($perfil["fechaNac"])."',".
-                                     "carnet = '".mysql_real_escape_string($perfil["carnet"])."',".
-                                     "tipo = '".mysql_real_escape_string($perfil["tipo"])."',".
-                                     "nombre = '".mysql_real_escape_string($perfil["nombre"])."',".
-                                     "apellido = '".mysql_real_escape_string($perfil["apellido"])."',".
-                                     "sexo = '".mysql_real_escape_string($perfil["sexo"])."',".
-                                     "telefono = '".mysql_real_escape_string($perfil["telefono"])."',".
-                                     "emailAlt = '".mysql_real_escape_string($perfil["emailAlt"])."',".
-                                     "tweeter = '".mysql_real_escape_string($perfil["tweeter"])."',".
-                                     "ciudad = '".mysql_real_escape_string($perfil["ciudad"])."',".
-                                     "carrera = '".mysql_real_escape_string($perfil["carrera"])."',".
-                                     "colegio = '".mysql_real_escape_string($perfil["colegio"])."',".
-                                     "actividadesExtra = '".mysql_real_escape_string($perfil["actividadesExtra"])."',".
-                                     "foto = '".mysql_real_escape_string($perfil["foto"])."',".
-                                     "trabajo = '".mysql_real_escape_string($perfil["trabajo"])."',".
-                                     "bio = '".mysql_real_escape_string($perfil["bio"])."',".
-                                     "Seguridad_ID = '".mysql_real_escape_string($perfil["seguridad_ID"])."',".
-                                     "Muro_ID = '".mysql_real_escape_string($perfil["muro_ID"])."',".
-                                     "esAdmin = '".mysql_real_escape_string($perfil["esAdmin"])."'".
-                  "WHERE usrname = '".mysql_real_escape_string($perfil["usrname"])."'";
+                                     "usrname = ".$usrname.",".
+                                     "passwd = ".$passwd.",".
+                                     "email = ".$email.",".
+                                     "fechaNac = ".$fechaNac.",".
+                                     "carnet = ".$carnet.",".
+                                     "tipo = ".$tipo.",".
+                                     "nombre = ".$nombre.",".
+                                     "apellido = ".$apellido.",".
+                                     "sexo = ".$sexo.",".
+                                     "telefono = ".$telefono.",".
+                                     "emailAlt = ".$emailAlt.",".
+                                     "tweeter = ".$tweeter.",".
+                                     "ciudad = ".$ciudad.",".
+                                     "carrera = ".$carrera.",".
+                                     "colegio = ".$colegio.",".
+                                     "actividadesExtra = ".$actividadesExtra.",".
+                                     "foto = ".$foto.",".
+                                     "trabajo = ".$trabajo.",".
+                                     "bio = ".$bio.",".
+                                     "Seguridad_ID = ".$seguridad_ID.",".
+                                     "Muro_ID = ".$muro_ID.",".
+                                     "esAdmin = ".$esAdmin.
+                  "WHERE usrname = ".$usrname;
     }
     $queryResult = mysql_query($sqlQuery);
+    //echo "<p>Query:<br/>".$sqlQuery."<br/>Error:<br>".mysql_error()."</p>";
     if (!$queryResult) {
       $errors[] = mysql_error();
       return $errors;

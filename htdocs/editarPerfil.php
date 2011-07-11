@@ -81,5 +81,5 @@
 <!-- fin pie de pagina -->
 </body>
 <script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
-<script type="text/javascript" src="js/inicio.js"></script>
+<script type="text/javascript" src="js/perfil/editarPerfil.js"></script>
 </html>

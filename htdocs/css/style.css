@@ -444,3 +444,7 @@ img.aligncenter {
 position: relative;
 top: 15px;
 }
+
+#regForm label {
+    text-align: right;
+}
