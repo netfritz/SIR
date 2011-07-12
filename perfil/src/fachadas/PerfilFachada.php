@@ -94,8 +94,8 @@ class PerfilFachada {
                               $data["foto"],
                               $data["trabajo"],
                               $data["bio"],
-                              1,
-                              1,
+                              $data["seguridad_ID"],
+                              $data["muro_ID"],
                               False,
                               True
                               );

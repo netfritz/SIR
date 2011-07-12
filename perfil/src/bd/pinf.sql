@@ -63,6 +63,7 @@ CREATE  TABLE IF NOT EXISTS `pinf`.`Perfil` (
   `Seguridad_ID` INT(10) NOT NULL ,
   `Muro_ID` INT(10) NOT NULL ,
   `esAdmin` TINYINT(1) NOT NULL ,
+  `estado` VARCHAR(10) NOT NULL DEFAULT 'activo' ,
   PRIMARY KEY (`usrname`) ,
   UNIQUE INDEX `usrname_UNIQUE` (`usrname` ASC) ,
   UNIQUE INDEX `email_UNIQUE` (`email` ASC) ,
@@ -195,7 +196,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `pinf`.`Grupo` ;
 
 CREATE  TABLE IF NOT EXISTS `pinf`.`Grupo` (
-  `ID` INT(10) NOT NULL AUTO_INCREMENT ,
+  `ID` VARCHAR(8) NOT NULL ,
   `nombre` VARCHAR(100) NOT NULL ,
   `ID_Lider` VARCHAR(20) NOT NULL ,
   `ID_Muro` INT(10) NOT NULL ,
@@ -203,6 +204,7 @@ CREATE  TABLE IF NOT EXISTS `pinf`.`Grupo` (
   `num_gusta` INT(11)  NOT NULL ,
   `num_nogusta` INT(11)  NOT NULL ,
   `num_miembros` INT(11)  NOT NULL ,
+  `visible` TINYINT(1) NOT NULL ,
   PRIMARY KEY (`ID`) ,
   INDEX `fk_Grupo_Perfil` (`ID_Lider` ASC) ,
   INDEX `fk_Grupo_Muro` (`ID_Muro` ASC) ,
@@ -230,7 +232,7 @@ CREATE  TABLE IF NOT EXISTS `pinf`.`Documento` (
   `fechaPublicacion` DATE NOT NULL ,
   `tamano` DECIMAL(10,0)  NOT NULL ,
   `descripcion` VARCHAR(300) NOT NULL ,
-  `ID_Grupo` INT(10) NOT NULL ,
+  `ID_Grupo` VARCHAR(8) NOT NULL ,
   PRIMARY KEY (`ID_Perfil`, `nombre`) ,
   INDEX `fk_Documento_Perfil` (`ID_Perfil` ASC) ,
   INDEX `fk_Documento_Grupo` (`ID_Grupo` ASC) ,
@@ -275,7 +277,7 @@ DROP TABLE IF EXISTS `pinf`.`esMiembro` ;
 
 CREATE  TABLE IF NOT EXISTS `pinf`.`esMiembro` (
   `ID_Perfil` VARCHAR(20) NOT NULL ,
-  `ID_Grupo` INT(10) NOT NULL ,
+  `ID_Grupo` VARCHAR(8) NOT NULL ,
   PRIMARY KEY (`ID_Perfil`, `ID_Grupo`) ,
   INDEX `fk_esMiembro_Perfil` (`ID_Perfil` ASC) ,
   INDEX `fk_esMiembro_Grupo` (`ID_Grupo` ASC) ,
@@ -300,7 +302,7 @@ DROP TABLE IF EXISTS `pinf`.`invita_a_grupo` ;
 CREATE  TABLE IF NOT EXISTS `pinf`.`invita_a_grupo` (
   `ID_Perfil` VARCHAR(20) NOT NULL ,
   `ID_Perfil2` VARCHAR(20) NOT NULL ,
-  `ID_Grupo` INT(10) NOT NULL ,
+  `ID_Grupo` VARCHAR(8) NOT NULL ,
   PRIMARY KEY (`ID_Perfil`, `ID_Perfil2`, `ID_Grupo`) ,
   INDEX `fk_invita_a_grupo_Perfil` (`ID_Perfil` ASC) ,
   INDEX `fk_invita_a_grupo_Perfil2` (`ID_Perfil2` ASC) ,
@@ -342,7 +344,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `pinf`.`grupo_album` ;
 
 CREATE  TABLE IF NOT EXISTS `pinf`.`grupo_album` (
-  `ID_Grupo` INT(10) NOT NULL ,
+  `ID_Grupo` VARCHAR(8) NOT NULL ,
   `ID_Album` INT(10) NOT NULL ,
   PRIMARY KEY (`ID_Grupo`, `ID_Album`) ,
   INDEX `fk_grupo_album_Grupo` (`ID_Grupo` ASC) ,
@@ -376,6 +378,7 @@ CREATE  TABLE IF NOT EXISTS `pinf`.`Evento` (
   `num_gusta` INT(11)  NOT NULL ,
   `num_nogusta` INT(11)  NOT NULL ,
   `num_miembros` INT(11)  NOT NULL ,
+  `visible` TINYINT(1) NOT NULL ,
   PRIMARY KEY (`ID`) ,
   INDEX `fk_Evento_Organizador` (`ID_Organizador` ASC) ,
   INDEX `fk_Evento_Muro` (`ID_Muro` ASC) ,
@@ -500,6 +503,7 @@ CREATE  TABLE IF NOT EXISTS `pinf`.`Noticia` (
   `ID_Cuerpo` INT(10) NOT NULL ,
   `ID_Muro` INT(10) NOT NULL ,
   `ID_Admin` VARCHAR(20) NOT NULL ,
+  `visible` TINYINT(1) NOT NULL ,
   PRIMARY KEY (`ID`) ,
   INDEX `fk_Noticia_Cuerpo` (`ID_Cuerpo` ASC) ,
   INDEX `fk_Noticia_Muro` (`ID_Muro` ASC) ,
@@ -570,6 +574,19 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `pinf`.`Departamento`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `pinf`.`Departamento` ;
+
+CREATE  TABLE IF NOT EXISTS `pinf`.`Departamento` (
+  `codigo` VARCHAR(7) NOT NULL ,
+  `nombre` VARCHAR(100) NOT NULL ,
+  `direccion` VARCHAR(200) NOT NULL ,
+  PRIMARY KEY (`codigo`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `pinf`.`Materia`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `pinf`.`Materia` ;
@@ -578,131 +595,12 @@ CREATE  TABLE IF NOT EXISTS `pinf`.`Materia` (
   `codigo` VARCHAR(7) NOT NULL ,
   `nombre` VARCHAR(100) NOT NULL ,
   `creditos` INT(2) NOT NULL ,
-  PRIMARY KEY (`codigo`) )
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `pinf`.`Departamento`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `pinf`.`Departamento` ;
-
-CREATE  TABLE IF NOT EXISTS `pinf`.`Departamento` (
-  `codigo` VARCHAR(7) NOT NULL ,
-  `nombre` VARCHAR(50) NOT NULL ,
-  `direccion` VARCHAR(200) NOT NULL ,
-  PRIMARY KEY (`codigo`) )
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `pinf`.`MateriaPerteneceDepartamento`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `pinf`.`MateriaPerteneceDepartamento` ;
-
-CREATE  TABLE IF NOT EXISTS `pinf`.`MateriaPerteneceDepartamento` (
-  `codigoM` VARCHAR(7) NOT NULL ,
-  `codigoD` VARCHAR(7) NOT NULL ,
-  PRIMARY KEY (`codigoM`, `codigoD`) ,
-  INDEX `fk_MPerteneceD_Materia` (`codigoM` ASC) ,
-  INDEX `fk_MPerteneceD_Departamento` (`codigoD` ASC) ,
-  CONSTRAINT `fk_MPerteneceD_Materia`
-    FOREIGN KEY (`codigoM` )
-    REFERENCES `pinf`.`Materia` (`codigo` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_MPerteneceD_Departamento`
-    FOREIGN KEY (`codigoD` )
+  `depCod` VARCHAR(7) NOT NULL ,
+  PRIMARY KEY (`codigo`) ,
+  INDEX `fk_Materia_Departamento` (`depCod` ASC) ,
+  CONSTRAINT `fk_Materia_Departamento`
+    FOREIGN KEY (`depCod` )
     REFERENCES `pinf`.`Departamento` (`codigo` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `pinf`.`Periodo`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `pinf`.`Periodo` ;
-
-CREATE  TABLE IF NOT EXISTS `pinf`.`Periodo` (
-  `mesIni` VARCHAR(3) NOT NULL ,
-  `mesFin` VARCHAR(3) NOT NULL ,
-  `anio` INT(4) NOT NULL ,
-  PRIMARY KEY (`mesIni`, `mesFin`, `anio`) )
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `pinf`.`cursaProfesorConPerfil`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `pinf`.`cursaProfesorConPerfil` ;
-
-CREATE  TABLE IF NOT EXISTS `pinf`.`cursaProfesorConPerfil` (
-  `miembro` VARCHAR(20) NOT NULL ,
-  `codigoM` VARCHAR(7) NOT NULL ,
-  `mesIni` VARCHAR(3) NOT NULL ,
-  `mesFin` VARCHAR(3) NOT NULL ,
-  `anio` INT(4) NOT NULL ,
-  `calificacion` INT(1) NOT NULL ,
-  `profesor` VARCHAR(20) NOT NULL ,
-  PRIMARY KEY (`miembro`, `codigoM`, `mesIni`, `mesFin`, `anio`) ,
-  INDEX `fk_cursaProfPerfil_Miembro` (`miembro` ASC) ,
-  INDEX `fk_cursaProfPerfil_Materia` (`codigoM` ASC) ,
-  INDEX `fk_cursaProfPerfil_Periodo` (`mesIni` ASC, `mesFin` ASC, `anio` ASC) ,
-  INDEX `fk_cursaProfPerfil_Profesor` (`profesor` ASC) ,
-  CONSTRAINT `fk_cursaProfPerfil_Miembro`
-    FOREIGN KEY (`miembro` )
-    REFERENCES `pinf`.`Perfil` (`usrname` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_cursaProfPerfil_Materia`
-    FOREIGN KEY (`codigoM` )
-    REFERENCES `pinf`.`Materia` (`codigo` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_cursaProfPerfil_Periodo`
-    FOREIGN KEY (`mesIni` , `mesFin` , `anio` )
-    REFERENCES `pinf`.`Periodo` (`mesIni` , `mesFin` , `anio` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_cursaProfPerfil_Profesor`
-    FOREIGN KEY (`profesor` )
-    REFERENCES `pinf`.`Perfil` (`usrname` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `pinf`.`cursaProfesorSinPerfil`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `pinf`.`cursaProfesorSinPerfil` ;
-
-CREATE  TABLE IF NOT EXISTS `pinf`.`cursaProfesorSinPerfil` (
-  `miembro` VARCHAR(20) NOT NULL ,
-  `codigoM` VARCHAR(7) NOT NULL ,
-  `mesIni` VARCHAR(3) NOT NULL ,
-  `mesFin` VARCHAR(3) NOT NULL ,
-  `anio` INT(4) NOT NULL ,
-  `calificacion` INT(1) NOT NULL ,
-  `NombreProfesor` VARCHAR(50) NOT NULL ,
-  PRIMARY KEY (`miembro`, `codigoM`, `mesIni`, `mesFin`, `anio`) ,
-  INDEX `fk_cursaProfPerfil_Miembro` (`miembro` ASC) ,
-  INDEX `fk_cursaProfPerfil_Materia` (`codigoM` ASC) ,
-  INDEX `fk_cursaProfPerfil_mesIni` (`mesIni` ASC, `mesFin` ASC, `anio` ASC) ,
-  CONSTRAINT `fk_cursaProfSinPerfil_Miembro`
-    FOREIGN KEY (`miembro` )
-    REFERENCES `pinf`.`Perfil` (`usrname` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_cursaProfSinPerfil_Materia`
-    FOREIGN KEY (`codigoM` )
-    REFERENCES `pinf`.`Materia` (`codigo` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_cursaProfSinPerfil_Periodo`
-    FOREIGN KEY (`mesIni` , `mesFin` , `anio` )
-    REFERENCES `pinf`.`Periodo` (`mesIni` , `mesFin` , `anio` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -719,6 +617,7 @@ CREATE  TABLE IF NOT EXISTS `pinf`.`Mensaje` (
   `mensaje` TEXT NOT NULL ,
   `eliminado` TINYINT(1) NOT NULL ,
   `emisor` VARCHAR(20) NOT NULL ,
+  `fecha_enviado` DATE NOT NULL ,
   PRIMARY KEY (`mid`) ,
   INDEX `fk_Mensaje_Emisor` (`emisor` ASC) ,
   CONSTRAINT `fk_Mensaje_Emisor`
@@ -823,6 +722,61 @@ CREATE  TABLE IF NOT EXISTS `pinf`.`MuroTieneFoto` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `pinf`.`Periodo`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `pinf`.`Periodo` ;
+
+CREATE  TABLE IF NOT EXISTS `pinf`.`Periodo` (
+  `mesIni` VARCHAR(3) NOT NULL ,
+  `mesFin` VARCHAR(3) NOT NULL ,
+  `anio` INT(4) NOT NULL ,
+  PRIMARY KEY (`mesIni`, `mesFin`, `anio`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `pinf`.`Curso`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `pinf`.`Curso` ;
+
+CREATE  TABLE IF NOT EXISTS `pinf`.`Curso` (
+  `estudiante` VARCHAR(20) NOT NULL ,
+  `materia` VARCHAR(7) NOT NULL ,
+  `mesIni` VARCHAR(3) NOT NULL ,
+  `mesFin` VARCHAR(3) NOT NULL ,
+  `anio` INT(4) NOT NULL ,
+  `calificacion` INT(1) NULL ,
+  `profesorID` VARCHAR(20) NULL ,
+  `profesor` VARCHAR(100) NULL ,
+  PRIMARY KEY (`estudiante`, `materia`, `mesIni`, `mesFin`, `anio`) ,
+  INDEX `fk_Curso_Estudiante` (`estudiante` ASC) ,
+  INDEX `fk_Curso_Materia` (`materia` ASC) ,
+  INDEX `fk_Curso_Periodo` (`mesIni` ASC, `mesFin` ASC, `anio` ASC) ,
+  INDEX `fk_Curso_Profesor` (`profesorID` ASC) ,
+  CONSTRAINT `fk_Curso_Estudiante`
+    FOREIGN KEY (`estudiante` )
+    REFERENCES `pinf`.`Perfil` (`usrname` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Curso_Materia`
+    FOREIGN KEY (`materia` )
+    REFERENCES `pinf`.`Materia` (`codigo` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Curso_Periodo`
+    FOREIGN KEY (`mesIni` , `mesFin` , `anio` )
+    REFERENCES `pinf`.`Periodo` (`mesIni` , `mesFin` , `anio` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Curso_Profesor`
+    FOREIGN KEY (`profesorID` )
+    REFERENCES `pinf`.`Perfil` (`usrname` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
@@ -842,7 +796,9 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `pinf`;
-INSERT INTO `pinf`.`Muro` (`ID`, `Num_max_Publicaciones`, `Num_Publicaciones`) VALUES (1, 999999, 0);
+INSERT INTO `pinf`.`Muro` (`ID`, `Num_max_Publicaciones`, `Num_Publicaciones`) VALUES (1, 15, 0);
+INSERT INTO `pinf`.`Muro` (`ID`, `Num_max_Publicaciones`, `Num_Publicaciones`) VALUES (2, 15, 0);
+INSERT INTO `pinf`.`Muro` (`ID`, `Num_max_Publicaciones`, `Num_Publicaciones`) VALUES (3, 15, 0);
 
 COMMIT;
 
@@ -851,6 +807,6 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `pinf`;
-INSERT INTO `pinf`.`Perfil` (`usrname`, `passwd`, `email`, `fechaNac`, `carnet`, `tipo`, `nombre`, `apellido`, `sexo`, `telefono`, `emailAlt`, `tweeter`, `ciudad`, `carrera`, `colegio`, `actividadesExtra`, `foto`, `trabajo`, `bio`, `Seguridad_ID`, `Muro_ID`, `esAdmin`) VALUES ('admin', 'pinfadmin', 'admin@pinf.com', '0000-00-00', '00-00000', 'Estudiante', 'Administrador', 'Pinf', 'M', '+000000000000', 'adminAlt@ping.com', '@pinfadmin', 'Caracas', 'Ing de Computación', 'USB', 'administrar la red social pinf', NULL, 'administrador de pinf', 'Soy el administrador de pinf', 1, 1, 1);
+INSERT INTO `pinf`.`Perfil` (`usrname`, `passwd`, `email`, `fechaNac`, `carnet`, `tipo`, `nombre`, `apellido`, `sexo`, `telefono`, `emailAlt`, `tweeter`, `ciudad`, `carrera`, `colegio`, `actividadesExtra`, `foto`, `trabajo`, `bio`, `Seguridad_ID`, `Muro_ID`, `esAdmin`, `estado`) VALUES ('admin', 'pinfadmin', 'admin@pinf.com', '0000-00-00', '00-00000', 'Estudiante', 'Administrador', 'Pinf', 'M', '+000000000000', 'adminAlt@ping.com', '@pinfadmin', 'Caracas', 'Ing de Computación', 'USB', 'administrar la red social pinf', NULL, 'administrador de pinf', 'Soy el administrador de pinf', 1, 1, 1, '\'activo\'');
 
 COMMIT;

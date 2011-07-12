@@ -35,7 +35,7 @@ class FachadaBDPerfil {
   private static $instance;   // Representa la unica instancia de esta clase
 
   public function buscarPerfil($user) {
-    DataBase::singleton(); //Conexion a BD establecida.
+    DataBase::getInstance(); //Conexion a BD establecida.
     $sqlQuery = "SELECT * FROM Perfil WHERE usrname = '".$user."'";
     $queryResult = mysql_query($sqlQuery);
     if (!$queryResult) {
@@ -50,7 +50,7 @@ class FachadaBDPerfil {
   }
 
   public function existePerfil($value, $attr = "usrname") {
-    DataBase::singleton(); //Conexion a BD establecida.
+    DataBase::getInstance(); //Conexion a BD establecida.
     if (strcmp($attr,"usrname") == 0) {
       $sqlQuery = "SELECT usrname FROM Perfil WHERE usrname = '".mysql_real_escape_string($value)."'";
     } else if (strcmp($attr,"email") == 0) {
@@ -70,7 +70,7 @@ class FachadaBDPerfil {
   }
 
   public function salvarPerfil($perfil) {
-    DataBase::singleton();
+    DataBase::getInstance();
 
 
     $usrname = (is_null($perfil["usrname"]) ? "NULL" : "'".mysql_real_escape_string($perfil["usrname"])."'");
@@ -95,6 +95,11 @@ class FachadaBDPerfil {
     $seguridad_ID =(is_null($perfil["seguridad_ID"]) ? "NULL" : "'".mysql_real_escape_string($perfil["seguridad_ID"])."'");
     $muro_ID = (is_null($perfil["muro_ID"]) ? "NULL" : "'".mysql_real_escape_string($perfil["muro_ID"])."'");
     $esAdmin = (is_null($perfil["esAdmin"]) ? "NULL" : "'".mysql_real_escape_string($perfil["esAdmin"])."'");
+    if (isset($perfil["estado"])) {
+      $estado = (is_null($perfil["estado"]) ? "activo" : "'".mysql_real_escape_string($perfil["estado"])."'");
+    } else {
+      $estado = "activo";
+    }
 
     if($perfil["isNew"]){
       $sqlQuery = "INSERT INTO Perfil VALUES (".
@@ -119,7 +124,8 @@ class FachadaBDPerfil {
                                                $bio.",".
                                                $seguridad_ID.",".
                                                $muro_ID.",".
-                                               $esAdmin.
+                                               $esAdmin.",".
+                                               $estado.
                                             ")";
     } else {
       $sqlQuery = "UPDATE Perfil SET ".
@@ -145,10 +151,11 @@ class FachadaBDPerfil {
                                      "Seguridad_ID = ".$seguridad_ID.",".
                                      "Muro_ID = ".$muro_ID.",".
                                      "esAdmin = ".$esAdmin.
+                                     "estado = ".$estado.
                   "WHERE usrname = ".$usrname;
     }
     $queryResult = mysql_query($sqlQuery);
-    //echo "<p>Query:<br/>".$sqlQuery."<br/>Error:<br>".mysql_error()."</p>";
+    echo "<p>Query:<br/>".$sqlQuery."<br/>Error:<br>".mysql_error()."</p>";
     if (!$queryResult) {
       $errors[] = mysql_error();
       return $errors;

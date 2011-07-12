@@ -1,4 +1,4 @@
-/**
+/*
  * Desplaza la página al siguiente tag de interés.
  * target: tag o id, o cualquier selector con sintaxis de jquery al cual se
  *         desea desplazar.
@@ -6,32 +6,81 @@
  *          algo de tipo input. Recibe un selector con sintaxis de jquery.
  */
 function desplazar(target,focused){
-    //conseguir el tope d3el desface del tag destino
+    //conseguir el tope del desface del tag destino
     var target_offset = $(target).offset();
     var target_top = target_offset.top;
     //ir al tag deslizando hasta el tope del mismo
     $('html, body').animate({scrollTop:target_top}, 500, function(){
-        $(focused).focus();
+        if (focused != null) {
+            $(focused).focus();
+        }
     });
 }
 
+/*
+ * Se encarga de desplegar y contraer el formulario de departamento.
+ */
+function alternar(container, num, focus) {
+    alert('hola!');
+    if (num < 0 || 5 < num){
+        alert("Ha ocurrido un error al tratar de desplegar o contraer el contenedor ("+container+"), con el número ("+num+")");
+    }
+    var panelSelector = '#'+container;
+    var panelAnchor = "#"+container+"Anc";
+    var buttonSelector = "#colapse"+container;
+    desplegados[num] = !desplegados[num];
+    $(panelSelector).slideToggle("slow");
+    if (desplegados[num]) {
+        $(buttonSelector).html('Ocultar');
+        desplazar(panelAnchor,focus);
+    } else {
+        $(buttonSelector).html('Mostrar');
+        desplazar(panelAnchor,null);
+    }
+}
 $(document).ready(function(){
 /******************************************************************************/
 /**********************   CHEQUEOS DURANTE LA ESCRITURA    ********************/
 /******************************************************************************/
+    var desplegados = new Array(6);
+    desplegados[0] = true;
+    desplegados[1] = true;
+    desplegados[2] = true;
+    desplegados[3] = true;
+    desplegados[4] = true;
+    desplegados[5] = true;
+    var paneles = new Array(6);
+    paneles[0] = "Photo";
+    paneles[1] = "Basic";
+    paneles[2] = "Contact";
+    paneles[3] = "Academic";
+    paneles[4] = "Misc";
+    paneles[5] = "Security";
     $(".error").hide();
     $("#usrname").focus();
-    $("#ajaxUsr").html('<td colspan=\"2\"><span id="usrSt" class="usrSt"></span></td>');
-    $("#ajaxEmail").html('<td colspan=\"2\"><span id="emailSt" class="emailSt"></span></td>');
-    $("#ajaxEmail2").html('<td colspan=\"2\"><span id="email2St" class="email2St"></span></td>');
-    $("#ajaxPasswd2").html('<td colspan=\"2\"><span id="passwd2St" class="passwd2St"></span></td>');
+    $("#ajaxUsr").html('<td colspan=\"4\"><span id="usrSt" class="usrSt"></span></td>');
+    $("#ajaxEmail").html('<td colspan=\"4\"><span id="emailSt" class="emailSt"></span></td>');
+    $("#ajaxEmail2").html('<td colspan=\"4\"><span id="email2St" class="email2St"></span></td>');
+    $("#ajaxEmailAlt2").html('<td colspan=\"4\"><span id="emailAlt2St" class="emailAlt2St"></span></td>');
+    $("#ajaxPasswd2").html('<td colspan=\"4\"><span id="passwd2St" class="passwd2St"></span></td>');
 
     var usrDisp = false;
     var emailDisp = false;
     var emailCoinciden = false;
     var passwdCoinciden = false;
+    
+    $("#colapsePhoto").click(function(){
+        alternar("Photo",0,"foto");
+        return false;
+    });
+/*
+    $("#colapseBasic").click();
+    $("#colapseContact").click();
+    $("#colapseAcademic").click();
+    $("#colapseMisc").click();
+    $("#colapseSecurity").click();*/
 
-    /**
+    /*
      * Informa al usuario si el las contraseñas coinciden
      */
     //$("#passwd2TBox").keyup(function(){testCoincidencia("passwd")});
@@ -52,7 +101,7 @@ $(document).ready(function(){
     });
 
 
-    /**
+    /*
      * Informa al usuario si el los correos electrónicos coinciden
      */
 //    $("#email2TBox").keyup(function(){testCoincidencia('email')});
@@ -73,7 +122,7 @@ $(document).ready(function(){
     });
 
 
-    /**
+    /*
      * Informa al usuario si el username introducido está disponible
      */
     $("#usrname").keyup(function(){
@@ -116,7 +165,7 @@ $(document).ready(function(){
         }
     });
 
-    /**
+    /*
      * Informa al usuario si el email introducido está disponible
      */
     $("#email").keyup(function(){
@@ -158,7 +207,6 @@ $(document).ready(function(){
             $("#ajaxEmail").fadeOut(2500);
         }
     });
-
 
 /******************************************************************************/
 /**********************     VALIDACIONES DEL FORMULARIO    ********************/

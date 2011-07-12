@@ -29,6 +29,7 @@ class Perfil {
   private $muro_ID;
   private $esAdmin;
   private $isNew;
+  private $estado;
 
   public function __construct() {
     if (func_num_args()==0) {
@@ -62,6 +63,7 @@ class Perfil {
         $this->seguridad_ID = $att["Seguridad_ID"];
         $this->muro_ID = $att["Muro_ID"];
         $this->esAdmin = $att["esAdmin"];
+        $this->estado = $att["estado"];
         $this->isNew = False;
       }
     } else {
@@ -160,6 +162,10 @@ class Perfil {
   public function getIsNew(){
     return $this->isNew;
   }
+
+  public function getEstado(){
+    return $this->estado;
+  }
   
   public function setUsrname($value){
     $this->usrname = $value;
@@ -253,6 +259,10 @@ class Perfil {
     $this->isNew = $value;
   }
 
+  public function setEstado($value){
+    $this->estado = $value;
+  }
+
   public function setDatosPerfil($usrname,
                                  $passwd,
                                  $email,
@@ -275,7 +285,8 @@ class Perfil {
                                  $seguridad_ID,
                                  $muro_ID,
                                  $esAdmin = False,
-                                 $isNew = False) {
+                                 $isNew = False,
+                                 $estado = "activo") {
     $this->usrname = $usrname;
     $this->passwd = $passwd;
     $this->email = $email;
@@ -298,6 +309,7 @@ class Perfil {
     $this->seguridad_ID = $seguridad_ID;
     $this->muro_ID = $muro_ID;
     $this->esAdmin = $esAdmin;
+    $this->estado = $estado;
     $this->isNew = $isNew;
   }
 
@@ -325,6 +337,7 @@ class Perfil {
     $perfil["muro_ID"] = $this->muro_ID;
     $perfil["esAdmin"] = $this->esAdmin;
     $perfil["isNew"] = $this->isNew;
+    $perfil["estado"] = $this->estado;
     return $perfil;
   }
     
@@ -370,6 +383,7 @@ class Perfil {
       "\tseguridad_ID = \"".(is_null($this->seguridad_ID) ? "NULL" : $this->seguridad_ID)."\"\n".
       "\tmuro_ID = \"".(is_null($this->muro_ID)? "NULL" : $this->muro_ID)."\"\n".
       "\tesAdmin = \"".(is_null($this->esAdmin)? "NULL" : $this->esAdmin)."\"\n".
+      "\testado = \"".(is_null($this->estado)? "NULL" : $this->estado)."\"\n".
       "\tisNew = \"".(is_null($this->isNew)? "NULL" : $this->isNew)."\"\n".
       "------------------------------------\n";
     return $str;

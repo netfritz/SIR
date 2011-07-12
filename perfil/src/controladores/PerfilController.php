@@ -2,7 +2,8 @@
 //echo "\n\n".getcwd()."\n\n";
 $srcFolder = "/home/victor/projects/ingSoftware/SIR/src/";
 $classes = array("fachadas/PerfilFachada.php",
-                 "vistas/PerfilView.php"
+                 "vistas/PerfilView.php"//,
+                 //                 "../../SYS/usuario1/Muro/Muro.php"
                  );
 
 foreach ($classes as $class)
@@ -11,19 +12,24 @@ foreach ($classes as $class)
 /*************************************************************************/
 /**                   Sección de cableado jejeje  =)                    **/
 /*************************************************************************/
-$_SESSION['k_username'] = "throoze";                                   /**/
+$_SESSION['k_username'] = "admin";                                   /**/
 //$_GET["Action"] = "edit";
+//$_GET["mode"] = "request";
 //$_GET["mode"] = "submit";
-//$_GET["Action"] = "create";
-//$_POST["usrname"] = "profe";
-/*$_POST["passwd"] = "holaa";
+/*$_GET["Action"] = "create";
+$_POST["usrname"] = "profe";
+$_POST["passwd"] = "holaa";
 $_POST["passwd2"] = "holaa";
 $_POST["email"] = "throoze@gmail.com";
 $_POST["email2"] = "throoze@gmail.com";
-$_POST["bdate"] = "0000-00-00";
-$_POST["name"] = "Victor";
-$_POST["lastname"] = "De Ponte";
-$_POST["tipo"] = "Estudiante";*/
+$_POST["fechaNac_anio"] = "0000";
+$_POST["fechaNac_mes"] = "00";
+$_POST["fechaNac_dia"] = "00";
+$_POST["nombre"] = "Victor";
+$_POST["apellido"] = "De Ponte";
+$_POST["tipo"] = "Estudiante";
+$_POST["sexo"] = "M";*/
+
 /*************************************************************************/
 /*************************************************************************/
 
@@ -63,10 +69,12 @@ if (isset($_GET["Action"])) {
       $data["trabajo"] = NULL;
       $data["bio"] = NULL;
       $data["seguridad_ID"] = 1; // cableado, seguridad default
-      $data["muro_ID"] = 1;      // cableado, hay que cambiarlo.
+      $data["muro_ID"] = 2;      // cableado, hay que cambiarlo.
       $data["esAdmin"] = False;
+      $data["estado"] = "activo";
       $fachada = PerfilFachada::singleton();
       $creacion = $fachada->createPerfil($data);
+      echo "\n\n\nadsvijbadsvkjbadsvkjbadsbkj\n\nmuroid = ".$data["muro_ID"]."\n\n";
       if ($creacion == True) {
         echo $vista->viewCreatePerfil();
       } else {
@@ -115,8 +123,9 @@ if (isset($_GET["Action"])) {
           $data["trabajo"] = $_POST["trabajo"];
           $data["bio"] = $_POST["bio"];
           $data["seguridad_ID"] = 1; // cableado para que funcione
-          $data["muro_ID"] = 1;      // cableado para que funcione
+          $data["muro_ID"] = 2;//Muro::Crear_Muro(999999,0);
           $data["esAdmin"] = False;
+          $data["estado"] = "activo";
           $fachada = PerfilFachada::singleton();
           $actualizacion = $fachada->editPerfil($data);
           if ($actualizacion == True || is_null($actualizacion)) {

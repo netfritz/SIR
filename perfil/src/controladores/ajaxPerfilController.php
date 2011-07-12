@@ -6,6 +6,9 @@ $classes = array("mappers/Perfil.php",
 foreach ($classes as $class)
   require_once($srcFolder.$class);
 
+//$_POST["function"] = "askForUsr";
+//$_POST["usrname"] = "admin";
+
 function getByAttr($attr, $value) {
   if (strcmp($attr,"usrname") == 0) {
     $fachada = PerfilFachada::singleton();

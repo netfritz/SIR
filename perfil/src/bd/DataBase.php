@@ -36,7 +36,7 @@ class DataBase{
    * (Tomado del manual de php:
    *             http://php.net/manual/en/language.oop5.patterns.php)
    */
-  public static function singleton() {
+  public static function getInstance() {
     if (!isset(self::$instance)) {
       $c = __CLASS__;
       $inst = new $c;

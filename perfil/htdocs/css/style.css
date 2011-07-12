@@ -448,3 +448,18 @@ top: 15px;
 #regForm label {
     text-align: right;
 }
+
+textarea {
+    width: 600px;
+    height:100px;
+}
+
+input {
+    width: 250px;
+    height:17px;
+}
+
+#submitBtn, #resetBtn {
+    width: auto;
+    height:auto;
+}
