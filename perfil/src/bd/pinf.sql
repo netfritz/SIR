@@ -57,7 +57,7 @@ CREATE  TABLE IF NOT EXISTS `pinf`.`Perfil` (
   `carrera` VARCHAR(100) NULL ,
   `colegio` VARCHAR(45) NULL ,
   `actividadesExtra` TEXT NULL ,
-  `foto` INT(10) NULL ,
+  `foto` BLOB NULL ,
   `trabajo` VARCHAR(100) NULL ,
   `bio` TEXT NULL ,
   `Seguridad_ID` INT(10) NOT NULL ,
