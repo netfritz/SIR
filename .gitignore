@@ -3,3 +3,4 @@
 *#*#
 *.bak
 src/bd/DataBase.php
+release.sh
