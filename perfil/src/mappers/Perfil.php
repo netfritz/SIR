@@ -1,9 +1,13 @@
 <?php
-$srcFolder = "/home/victor/projects/ingSoftware/SIR/src/";
-$classes = array("fachadasBD/FachadaBDPerfil.php"
-                 );
-foreach ($classes as $class)
-  require_once($srcFolder.$class);
+if (!isset($ajax) || !$ajax) {
+  $srcFolder = $_SERVER['DOCUMENT_ROOT']."/rspinf-usb/perfil/src/";
+  $classes = array("fachadasBD/FachadaBDPerfil.php"
+                   );
+  foreach ($classes as $class)
+    require_once($srcFolder.$class);
+  require_once($_SERVER['DOCUMENT_ROOT']."/rspinf-usb/mensajes/NoExisteException.php");
+  require_once($_SERVER['DOCUMENT_ROOT']."/rspinf-usb/basedatos.php");
+}
 class Perfil {
 
   private $usrname;
@@ -25,9 +29,12 @@ class Perfil {
   private $foto;
   private $trabajo;
   private $bio;
-  private $seguridad_ID;
-  private $muro_ID;
+  private $seguridadId;
+  private $muroId;
   private $esAdmin;
+  private $nombreFoto;
+  private $tamFoto;
+  private $formatoFoto;
   private $isNew;
   private $estado;
 
@@ -39,7 +46,7 @@ class Perfil {
       $P = FachadaBDPerfil::getInstance();
       $att = $P -> buscarPerfil($args[0]);
       if ($att==false) {
-        return null;
+        throw new NoExisteException("El perfil con username (".$args[0].") no está registrado!");
       } else {
         $this->usrname = $args[0];
         $this->passwd = $att["passwd"];
@@ -60,8 +67,8 @@ class Perfil {
         $this->foto = $att["foto"];
         $this->trabajo = $att["trabajo"];
         $this->bio = $att["bio"];
-        $this->seguridad_ID = $att["Seguridad_ID"];
-        $this->muro_ID = $att["Muro_ID"];
+        $this->seguridadId = $att["seguridadId"];
+        $this->muroId = $att["muroId"];
         $this->esAdmin = $att["esAdmin"];
         $this->estado = $att["estado"];
         $this->isNew = False;
@@ -70,7 +77,7 @@ class Perfil {
       return null;
     }
   }
-  
+
   public function getUsrname(){
     return $this->usrname;
   }
@@ -147,16 +154,28 @@ class Perfil {
     return $this->bio;
   }
 
-  public function getSeguridad_ID(){
-    return $this->seguridad_ID;
+  public function getSeguridadId(){
+    return $this->seguridadId;
   }
-  
-  public function getMuro_ID(){
-    return $this->muro_ID;
+
+  public function getMuroId(){
+    return $this->muroId;
   }
-  
+
   public function getEsAdmin(){
     return $this->esAdmin;
+  }
+
+  public function getNombreFoto(){
+    return $this->nombreFoto;
+  }
+
+  public function getTamFoto(){
+    return $this->tamFoto;
+  }
+
+  public function getFormatoFoto(){
+    return $this->formatoFoto;
   }
 
   public function getIsNew(){
@@ -166,7 +185,7 @@ class Perfil {
   public function getEstado(){
     return $this->estado;
   }
-  
+
   public function setUsrname($value){
     $this->usrname = $value;
   }
@@ -243,16 +262,28 @@ class Perfil {
     $this->bio = $value;
   }
 
-  public function setSeguridad_ID($value){
-    $this->seguridad_ID = $value;
+  public function setSeguridadId($value){
+    $this->seguridadId = $value;
   }
-  
-  public function setMuro_ID($value){
-    $this->muro_ID = $value;
+
+  public function setMuroId($value){
+    $this->muroId = $value;
   }
-  
+
   public function setEsAdmin($value){
     $this->esAdmin = $value;
+  }
+
+  public function setNombreFoto($value){
+    $this->nombreFoto = $value;
+  }
+
+  public function setTamFoto($value){
+    $this->tamFoto = $value;
+  }
+
+  public function setFormatoFoto($value){
+    $this->formatoFoto = $value;
   }
 
   public function setIsNew($value){
@@ -282,11 +313,14 @@ class Perfil {
                                  $foto,
                                  $trabajo,
                                  $bio,
-                                 $seguridad_ID,
-                                 $muro_ID,
-                                 $esAdmin = False,
-                                 $isNew = False,
-                                 $estado = "activo") {
+                                 $seguridadId,
+                                 $muroId,
+                                 $esAdmin,
+                                 $estado,
+                                 $nombreFoto,
+                                 $tamFoto,
+                                 $formatoFoto,
+                                 $isNew) {
     $this->usrname = $usrname;
     $this->passwd = $passwd;
     $this->email = $email;
@@ -306,10 +340,13 @@ class Perfil {
     $this->foto = $foto;
     $this->trabajo = $trabajo;
     $this->bio = $bio;
-    $this->seguridad_ID = $seguridad_ID;
-    $this->muro_ID = $muro_ID;
+    $this->seguridadId = $seguridadId;
+    $this->muroId = $muroId;
     $this->esAdmin = $esAdmin;
     $this->estado = $estado;
+    $this->nombreFoto = $nombreFoto;
+    $this->tamFoto = $tamFoto;
+    $this->formatoFoto = $formatoFoto;
     $this->isNew = $isNew;
   }
 
@@ -333,14 +370,17 @@ class Perfil {
     $perfil["foto"] = $this->foto;
     $perfil["trabajo"] = $this->trabajo;
     $perfil["bio"] = $this->bio;
-    $perfil["seguridad_ID"] = $this->seguridad_ID;
-    $perfil["muro_ID"] = $this->muro_ID;
+    $perfil["seguridadId"] = $this->seguridadId;
+    $perfil["muroId"] = $this->muroId;
     $perfil["esAdmin"] = $this->esAdmin;
-    $perfil["isNew"] = $this->isNew;
     $perfil["estado"] = $this->estado;
+    $perfil["nombreFoto"] = $this->nombreFoto;
+    $perfil["tamFoto"] = $this->tamFoto;
+    $perfil["formatoFoto"] = $this->formatoFoto;
+    $perfil["isNew"] = $this->isNew;
     return $perfil;
   }
-    
+
   public static function existe($value, $attr = "usrname") {
     $fachadaBD = FachadaBDPerfil::getInstance();
     if (strcmp($attr,"usrname") == 0) {
@@ -354,11 +394,24 @@ class Perfil {
     }
   }
 
+  public function tieneFoto() {
+    return (!is_null($this->getFoto()) &&
+            !is_null($this->getNombreFoto()) &&
+            !is_null($this->getTamFoto()) &&
+            !is_null($this->getFormatoFoto())
+            );
+  }
+
   public function save() {
     $P = FachadaBDPerfil::getInstance();
-    return $P->salvarPerfil($this->asArrayAssoc());
+    try {
+      $ans = $P->salvarPerfil($this->asArrayAssoc());
+    } catch (DatosInvalidosException $e) {
+      throw $e;
+    }
+    return $ans;
   }
-  
+
   public function toString(){
     $str = "Perfil:\n".
       "\tusrname = \"".(is_null($this->usrname) ? "NULL" : $this->usrname)."\"\n".
@@ -380,13 +433,115 @@ class Perfil {
       "\tfoto = \"".(is_null($this->foto)? "NULL" : $this->foto)."\"\n".
       "\ttrabajo = \"".(is_null($this->trabajo)? "NULL" : $this->trabajo)."\"\n".
       "\tbio = \"".(is_null($this->bio)? "NULL" : $this->bio)."\"\n".
-      "\tseguridad_ID = \"".(is_null($this->seguridad_ID) ? "NULL" : $this->seguridad_ID)."\"\n".
-      "\tmuro_ID = \"".(is_null($this->muro_ID)? "NULL" : $this->muro_ID)."\"\n".
+      "\tseguridadId = \"".(is_null($this->seguridadId) ? "NULL" : $this->seguridadId)."\"\n".
+      "\tmuroId = \"".(is_null($this->muroId)? "NULL" : $this->muroId)."\"\n".
       "\tesAdmin = \"".(is_null($this->esAdmin)? "NULL" : $this->esAdmin)."\"\n".
       "\testado = \"".(is_null($this->estado)? "NULL" : $this->estado)."\"\n".
+      "\tnombreFoto = \"".(is_null($this->nombreFoto)? "NULL" : $this->nombreFoto)."\"\n".
+      "\ttamFoto = \"".(is_null($this->tamFoto)? "NULL" : $this->tamFoto)."\"\n".
+      "\tformatoFoto = \"".(is_null($this->formatoFoto)? "NULL" : $this->formatoFoto)."\"\n".
       "\tisNew = \"".(is_null($this->isNew)? "NULL" : $this->isNew)."\"\n".
       "------------------------------------\n";
     return $str;
+  }
+
+  public function anadir_amistad($idAmigo){
+    $baseD = new BaseDatos('esAmigo');
+    $baseD ->agregarAmistad($this->username , $idAmigo);
+  }
+
+  public function eliminar_amistad($idAmigo){
+    $baseD = new BaseDatos('esAmigo');
+    $baseD -> eliminarAmistad($this->username, $idAmigo);
+  }
+
+  public function buscar_amistades() {
+    $baseD = new BaseDatos('esAmigo');
+    $aux = $baseD ->buscarAmistades($this->username);
+    $retorno = array();
+    $k = 0;
+    for($i = 0; $i < sizeof($aux); $i++){
+      for($j = 0; $j < 2; $j++){
+        if(strcmp($aux[$i][$j],$this->username) != 0){
+          $retorno[$k] = $aux[$i][$j];
+          $k = $k+1;
+        }
+      }
+    }
+    return $retorno;
+  }
+
+  public function buscar_amistades2($idUsername) {
+    $baseD = new BaseDatos('esAmigo');
+    $aux = $baseD ->buscarAmistades($idUsername);
+    $retorno = array();
+    $k = 0;
+    for($i = 0; $i < sizeof($aux); $i++){
+      for($j = 0; $j < 2; $j++){
+        if(strcmp($aux[$i][$j],$idUsername) != 0){
+          $retorno[$k] = $aux[$i][$j];
+          $k = $k+1;
+        }
+      }
+    }
+    return $retorno;
+  }
+
+  public function obtenerFoto(){
+    $amigosUsuario = $this->buscar_amistades();
+    $baseD = new BaseDatos('Perfil');
+    return $baseD->obtenerFoto("admin");
+
+  }
+  public function sugerir_personas() {
+
+    $amigosUsuario = $this->buscar_amistades();
+    $baseD = new BaseDatos('esAmigo');
+    $listaAmigos = array();
+    $retorno = array();
+
+    for($i = 0; $i < sizeof($amigosUsuario); $i++){
+
+
+      $amigosAmigos = $this->buscar_amistades2($amigosUsuario[$i]);
+      $k = 0;
+      for($j = 0; $j < sizeof($amigosAmigos); $j++){
+
+
+        if(isset($listaAmigos[$amigosAmigos[$j]])){
+          $listaAmigos[$amigosAmigos[$j]][1]++;
+        }else{
+          $listaAmigos[$amigosAmigos[$j]][0] = $amigosAmigos[$j];
+          $listaAmigos[$amigosAmigos[$j]][1] = 1;
+
+          $k++;
+
+        }
+      }
+
+      for($y = 0; $y < sizeof($amigosUsuario);$y++){
+        if(isset($listaAmigos[$amigosUsuario[$y]])){
+          if($listaAmigos[$amigosUsuario[$y]][1]>0){
+            unset($listaAmigos[$amigosUsuario[$y]]);
+          }
+        }
+      }
+
+      if(isset($listaAmigos[$this->username])){
+        unset($listaAmigos[$this->username]);
+      }
+
+    }
+    usort($listaAmigos,function ($a, $b){
+        if ($a == $b) {
+          return 0;
+        }
+        return ($a[1] > $b[1]) ? -1 : 1;
+      });
+
+
+    $retorno = array(array_shift($listaAmigos),array_shift($listaAmigos));
+    return $retorno;
   }
 
 }

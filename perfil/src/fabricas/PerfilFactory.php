@@ -1,12 +1,13 @@
 <?php
-$srcFolder = "/home/victor/projects/ingSoftware/SIR/src/";
-$classes = array("mappers/Perfil.php"
-                 );
-foreach ($classes as $class)
-  require_once($srcFolder.$class);
+if (!isset($ajax) || !$ajax) {
+  $srcFolder = $_SERVER['DOCUMENT_ROOT']."/rspinf-usb/perfil/src/";
+  $classes = array("mappers/Perfil.php"
+                   );
+  foreach ($classes as $class)
+    require_once($srcFolder.$class);
+}
 class PerfilFactory {
   private static $instance;
-
   /* Arreglo asociativo que mapea identificadores de perfiles a perfiles */
   private $perfiles;
 

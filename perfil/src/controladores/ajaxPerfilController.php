@@ -1,6 +1,11 @@
 <?php
-$srcFolder = "/home/victor/projects/ingSoftware/SIR/src/";
-$classes = array("mappers/Perfil.php",
+//$srcFolder = $_SERVER['DOCUMENT_ROOT']."/rspinf-usb/perfil/src/";
+$srcFolder = "../";
+$ajax = true;
+$classes = array("bd/DataBase.php",
+                 "fachadasBD/FachadaBDPerfil.php",
+                 "mappers/Perfil.php",
+                 "fabricas/PerfilFactory.php",
                  "fachadas/PerfilFachada.php"
                  );
 foreach ($classes as $class)

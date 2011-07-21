@@ -1,11 +1,12 @@
 <?php
-$srcFolder = "/home/victor/projects/ingSoftware/SIR/src/";
-$classes = array("mappers/Perfil.php",
-                 "fabricas/PerfilFactory.php"
-                 );
-foreach ($classes as $class)
-  require_once($srcFolder.$class);
-
+if (!isset($ajax) || !$ajax) {
+  $srcFolder = $_SERVER['DOCUMENT_ROOT']."/rspinf-usb/perfil/src/";
+  $classes = array("mappers/Perfil.php",
+                   "fabricas/PerfilFactory.php"
+                   );
+  foreach ($classes as $class)
+    require_once($srcFolder.$class);
+}
 
 class PerfilFachada {
   private static $instance; // Representa la unica instancia de esta clase
@@ -18,12 +19,33 @@ class PerfilFachada {
     $errors = $this->perfilValidator($data);
     if (is_null($errors)) {
       $fabrica = PerfilFactory::getInstance();
-      $perfil = $fabrica->getPerfil($data["usrname"]);
+      try {
+        $perfil = $fabrica->getPerfil($data["usrname"]);
+      } catch (NoExisteException $e){
+        throw $e;
+      }
       if (is_null($perfil)) {
         $errors[] = "PerfilFachada.editPerfil(): error instanciando el perfil!";
         return $errors;
       }
+      $laFoto = NULL;
+      $elNombreFoto = NULL;
+      $elTamFoto = NULL;
+      $elFormatoFoto = NULL;
       // Seteo los nuevos atributos:
+      if (is_null($data["foto"])) {
+        if ($perfil->tieneFoto()) {
+          $laFoto = $perfil->getFoto();
+          $elNombreFoto = $perfil->getNombreFoto();
+          $elTamFoto = $perfil->getTamFoto();
+          $elFormatoFoto = $perfil->getFormatoFoto();
+        }
+      } else {
+        $laFoto = $data["foto"];
+        $elNombreFoto = $data["nombreFoto"];
+        $elTamFoto = $data["tamFoto"];
+        $elFormatoFoto = $data["formatoFoto"];
+      }
       $perfil->setDatosPerfil($data["usrname"],
                               $data["passwd"],
                               $data["email"],
@@ -40,16 +62,25 @@ class PerfilFachada {
                               $data["carrera"],
                               $data["colegio"],
                               $data["actividadesExtra"],
-                              $data["foto"],
+                              $laFoto,
                               $data["trabajo"],
                               $data["bio"],
-                              $data["seguridad_ID"],
-                              $data["muro_ID"],
-                              False,
-                              False
-                              );
+                              $perfil->getSeguridadId(),
+                              $perfil->getMuroId(),
+                              $perfil->getEsAdmin(),
+                              $perfil->getEstado(),
+                              $elNombreFoto,
+                              $elTamFoto,
+                              $elFormatoFoto,
+                              $perfil->getIsNew());
 
-      return $perfil->save();
+      try {
+        $perfil->save();
+        $success = True;
+      } catch (DatosInvalidosException $e) {
+        throw $e;
+      }
+      return $success;
     } else {
       return $errors;
     }
@@ -57,7 +88,11 @@ class PerfilFachada {
 
   public function getPerfil($usrname) {
     $fabrica = PerfilFactory::getInstance();
-    $perfil = $fabrica->getPerfil($usrname);
+    try {
+      $perfil = $fabrica->getPerfil($usrname);
+    } catch (NoExisteException $e){
+      throw $e;
+    }
     if (is_null($perfil)) {
       return NULL;
     } else {;
@@ -94,12 +129,18 @@ class PerfilFachada {
                               $data["foto"],
                               $data["trabajo"],
                               $data["bio"],
-                              $data["seguridad_ID"],
-                              $data["muro_ID"],
+                              $data["seguridadId"],
+                              $data["muroId"],
                               False,
                               True
                               );
-      return $perfil->save();
+      try {
+        $perfil->save();
+        $success = True;
+      } catch (DatosInvalidosException $e) {
+        throw $e;
+      }
+      return $success;
     } else {
       return $errors;
     }
@@ -116,7 +157,7 @@ class PerfilFachada {
   //#####################################################################//
   //                        Inicio del Singleton                         //
   //#####################################################################//
-  
+
   /**
    * Para evitar que instancien esta clase, se crea un constructor privado
    * (Tomado del manual de php:
@@ -136,9 +177,9 @@ class PerfilFachada {
   }
 
   /**
-   * Método que garantiza que sólo habrá una instancia de esta clase, con los 
-   * dos métodos anteriores junto con este, se crea un "Singleton Pattern" 
-   * con lo cual emulamos lo que sería una clase estática (lo que en java 
+   * Método que garantiza que sólo habrá una instancia de esta clase, con los
+   * dos métodos anteriores junto con este, se crea un "Singleton Pattern"
+   * con lo cual emulamos lo que sería una clase estática (lo que en java
    * hacemos con "public static class blah {}").
    * (Tomado del manual de php:
    *             http://php.net/manual/en/language.oop5.patterns.php)
